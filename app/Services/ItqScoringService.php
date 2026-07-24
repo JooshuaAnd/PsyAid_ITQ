@@ -1,0 +1,125 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\ItqAnswersModel;
+use App\Models\ItqResultModel;
+
+/**
+ * Official ITQ (International Trauma Questionnaire) Scoring Engine
+ * Implements Cloitre et al. ICD-11 diagnostic criteria algorithms for PTSD & DSO.
+ */
+class ItqScoringService
+{
+    /**
+     * NOTE: This percentile and severity mapping is a local approximation for demo/prototype purposes.
+     * It is NOT derived from an official normative study.
+     * Please consult a qualified clinical psychologist or expert before deploying in real field operations.
+     */
+    private const SEVERITY_MAPPING = [
+        0  => ['severity' => 'Minimal',     'percentile' => 5.00],
+        1  => ['severity' => 'Minimal',     'percentile' => 10.00],
+        2  => ['severity' => 'Minimal',     'percentile' => 18.00],
+        3  => ['severity' => 'Mild',        'percentile' => 25.00],
+        4  => ['severity' => 'Mild',        'percentile' => 32.00],
+        5  => ['severity' => 'Mild',        'percentile' => 40.00],
+        6  => ['severity' => 'Moderate',    'percentile' => 48.00],
+        7  => ['severity' => 'Moderate',    'percentile' => 55.00],
+        8  => ['severity' => 'Moderate',    'percentile' => 62.00],
+        9  => ['severity' => 'Moderate',    'percentile' => 68.00],
+        10 => ['severity' => 'Moderate',    'percentile' => 73.00],
+        11 => ['severity' => 'Severe',      'percentile' => 78.00],
+        12 => ['severity' => 'Severe',      'percentile' => 82.00],
+        13 => ['severity' => 'Severe',      'percentile' => 86.00],
+        14 => ['severity' => 'Severe',      'percentile' => 89.00],
+        15 => ['severity' => 'Severe',      'percentile' => 92.00],
+        16 => ['severity' => 'Very Severe', 'percentile' => 94.00],
+        17 => ['severity' => 'Very Severe', 'percentile' => 95.50],
+        18 => ['severity' => 'Very Severe', 'percentile' => 97.00],
+        19 => ['severity' => 'Very Severe', 'percentile' => 98.00],
+        20 => ['severity' => 'Very Severe', 'percentile' => 98.50],
+        21 => ['severity' => 'Very Severe', 'percentile' => 99.00],
+        22 => ['severity' => 'Very Severe', 'percentile' => 99.30],
+        23 => ['severity' => 'Very Severe', 'percentile' => 99.70],
+        24 => ['severity' => 'Very Severe', 'percentile' => 99.90],
+    ];
+
+    public function generate(int $victimId): ?array
+    {
+        $itqModel = new ItqAnswersModel();
+        $answers  = $itqModel->getByVictimId($victimId);
+
+        if (! $answers) {
+            return null; // No ITQ answers recorded yet
+        }
+
+        // 1. PTSD Score (Items 1 - 6)
+        $ptsdScore = (int)$answers['item_1'] + (int)$answers['item_2'] + 
+                     (int)$answers['item_3'] + (int)$answers['item_4'] + 
+                     (int)$answers['item_5'] + (int)$answers['item_6'];
+
+        // 2. DSO Score (Items 10 - 15)
+        $dsoScore  = (int)$answers['item_10'] + (int)$answers['item_11'] + 
+                     (int)$answers['item_12'] + (int)$answers['item_13'] + 
+                     (int)$answers['item_14'] + (int)$answers['item_15'];
+
+        // 3. Functional Impairment
+        $ptsdImpairment = ((int)$answers['item_7'] >= 2 || (int)$answers['item_8'] >= 2 || (int)$answers['item_9'] >= 2);
+        $dsoImpairment  = ((int)$answers['item_16'] >= 2 || (int)$answers['item_17'] >= 2 || (int)$answers['item_18'] >= 2);
+
+        // 4. Diagnostic Criteria Met
+        $ptsdReexp  = ((int)$answers['item_1'] >= 2 || (int)$answers['item_2'] >= 2);
+        $ptsdAvoid  = ((int)$answers['item_3'] >= 2 || (int)$answers['item_4'] >= 2);
+        $ptsdThreat = ((int)$answers['item_5'] >= 2 || (int)$answers['item_6'] >= 2);
+        $ptsdCriteriaMet = ($ptsdReexp && $ptsdAvoid && $ptsdThreat && $ptsdImpairment);
+
+        $dsoAffect = ((int)$answers['item_10'] >= 2 || (int)$answers['item_11'] >= 2);
+        $dsoSelf   = ((int)$answers['item_12'] >= 2 || (int)$answers['item_13'] >= 2);
+        $dsoRel    = ((int)$answers['item_14'] >= 2 || (int)$answers['item_15'] >= 2);
+        $dsoCriteriaMet  = ($dsoAffect && $dsoSelf && $dsoRel && $dsoImpairment);
+
+        // 5. Severity & Percentile Mapping
+        $ptsdMap = self::SEVERITY_MAPPING[min(24, max(0, $ptsdScore))];
+        $dsoMap  = self::SEVERITY_MAPPING[min(24, max(0, $dsoScore))];
+
+        // 6. Overall Risk Level
+        if ($ptsdCriteriaMet || $dsoCriteriaMet) {
+            $overallRisk = 'HIGH';
+        } elseif ($ptsdScore >= 8 || $dsoScore >= 8) {
+            $overallRisk = 'MEDIUM';
+        } else {
+            $overallRisk = 'LOW';
+        }
+
+        $reviewerName = session()->get('user_name') ?? 'Psikolog Jaga';
+
+        // 7. Save/Update record in itq_result
+        $resultModel = new ItqResultModel();
+        $existing    = $resultModel->getByVictimId($victimId);
+
+        $resultData = [
+            'victim_id'         => $victimId,
+            'ptsd_score'        => $ptsdScore,
+            'ptsd_severity'     => $ptsdMap['severity'],
+            'ptsd_percentile'   => $ptsdMap['percentile'],
+            'ptsd_criteria_met' => $ptsdCriteriaMet ? 1 : 0,
+            'dso_score'         => $dsoScore,
+            'dso_severity'      => $dsoMap['severity'],
+            'dso_percentile'    => $dsoMap['percentile'],
+            'dso_criteria_met'  => $dsoCriteriaMet ? 1 : 0,
+            'overall_risk'      => $overallRisk,
+            'reviewed_by'       => session()->get('user_id') ?? 4,
+            'reviewed_at'       => date('Y-m-d H:i:s'),
+        ];
+
+        if ($existing) {
+            $resultModel->update($existing['id'], $resultData);
+        } else {
+            $resultModel->insert($resultData);
+        }
+
+        return array_merge($resultData, [
+            'reviewed_by_name' => $reviewerName,
+        ]);
+    }
+}
