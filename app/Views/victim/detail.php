@@ -53,8 +53,13 @@
                 </button>
             </li>
             <li class="nav-item" role="presentation">
+                <button class="nav-link fw-semibold py-3 px-3" id="summary-tab" data-bs-toggle="tab" data-bs-target="#tab-summary" type="button" role="tab">
+                    <i class="bi bi-file-earmark-text me-1"></i> 5. Summary
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
                 <button class="nav-link fw-semibold py-3 px-3" id="ai-tab" data-bs-toggle="tab" data-bs-target="#tab-ai" type="button" role="tab">
-                    <i class="bi bi-cpu me-1"></i> 5. AI Assessment
+                    <i class="bi bi-cpu me-1"></i> 6. AI Assessment
                 </button>
             </li>
         </ul>
@@ -158,13 +163,20 @@
                     </div>
 
                     <div class="row g-3">
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-4">
                             <label for="jenis_bencana" class="form-label fw-semibold">Jenis Bencana</label>
                             <input type="text" class="form-control" id="jenis_bencana" name="jenis_bencana" 
                                    value="<?= old('jenis_bencana', $disasterInfo['jenis_bencana'] ?? $victim['posko_bencana'] ?? 'Gempa Bumi') ?>">
                         </div>
 
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-4">
+                            <label for="lokasi_bencana" class="form-label fw-semibold">Lokasi Bencana <span class="badge bg-secondary ms-1">Auto Posko</span></label>
+                            <input type="text" class="form-control bg-light" id="lokasi_bencana" 
+                                   value="<?= esc(($victim['regency_name'] ?? '') . ', ' . ($victim['province_name'] ?? '')) ?>" readonly disabled>
+                            <div class="form-text text-muted fs-8"><i class="bi bi-info-circle me-1"></i> Otomatis terisi dari wilayah Posko terdaftar milik relawan.</div>
+                        </div>
+
+                        <div class="col-12 col-md-4">
                             <label for="tanggal_bencana" class="form-label fw-semibold">Tanggal Kejadian Bencana</label>
                             <input type="date" class="form-control" id="tanggal_bencana" name="tanggal_bencana" 
                                    value="<?= old('tanggal_bencana', $disasterInfo['tanggal'] ?? date('Y-m-d')) ?>">
@@ -595,11 +607,293 @@
                 <?php endif; ?>
             </div>
 
-            <!-- TAB 5: AI CLINICAL DECISION SUPPORT (SEGMEN 8) -->
+            <!-- TAB 5: SUMMARY & REVIEW DATA PENYINTAS -->
+            <div class="tab-pane fade" id="tab-summary" role="tabpanel">
+                <div class="border-bottom pb-3 mb-4 d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div>
+                        <h5 class="fw-bold text-dark mb-1"><i class="bi bi-file-earmark-text text-primary me-2"></i> Section 5 — Summary & Review Data Penyintas</h5>
+                        <p class="text-muted small mb-0">Tinjau kembali seluruh data korban yang telah diinput sebelumnya. Anda dapat mengedit kembali data yang sudah diinput melalui tombol edit di masing-masing seksi.</p>
+                    </div>
+                    <span class="badge bg-primary px-3 py-2 fs-7"><i class="bi bi-check2-square me-1"></i> Mode Review Relawan</span>
+                </div>
+
+                <!-- 1. IDENTITAS PENYINTAS -->
+                <div class="card card-custom p-4 bg-light border mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="fw-bold text-dark mb-0"><i class="bi bi-person-vcard text-primary me-2"></i> 1. Identitas Penyintas</h6>
+                        <button type="button" onclick="switchToTab('identitas')" class="btn btn-outline-primary btn-sm rounded-3 fw-semibold">
+                            <i class="bi bi-pencil-square me-1"></i> Edit Data Identitas
+                        </button>
+                    </div>
+                    <div class="row g-3 bg-white p-3 rounded border">
+                        <div class="col-12 col-md-6">
+                            <span class="text-muted small d-block">Nama Lengkap</span>
+                            <strong class="text-dark fs-6"><?= esc($victim['nama']) ?></strong>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <span class="text-muted small d-block">Jenis Kelamin</span>
+                            <strong class="text-dark"><?= esc($victim['jenis_kelamin'] === 'L' ? 'Laki-Laki (L)' : 'Perempuan (P)') ?></strong>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <span class="text-muted small d-block">Umur</span>
+                            <strong class="text-dark"><?= esc($victim['umur']) ?> Tahun</strong>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <span class="text-muted small d-block">NIK</span>
+                            <strong class="text-dark"><?= esc($victim['nik'] ?? '-') ?></strong>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <span class="text-muted small d-block">Kontak Keluarga / No HP</span>
+                            <strong class="text-dark"><?= esc($victim['no_hp_keluarga'] ?? '-') ?></strong>
+                        </div>
+                        <div class="col-12">
+                            <span class="text-muted small d-block">Alamat Asal</span>
+                            <span class="text-dark"><?= esc($victim['alamat'] ?? '-') ?></span>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <span class="text-muted small d-block">Tanggal Tiba di Posko</span>
+                            <strong class="text-dark"><?= esc($victim['tanggal_datang']) ?></strong>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <span class="text-muted small d-block">Jam Tiba</span>
+                            <strong class="text-dark"><?= esc($victim['jam_datang']) ?></strong>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <span class="text-muted small d-block">Ditemukan Oleh Relawan</span>
+                            <strong class="text-dark"><?= esc($victim['relawan_nama'] ?? 'Relawan Posko') ?></strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. INFORMASI & DAMPAK BENCANA -->
+                <div class="card card-custom p-4 bg-light border mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="fw-bold text-dark mb-0"><i class="bi bi-tsunami text-danger me-2"></i> 2. Informasi & Dampak Bencana</h6>
+                        <button type="button" onclick="switchToTab('bencana')" class="btn btn-outline-primary btn-sm rounded-3 fw-semibold">
+                            <i class="bi bi-pencil-square me-1"></i> Edit Info Bencana
+                        </button>
+                    </div>
+                    <div class="row g-3 bg-white p-3 rounded border">
+                        <div class="col-12 col-md-4">
+                            <span class="text-muted small d-block">Jenis Bencana</span>
+                            <strong class="text-dark"><?= esc($disasterInfo['jenis_bencana'] ?? $victim['posko_bencana'] ?? 'Gempa Bumi') ?></strong>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <span class="text-muted small d-block">Lokasi Bencana (Wilayah Posko)</span>
+                            <span class="badge bg-secondary px-2 py-1 me-1">Auto</span>
+                            <strong class="text-dark"><?= esc(($victim['regency_name'] ?? '') . ', ' . ($victim['province_name'] ?? '')) ?></strong>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <span class="text-muted small d-block">Tanggal Kejadian Bencana</span>
+                            <strong class="text-dark"><?= esc($disasterInfo['tanggal'] ?? '-') ?></strong>
+                        </div>
+                        <div class="col-12">
+                            <span class="text-muted small d-block mb-1">Durasi Terjebak Reruntuhan / Bencana</span>
+                            <span class="badge bg-warning text-dark px-3 py-2 fs-7"><?= esc($disasterInfo['durasi_terjebak'] ?? '<1 jam') ?></span>
+                        </div>
+                        <div class="col-12">
+                            <span class="text-muted small d-block mb-2">Indikator Dampak Trauma Bencana</span>
+                            <div class="d-flex flex-wrap gap-2">
+                                <span class="badge <?= !empty($disasterInfo['mengungsi']) ? 'bg-primary' : 'bg-light text-muted border' ?> px-3 py-2">
+                                    <?= !empty($disasterInfo['mengungsi']) ? '✓ Mengungsi' : '✗ Tidak Mengungsi' ?>
+                                </span>
+                                <span class="badge <?= !empty($disasterInfo['kehilangan_rumah']) ? 'bg-danger' : 'bg-light text-muted border' ?> px-3 py-2">
+                                    <?= !empty($disasterInfo['kehilangan_rumah']) ? '✓ Rumah Hancur/Kehilangan' : '✗ Rumah Utuh' ?>
+                                </span>
+                                <span class="badge <?= !empty($disasterInfo['kehilangan_keluarga']) ? 'bg-danger' : 'bg-light text-muted border' ?> px-3 py-2">
+                                    <?= !empty($disasterInfo['kehilangan_keluarga']) ? '✓ Kehilangan Anggota Keluarga' : '✗ Keluarga Utuh' ?>
+                                </span>
+                                <span class="badge <?= !empty($disasterInfo['cedera']) ? 'bg-warning text-dark' : 'bg-light text-muted border' ?> px-3 py-2">
+                                    <?= !empty($disasterInfo['cedera']) ? '✓ Cedera Fisik' : '✗ Tidak Cedera' ?>
+                                </span>
+                                <span class="badge <?= !empty($disasterInfo['rawat_inap']) ? 'bg-warning text-dark' : 'bg-light text-muted border' ?> px-3 py-2">
+                                    <?= !empty($disasterInfo['rawat_inap']) ? '✓ Rawat Inap' : '✗ Tidak Rawat Inap' ?>
+                                </span>
+                                <span class="badge <?= !empty($disasterInfo['saksi_kematian']) ? 'bg-danger' : 'bg-light text-muted border' ?> px-3 py-2">
+                                    <?= !empty($disasterInfo['saksi_kematian']) ? '✓ Saksi Kematian Korban' : '✗ Bukan Saksi Kematian' ?>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. RIWAYAT PSIKOLOGIS -->
+                <div class="card card-custom p-4 bg-light border mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="fw-bold text-dark mb-0"><i class="bi bi-journal-medical text-primary me-2"></i> 3. Riwayat Medis & Psikologis</h6>
+                        <?php if ($userRole !== 'bpbd_admin'): ?>
+                            <button type="button" onclick="switchToTab('psikologis')" class="btn btn-outline-primary btn-sm rounded-3 fw-semibold">
+                                <i class="bi bi-pencil-square me-1"></i> Edit Riwayat Psikologis
+                            </button>
+                        <?php endif; ?>
+                    </div>
+                    <?php if ($userRole === 'bpbd_admin'): ?>
+                        <div class="alert alert-warning mb-0 fs-7">
+                            <i class="bi bi-shield-lock-fill me-1"></i> Hak Akses Dibatasi: Data medis sensitif disembunyikan untuk role BPBD Admin.
+                        </div>
+                    <?php else: ?>
+                        <div class="row g-3 bg-white p-3 rounded border">
+                            <div class="col-12 col-md-6">
+                                <span class="text-muted small d-block">Pernah Konsultasi / Dirawat Psikiater</span>
+                                <strong class="text-dark">
+                                    <?= !empty($psychHist['pernah_konsultasi']) ? 'Pernah Konsultasi' : 'Belum Pernah' ?> • 
+                                    <?= !empty($psychHist['pernah_dirawat_psikiater']) ? 'Pernah Dirawat Psikiater' : 'Tidak Pernah Dirawat' ?>
+                                </strong>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <span class="text-muted small d-block">Riwayat Risiko Melukai Diri / Suicide / NAPZA</span>
+                                <div>
+                                    <?php if (!empty($psychHist['riwayat_percobaan_bunuh_diri'])): ?>
+                                        <span class="badge bg-danger me-1">Percobaan Bunuh Diri</span>
+                                    <?php endif; ?>
+                                    <?php if (!empty($psychHist['riwayat_melukai_diri'])): ?>
+                                        <span class="badge bg-danger me-1">Melukai Diri (Self-Harm)</span>
+                                    <?php endif; ?>
+                                    <?php if (!empty($psychHist['riwayat_napza'])): ?>
+                                        <span class="badge bg-warning text-dark me-1">Riwayat NAPZA</span>
+                                    <?php endif; ?>
+                                    <?php if (empty($psychHist['riwayat_percobaan_bunuh_diri']) && empty($psychHist['riwayat_melukai_diri']) && empty($psychHist['riwayat_napza'])): ?>
+                                        <span class="text-muted fs-7">Tidak Ada Riwayat Krisis</span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <span class="text-muted small d-block">Diagnosis Sebelumnya</span>
+                                <strong class="text-dark">
+                                    <?= !empty($savedDiagnoses) ? esc(implode(', ', $savedDiagnoses)) : 'Tidak Ada Diagnosis Sebelumnya' ?>
+                                </strong>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <span class="text-muted small d-block">Obat-obatan yang Sedang Dikonsumsi</span>
+                                <strong class="text-dark">
+                                    <?= !empty($psychHist['sedang_konsumsi_obat']) ? esc(($psychHist['nama_obat'] ?? '-') . ' (Dosis: ' . ($psychHist['dosis'] ?? '-') . ', Dokter: ' . ($psychHist['dokter'] ?? '-') . ')') : 'Tidak Ada Obat' ?>
+                                </strong>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <span class="text-muted small d-block">Riwayat Penyakit Kronis Fisik</span>
+                                <strong class="text-dark">
+                                    <?= !empty($psychHist['riwayat_penyakit_kronis']) ? esc($psychHist['keterangan_penyakit_kronis'] ?? 'Ada Penyakit Kronis') : 'Tidak Ada' ?>
+                                </strong>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <!-- 4. SKRINING AWAL RELAWAN -->
+                <div class="card card-custom p-4 bg-light border mb-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="fw-bold text-dark mb-0"><i class="bi bi-clipboard-pulse text-success me-2"></i> 4. Skrining Awal Relawan</h6>
+                        <?php if ($userRole !== 'bpbd_admin'): ?>
+                            <button type="button" onclick="switchToTab('screening')" class="btn btn-outline-primary btn-sm rounded-3 fw-semibold">
+                                <i class="bi bi-pencil-square me-1"></i> Edit Skrining Relawan
+                            </button>
+                        <?php endif; ?>
+                    </div>
+                    <?php if (empty($screening)): ?>
+                        <div class="alert alert-warning mb-0 fs-7">
+                            <i class="bi bi-exclamation-triangle me-1"></i> Belum ada data Skrining Relawan. Silakan isi skrining terlebih dahulu.
+                        </div>
+                    <?php else: ?>
+                        <div class="row g-3 bg-white p-3 rounded border">
+                            <div class="col-12 col-md-4">
+                                <span class="text-muted small d-block">Kemampuan Orientasi</span>
+                                <strong class="text-dark">
+                                    <?= !empty($screening['mampu_sebut_nama']) ? '✓ Nama' : '✗ Nama' ?> • 
+                                    <?= !empty($screening['mampu_sebut_lokasi']) ? '✓ Lokasi' : '✗ Lokasi' ?> • 
+                                    <?= !empty($screening['mampu_sebut_tanggal']) ? '✓ Tanggal' : '✗ Tanggal' ?>
+                                </strong>
+                            </div>
+                            <div class="col-6 col-md-4">
+                                <span class="text-muted small d-block">Kontak Mata</span>
+                                <strong class="text-dark capitalize"><?= esc($screening['kontak_mata'] ?? 'baik') ?></strong>
+                            </div>
+                            <div class="col-6 col-md-4">
+                                <span class="text-muted small d-block">Cara Berbicara</span>
+                                <strong class="text-dark capitalize"><?= esc($screening['bicara'] ?? 'normal') ?></strong>
+                            </div>
+                            <div class="col-12">
+                                <span class="text-muted small d-block mb-1">Gejala Perilaku Lapangan Teramati</span>
+                                <div class="d-flex flex-wrap gap-1">
+                                    <?php 
+                                    $obs = [];
+                                    if (!empty($screening['menangis_terus'])) $obs[] = 'Menangis Terus';
+                                    if (!empty($screening['tampak_panik'])) $obs[] = 'Tampak Panik';
+                                    if (!empty($screening['sulit_ditenangkan'])) $obs[] = 'Sulit Ditenangkan';
+                                    if (!empty($screening['gemetar'])) $obs[] = 'Gemetar';
+                                    if (!empty($screening['berteriak_histeris'])) $obs[] = 'Berteriak Histeris';
+                                    if (!empty($screening['diam_total'])) $obs[] = 'Diam Total';
+                                    if (!empty($screening['menghindari_orang'])) $obs[] = 'Menghindari Orang';
+                                    if (!empty($screening['agresif'])) $obs[] = 'Agresif';
+                                    if (!empty($screening['mencari_keluarga'])) $obs[] = 'Panik Mencari Keluarga';
+                                    if (!empty($screening['sulit_tidur'])) $obs[] = 'Sulit Tidur';
+                                    if (!empty($screening['mimpi_buruk'])) $obs[] = 'Mimpi Buruk';
+                                    if (!empty($screening['tidak_mau_makan'])) $obs[] = 'Menolak Makan';
+
+                                    if (!empty($obs)) {
+                                        foreach ($obs as $o) {
+                                            echo '<span class="badge bg-secondary me-1 mb-1">' . esc($o) . '</span>';
+                                        }
+                                    } else {
+                                        echo '<span class="text-muted fs-7">Tidak ada gejala khusus teramati.</span>';
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <span class="text-muted small d-block mb-1">Indikator Darurat Krisis</span>
+                                <div>
+                                    <?php if (!empty($screening['menyebut_ingin_mati']) || !empty($screening['mengancam_bunuh_diri']) || !empty($screening['melukai_diri'])): ?>
+                                        <span class="badge bg-danger px-3 py-2 fs-7"><i class="bi bi-exclamation-triangle-fill me-1"></i> RISIKO BUNUH DIRI / MELUKAI DIRI TERDETEKSI</span>
+                                    <?php else: ?>
+                                        <span class="badge bg-success px-3 py-2 fs-7"><i class="bi bi-shield-check me-1"></i> Tidak Ada Indikasi Krisis Darurat</span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <span class="text-muted small d-block mb-1">Dokumentasi Media Terlampir</span>
+                                <div class="d-flex flex-wrap gap-2 fs-7">
+                                    <span class="badge <?= !empty($screening['foto_path']) ? 'bg-success' : 'bg-light text-muted border' ?>">
+                                        <i class="bi bi-image me-1"></i> Foto: <?= !empty($screening['foto_path']) ? 'Tersedia' : 'Tidak Ada' ?>
+                                    </span>
+                                    <span class="badge <?= !empty($screening['voice_note_path']) ? 'bg-success' : 'bg-light text-muted border' ?>">
+                                        <i class="bi bi-mic me-1"></i> Audio: <?= !empty($screening['voice_note_path']) ? 'Tersedia' : 'Tidak Ada' ?>
+                                    </span>
+                                    <span class="badge <?= !empty($screening['video_path']) ? 'bg-success' : 'bg-light text-muted border' ?>">
+                                        <i class="bi bi-camera-video me-1"></i> Video: <?= !empty($screening['video_path']) ? 'Tersedia' : 'Tidak Ada' ?>
+                                    </span>
+                                    <span class="badge <?= !empty($screening['dokumen_path']) ? 'bg-success' : 'bg-light text-muted border' ?>">
+                                        <i class="bi bi-file-earmark-pdf me-1"></i> Dokumen: <?= !empty($screening['dokumen_path']) ? 'Tersedia' : 'Tidak Ada' ?>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
+                <!-- KONFIRMASI & TINDAK LANJUT -->
+                <div class="card card-custom p-4 bg-white border border-primary border-opacity-25 shadow-sm">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                        <div>
+                            <h6 class="fw-bold text-dark mb-1"><i class="bi bi-check-circle-fill text-success me-2"></i> Review Selesai — Langkah Selanjutnya</h6>
+                            <p class="text-muted small mb-0">Pastikan seluruh data di atas sudah valid. Anda dapat melanjutkan ke analisis AI Clinical Decision Support atau kembali ke posko.</p>
+                        </div>
+                        <div class="d-flex align-items-center flex-wrap gap-2">
+                            <a href="<?= site_url('/posko/' . $victim['posko_id']) ?>" class="btn btn-outline-secondary px-4 py-2 fw-semibold rounded-3">
+                                <i class="bi bi-arrow-left me-1"></i> Kembali ke Posko
+                            </a>
+                            <button type="button" onclick="switchToTab('ai')" class="btn btn-primary px-4 py-2 fw-semibold rounded-3 shadow-sm">
+                                <i class="bi bi-cpu-fill me-1"></i> Lanjut ke AI Assessment <i class="bi bi-arrow-right ms-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 6: AI CLINICAL DECISION SUPPORT (SEGMEN 8) -->
             <div class="tab-pane fade" id="tab-ai" role="tabpanel">
                 <div class="border-bottom pb-3 mb-4 d-flex align-items-center justify-content-between flex-wrap gap-2">
                     <div>
-                        <h5 class="fw-bold text-dark mb-1"><i class="bi bi-cpu-fill text-danger me-2"></i> Section 5 — AI Clinical Decision Support</h5>
+                        <h5 class="fw-bold text-dark mb-1"><i class="bi bi-cpu-fill text-danger me-2"></i> Section 6 — AI Clinical Decision Support</h5>
                         <p class="text-muted small mb-0">Engine triase & analisis psikologis klinis berbasis AI Gemini & Indikator Objektif.</p>
                     </div>
                     <div class="d-flex align-items-center flex-wrap gap-2">
@@ -761,6 +1055,15 @@
 
 <!-- JavaScript for Dynamic Form Toggles & Emergency Suicide Risk Alert -->
 <script>
+function switchToTab(tabName) {
+    const tabBtn = document.getElementById(tabName + '-tab');
+    if (tabBtn) {
+        const bsTab = new bootstrap.Tab(tabBtn);
+        bsTab.show();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
 function toggleMedicineFields(checked) {
     const el = document.getElementById('medicine-fields');
     if (el) {

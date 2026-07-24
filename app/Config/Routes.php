@@ -4,8 +4,9 @@ use CodeIgniter\Router\RouteCollection;
 
 /** @var RouteCollection $routes */
 
-// Root redirect
-$routes->get('/', 'AuthController::login');
+// Root & Landing page
+$routes->get('/', 'LandingController::index');
+$routes->get('/landing', 'LandingController::index');
 
 // Authentication routes
 $routes->get('/login', 'AuthController::login');

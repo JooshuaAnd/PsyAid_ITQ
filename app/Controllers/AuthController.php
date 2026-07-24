@@ -17,7 +17,7 @@ class AuthController extends Controller
             return $this->redirectUserByRole(session()->get('role'), session()->get('posko_id'));
         }
 
-        return view('auth/login');
+        return view('auth/login', ['hideNavbar' => true]);
     }
 
     /**

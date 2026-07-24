@@ -102,14 +102,14 @@ class ScreeningController extends Controller
 
         // Emergency Suicide Alert Check
         if ($menyebutInginMati || $mengancamBunuhDiri || $melukaiDiri) {
-            return redirect()->to('/victim/detail/' . $victimId . '?tab=ai')
-                ->with('activeTab', 'ai')
+            return redirect()->to('/victim/detail/' . $victimId . '?tab=summary')
+                ->with('activeTab', 'summary')
                 ->with('error', '⚠️ PERINGATAN KRISIS DARURAT: Data skrining berhasil disimpan & AI Clinical Decision Support aktif. TERDETEKSI INDIKASI RISIKO BUNUH DIRI / MELUKAI DIRI! Harap SEGERA hubungi Psikolog Jaga Posko / Hotline 0800-1-PSY-AID!');
         }
 
-        return redirect()->to('/victim/detail/' . $victimId . '?tab=ai')
-            ->with('activeTab', 'ai')
-            ->with('success', 'Skrining awal relawan berhasil disimpan dan AI Clinical Decision Support telah aktif secara otomatis!');
+        return redirect()->to('/victim/detail/' . $victimId . '?tab=summary')
+            ->with('activeTab', 'summary')
+            ->with('success', 'Skrining awal relawan berhasil disimpan dan AI Clinical Decision Support telah aktif! Silakan review data korban pada tab Summary.');
     }
 
     /**
