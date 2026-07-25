@@ -29,8 +29,8 @@ class CreateUsersTable extends Migration
                 'constraint' => 255,
             ],
             'role' => [
-                'type'       => 'ENUM',
-                'constraint' => ['bpbd_admin', 'relawan', 'psikolog'],
+                'type'       => 'VARCHAR',
+                'constraint' => 50,
             ],
             'posko_id' => [
                 'type'       => 'INT',

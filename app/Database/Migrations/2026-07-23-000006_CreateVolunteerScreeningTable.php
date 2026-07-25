@@ -33,12 +33,12 @@ class CreateVolunteerScreeningTable extends Migration
                 'default' => false,
             ],
             'kontak_mata' => [
-                'type'       => 'ENUM',
-                'constraint' => ['baik', 'kurang', 'tidak ada'],
+                'type'       => 'VARCHAR',
+                'constraint' => 50,
             ],
             'bicara' => [
-                'type'       => 'ENUM',
-                'constraint' => ['normal', 'pelan', 'tidak menjawab', 'berteriak'],
+                'type'       => 'VARCHAR',
+                'constraint' => 50,
             ],
             'menangis_terus' => [
                 'type'    => 'BOOLEAN',

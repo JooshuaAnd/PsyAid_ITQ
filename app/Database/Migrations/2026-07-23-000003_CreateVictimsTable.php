@@ -25,8 +25,8 @@ class CreateVictimsTable extends Migration
                 'constraint' => 150,
             ],
             'jenis_kelamin' => [
-                'type'       => 'ENUM',
-                'constraint' => ['L', 'P'],
+                'type'       => 'VARCHAR',
+                'constraint' => 10,
             ],
             'umur' => [
                 'type'       => 'INT',

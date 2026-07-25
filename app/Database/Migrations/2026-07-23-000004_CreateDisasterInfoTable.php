@@ -28,8 +28,8 @@ class CreateDisasterInfoTable extends Migration
                 'type' => 'DATE',
             ],
             'durasi_terjebak' => [
-                'type'       => 'ENUM',
-                'constraint' => ['<1 jam', '1-6 jam', '>6 jam'],
+                'type'       => 'VARCHAR',
+                'constraint' => 50,
             ],
             'mengungsi' => [
                 'type'    => 'BOOLEAN',

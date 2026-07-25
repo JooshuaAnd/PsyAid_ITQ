@@ -21,8 +21,8 @@ class CreateAiAssessmentTable extends Migration
                 'unsigned'   => true,
             ],
             'risk_level' => [
-                'type'       => 'ENUM',
-                'constraint' => ['low', 'medium', 'high'],
+                'type'       => 'VARCHAR',
+                'constraint' => 50,
             ],
             'confidence' => [
                 'type'       => 'DECIMAL',
@@ -38,8 +38,8 @@ class CreateAiAssessmentTable extends Migration
                 'null' => true,
             ],
             'risiko_ptsd_berkembang' => [
-                'type'       => 'ENUM',
-                'constraint' => ['low', 'medium', 'high'],
+                'type'       => 'VARCHAR',
+                'constraint' => 50,
             ],
             'evidence_sources' => [
                 'type' => 'TEXT',
@@ -50,8 +50,8 @@ class CreateAiAssessmentTable extends Migration
                 'null' => true,
             ],
             'status' => [
-                'type'       => 'ENUM',
-                'constraint' => ['ai_generated', 'reviewed'],
+                'type'       => 'VARCHAR',
+                'constraint' => 50,
                 'default'    => 'ai_generated',
             ],
             'generated_at' => [

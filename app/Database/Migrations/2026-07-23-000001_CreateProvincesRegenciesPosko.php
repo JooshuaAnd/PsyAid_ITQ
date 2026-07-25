@@ -68,8 +68,8 @@ class CreateProvincesRegenciesPosko extends Migration
                 'constraint' => 100,
             ],
             'status' => [
-                'type'       => 'ENUM',
-                'constraint' => ['aktif', 'recovery', 'closed'],
+                'type'       => 'VARCHAR',
+                'constraint' => 50,
                 'default'    => 'aktif',
             ],
         ]);

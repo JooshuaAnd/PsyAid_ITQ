@@ -39,8 +39,8 @@ class CreateClinicalActionTable extends Migration
                 'null' => true,
             ],
             'intervensi' => [
-                'type'       => 'ENUM',
-                'constraint' => ['PFA', 'CBT', 'konseling individu', 'terapi kelompok', 'rujukan psikiater'],
+                'type'       => 'VARCHAR',
+                'constraint' => 100,
             ],
             'catatan_klinis' => [
                 'type' => 'TEXT',
@@ -51,8 +51,8 @@ class CreateClinicalActionTable extends Migration
                 'null' => true,
             ],
             'status' => [
-                'type'       => 'ENUM',
-                'constraint' => ['ai_generated', 'reviewed'],
+                'type'       => 'VARCHAR',
+                'constraint' => 50,
                 'default'    => 'ai_generated',
             ],
         ]);

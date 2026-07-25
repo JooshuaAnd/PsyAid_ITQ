@@ -21,8 +21,8 @@ class CreateLongitudinalFollowupTable extends Migration
                 'unsigned'   => true,
             ],
             'hari' => [
-                'type'       => 'ENUM',
-                'constraint' => ['1', '7', '14', '30', '90'],
+                'type'       => 'VARCHAR',
+                'constraint' => 20,
             ],
             'ptsd_score' => [
                 'type'       => 'INT',
