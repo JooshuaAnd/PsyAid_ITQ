@@ -4,6 +4,10 @@ set -e
 # Railway provides PORT env var dynamically (defaults to 8080 if not set)
 PORT="${PORT:-8080}"
 
+# Ensure only mpm_prefork is enabled for PHP Apache module
+a2dismod mpm_event mpm_worker 2>/dev/null || true
+a2enmod mpm_prefork 2>/dev/null || true
+
 # Replace Apache port in ports.conf and default vhost site configuration
 sed -i "s/Listen 80/Listen ${PORT}/g" /etc/apache2/ports.conf
 sed -i "s/<VirtualHost \*:80>/<VirtualHost \*:${PORT}>/g" /etc/apache2/sites-available/000-default.conf
