@@ -1,0 +1,14 @@
+.git
+.gitignore
+.env
+vendor/
+writable/cache/*
+writable/debugbar/*
+writable/logs/*
+writable/session/*
+writable/uploads/*
+tests/
+phpunit.dist.xml
+README.md
+Project.MD
+DEPLOY_RAILWAY_SUPABASE.md

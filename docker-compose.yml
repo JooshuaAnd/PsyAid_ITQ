@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - CI_ENVIRONMENT=development
+      - PORT=8080
+      - app.baseURL=http://localhost:8080/
+      - database.default.hostname=db
+      - database.default.database=psyaid_db
+      - database.default.username=psyaid_user
+      - database.default.password=psyaid_pass
+      - database.default.DBDriver=MySQLi
+      - database.default.port=3306
+    volumes:
+      - ./writable:/var/www/html/writable
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: psyaid_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: psyaid_db
+      MYSQL_USER: psyaid_user
+      MYSQL_PASSWORD: psyaid_pass
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
