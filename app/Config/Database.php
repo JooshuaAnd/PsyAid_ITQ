@@ -140,7 +140,7 @@ class Database extends Config
         $username = $pgUser ?: $ciUser;
         $password = $pgPass !== null ? $pgPass : $ciPass;
         $port     = $pgPort ?: ($ciPort ?: 5432);
-        $driver   = strtolower((string)$ciDriver) === 'mysqli' ? 'MySQLi' : 'Postgre';
+        $driver   = (!empty($pgHost) || !empty($dbUrl)) ? 'Postgre' : (strtolower((string)$ciDriver) === 'mysqli' ? 'MySQLi' : 'Postgre');
 
         // Check if database parameters are missing
         if (empty($host) || empty($database) || empty($username)) {
