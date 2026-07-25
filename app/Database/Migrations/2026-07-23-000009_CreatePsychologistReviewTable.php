@@ -12,18 +12,15 @@ class CreatePsychologistReviewTable extends Migration
             'id' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
-                'unsigned'       => true,
                 'auto_increment' => true,
             ],
             'victim_id' => [
                 'type'       => 'INT',
                 'constraint' => 11,
-                'unsigned'   => true,
             ],
             'psikolog_id' => [
                 'type'       => 'INT',
                 'constraint' => 11,
-                'unsigned'   => true,
             ],
             'chief_complaint' => [
                 'type' => 'TEXT',

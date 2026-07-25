@@ -12,13 +12,11 @@ class CreateVictimsTable extends Migration
             'id' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
-                'unsigned'       => true,
                 'auto_increment' => true,
             ],
             'posko_id' => [
                 'type'       => 'INT',
                 'constraint' => 11,
-                'unsigned'   => true,
             ],
             'nama' => [
                 'type'       => 'VARCHAR',
@@ -31,7 +29,6 @@ class CreateVictimsTable extends Migration
             'umur' => [
                 'type'       => 'INT',
                 'constraint' => 5,
-                'unsigned'   => true,
             ],
             'nik' => [
                 'type'       => 'VARCHAR',
@@ -56,7 +53,6 @@ class CreateVictimsTable extends Migration
             'ditemukan_oleh_relawan_id' => [
                 'type'       => 'INT',
                 'constraint' => 11,
-                'unsigned'   => true,
                 'null'       => true,
             ],
             'created_at' => [

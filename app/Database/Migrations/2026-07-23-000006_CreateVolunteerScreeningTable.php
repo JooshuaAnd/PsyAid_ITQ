@@ -12,13 +12,11 @@ class CreateVolunteerScreeningTable extends Migration
             'id' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
-                'unsigned'       => true,
                 'auto_increment' => true,
             ],
             'victim_id' => [
                 'type'       => 'INT',
                 'constraint' => 11,
-                'unsigned'   => true,
             ],
             'mampu_sebut_nama' => [
                 'type'    => 'BOOLEAN',
@@ -101,10 +99,8 @@ class CreateVolunteerScreeningTable extends Migration
                 'default' => false,
             ],
             'skala_distress' => [
-                'type'       => 'TINYINT',
-                'constraint' => 3,
-                'unsigned'   => true,
-                'default'    => 0,
+                'type'    => 'SMALLINT',
+                'default' => 0,
             ],
             'catatan_relawan' => [
                 'type' => 'TEXT',
@@ -133,7 +129,6 @@ class CreateVolunteerScreeningTable extends Migration
             'relawan_id' => [
                 'type'       => 'INT',
                 'constraint' => 11,
-                'unsigned'   => true,
             ],
             'created_at' => [
                 'type' => 'DATETIME',

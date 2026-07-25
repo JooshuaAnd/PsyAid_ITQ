@@ -12,13 +12,11 @@ class CreateItqResultTable extends Migration
             'id' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
-                'unsigned'       => true,
                 'auto_increment' => true,
             ],
             'victim_id' => [
                 'type'       => 'INT',
                 'constraint' => 11,
-                'unsigned'   => true,
             ],
             'ptsd_score' => [
                 'type'       => 'INT',
@@ -63,7 +61,6 @@ class CreateItqResultTable extends Migration
             'reviewed_by' => [
                 'type'       => 'INT',
                 'constraint' => 11,
-                'unsigned'   => true,
             ],
             'reviewed_at' => [
                 'type' => 'DATETIME',

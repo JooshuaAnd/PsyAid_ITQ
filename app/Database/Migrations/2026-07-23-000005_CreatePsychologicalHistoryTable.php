@@ -12,13 +12,11 @@ class CreatePsychologicalHistoryTable extends Migration
             'id' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
-                'unsigned'       => true,
                 'auto_increment' => true,
             ],
             'victim_id' => [
                 'type'       => 'INT',
                 'constraint' => 11,
-                'unsigned'   => true,
             ],
             'pernah_konsultasi' => [
                 'type'    => 'BOOLEAN',

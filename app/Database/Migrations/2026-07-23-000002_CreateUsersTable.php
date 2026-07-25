@@ -12,7 +12,6 @@ class CreateUsersTable extends Migration
             'id' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
-                'unsigned'       => true,
                 'auto_increment' => true,
             ],
             'name' => [
@@ -35,7 +34,6 @@ class CreateUsersTable extends Migration
             'posko_id' => [
                 'type'       => 'INT',
                 'constraint' => 11,
-                'unsigned'   => true,
                 'null'       => true,
             ],
             'created_at' => [

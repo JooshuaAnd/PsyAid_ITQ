@@ -12,28 +12,23 @@ class CreatePsychologistAssignmentTable extends Migration
             'id' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
-                'unsigned'       => true,
                 'auto_increment' => true,
             ],
             'victim_id' => [
                 'type'       => 'INT',
                 'constraint' => 11,
-                'unsigned'   => true,
             ],
             'psikolog_id' => [
                 'type'       => 'INT',
                 'constraint' => 11,
-                'unsigned'   => true,
             ],
             'assigned_at' => [
                 'type' => 'DATETIME',
                 'null' => true,
             ],
             'jumlah_kasus_saat_assign' => [
-                'type'       => 'INT',
-                'constraint' => 11,
-                'unsigned'   => true,
-                'default'    => 0,
+                'type'    => 'INT',
+                'default' => 0,
             ],
         ]);
 

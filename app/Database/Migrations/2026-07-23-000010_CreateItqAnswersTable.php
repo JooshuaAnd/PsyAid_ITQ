@@ -12,27 +12,22 @@ class CreateItqAnswersTable extends Migration
             'id' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
-                'unsigned'       => true,
                 'auto_increment' => true,
             ],
             'victim_id' => [
                 'type'       => 'INT',
                 'constraint' => 11,
-                'unsigned'   => true,
             ],
             'psikolog_id' => [
                 'type'       => 'INT',
                 'constraint' => 11,
-                'unsigned'   => true,
             ],
         ];
 
         for ($i = 1; $i <= 18; $i++) {
             $fields['item_' . $i] = [
-                'type'       => 'TINYINT',
-                'constraint' => 3,
-                'unsigned'   => true,
-                'default'    => 0,
+                'type'    => 'SMALLINT',
+                'default' => 0,
             ];
         }
 

@@ -13,7 +13,6 @@ class CreateProvincesRegenciesPosko extends Migration
             'id' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
-                'unsigned'       => true,
                 'auto_increment' => true,
             ],
             'name' => [
@@ -29,13 +28,11 @@ class CreateProvincesRegenciesPosko extends Migration
             'id' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
-                'unsigned'       => true,
                 'auto_increment' => true,
             ],
             'province_id' => [
                 'type'       => 'INT',
                 'constraint' => 11,
-                'unsigned'   => true,
             ],
             'name' => [
                 'type'       => 'VARCHAR',
@@ -51,7 +48,6 @@ class CreateProvincesRegenciesPosko extends Migration
             'id' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
-                'unsigned'       => true,
                 'auto_increment' => true,
             ],
             'name' => [
@@ -61,7 +57,6 @@ class CreateProvincesRegenciesPosko extends Migration
             'regency_id' => [
                 'type'       => 'INT',
                 'constraint' => 11,
-                'unsigned'   => true,
             ],
             'jenis_bencana' => [
                 'type'       => 'VARCHAR',

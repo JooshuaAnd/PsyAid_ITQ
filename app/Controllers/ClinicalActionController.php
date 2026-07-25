@@ -30,7 +30,7 @@ class ClinicalActionController extends Controller
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
-        $aiApproved       = $this->request->getPost('ai_recommendation_approved') ? 1 : 0;
+        $aiApproved       = $this->request->getPost('ai_recommendation_approved') ? true : false;
         $priorityOverride = $this->request->getPost('priority_override') ?: null;
 
         $clinicalModel = new ClinicalActionModel();

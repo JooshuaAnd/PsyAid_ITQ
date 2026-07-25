@@ -173,12 +173,12 @@ class VictimController extends Controller
             'jenis_bencana'       => $this->request->getPost('jenis_bencana') ?: $victim['posko_bencana'] ?? 'Gempa Bumi',
             'tanggal'             => $this->request->getPost('tanggal_bencana') ?: date('Y-m-d'),
             'durasi_terjebak'     => $this->request->getPost('durasi_terjebak') ?: '<1 jam',
-            'mengungsi'           => $this->request->getPost('mengungsi') ? 1 : 0,
-            'kehilangan_rumah'    => $this->request->getPost('kehilangan_rumah') ? 1 : 0,
-            'kehilangan_keluarga' => $this->request->getPost('kehilangan_keluarga') ? 1 : 0,
-            'cedera'              => $this->request->getPost('cedera') ? 1 : 0,
-            'rawat_inap'          => $this->request->getPost('rawat_inap') ? 1 : 0,
-            'saksi_kematian'      => $this->request->getPost('saksi_kematian') ? 1 : 0,
+            'mengungsi'           => $this->request->getPost('mengungsi') ? true : false,
+            'kehilangan_rumah'    => $this->request->getPost('kehilangan_rumah') ? true : false,
+            'kehilangan_keluarga' => $this->request->getPost('kehilangan_keluarga') ? true : false,
+            'cedera'              => $this->request->getPost('cedera') ? true : false,
+            'rawat_inap'          => $this->request->getPost('rawat_inap') ? true : false,
+            'saksi_kematian'      => $this->request->getPost('saksi_kematian') ? true : false,
         ];
 
         if ($existingDisaster) {
@@ -217,17 +217,17 @@ class VictimController extends Controller
 
         $data = [
             'victim_id'                    => (int) $id,
-            'pernah_konsultasi'            => $this->request->getPost('pernah_konsultasi') ? 1 : 0,
-            'pernah_dirawat_psikiater'     => $this->request->getPost('pernah_dirawat_psikiater') ? 1 : 0,
+            'pernah_konsultasi'            => $this->request->getPost('pernah_konsultasi') ? true : false,
+            'pernah_dirawat_psikiater'     => $this->request->getPost('pernah_dirawat_psikiater') ? true : false,
             'diagnosis_sebelumnya'         => $jsonDiagnosis,
-            'sedang_konsumsi_obat'         => $this->request->getPost('sedang_konsumsi_obat') ? 1 : 0,
+            'sedang_konsumsi_obat'         => $this->request->getPost('sedang_konsumsi_obat') ? true : false,
             'nama_obat'                    => $this->request->getPost('nama_obat') ?: null,
             'dosis'                        => $this->request->getPost('dosis') ?: null,
             'dokter'                       => $this->request->getPost('dokter') ?: null,
-            'riwayat_percobaan_bunuh_diri' => $this->request->getPost('riwayat_percobaan_bunuh_diri') ? 1 : 0,
-            'riwayat_melukai_diri'         => $this->request->getPost('riwayat_melukai_diri') ? 1 : 0,
-            'riwayat_napza'                => $this->request->getPost('riwayat_napza') ? 1 : 0,
-            'riwayat_penyakit_kronis'      => $this->request->getPost('riwayat_penyakit_kronis') ? 1 : 0,
+            'riwayat_percobaan_bunuh_diri' => $this->request->getPost('riwayat_percobaan_bunuh_diri') ? true : false,
+            'riwayat_melukai_diri'         => $this->request->getPost('riwayat_melukai_diri') ? true : false,
+            'riwayat_napza'                => $this->request->getPost('riwayat_napza') ? true : false,
+            'riwayat_penyakit_kronis'      => $this->request->getPost('riwayat_penyakit_kronis') ? true : false,
             'keterangan_penyakit_kronis'   => $this->request->getPost('keterangan_penyakit_kronis') ?: null,
         ];
 

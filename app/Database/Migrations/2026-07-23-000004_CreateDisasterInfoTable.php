@@ -12,13 +12,11 @@ class CreateDisasterInfoTable extends Migration
             'id' => [
                 'type'           => 'INT',
                 'constraint'     => 11,
-                'unsigned'       => true,
                 'auto_increment' => true,
             ],
             'victim_id' => [
                 'type'       => 'INT',
                 'constraint' => 11,
-                'unsigned'   => true,
             ],
             'jenis_bencana' => [
                 'type'       => 'VARCHAR',
