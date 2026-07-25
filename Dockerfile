@@ -25,7 +25,8 @@ WORKDIR /var/www/html
 COPY . /var/www/html
 
 # Install Composer dependencies (production mode)
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+ENV COMPOSER_ALLOW_SUPERUSER=1
+RUN composer install --no-dev --optimize-autoloader --no-interaction --ignore-platform-reqs
 
 # Configure Apache DocumentRoot to /var/www/html/public
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
