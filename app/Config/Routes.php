@@ -48,3 +48,7 @@ $routes->get('/itq/chart-data/(:num)', 'ItqController::getChartData/$1', ['filte
 
 // Clinical Action route
 $routes->post('/clinical-action/save/(:num)', 'ClinicalActionController::save/$1', ['filter' => ['auth', 'role:psikolog']]);
+
+// Health Check route
+$routes->get('/health/database', 'HealthController::database');
+

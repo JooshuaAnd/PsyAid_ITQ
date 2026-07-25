@@ -3,6 +3,7 @@
 namespace Config;
 
 use CodeIgniter\Database\Config;
+use RuntimeException;
 
 /**
  * Database Configuration
@@ -26,23 +27,23 @@ class Database extends Config
      */
     public array $default = [
         'DSN'          => '',
-        'hostname'     => 'localhost',
+        'hostname'     => '',
         'username'     => '',
         'password'     => '',
         'database'     => '',
         'schema'       => 'public',
-        'DBDriver'     => 'MySQLi',
+        'DBDriver'     => 'Postgre',
         'DBPrefix'     => '',
         'pConnect'     => false,
         'DBDebug'      => true,
-        'charset'      => 'utf8mb4',
-        'DBCollat'     => 'utf8mb4_general_ci',
+        'charset'      => 'utf8',
+        'DBCollat'     => '',
         'swapPre'      => '',
         'encrypt'      => false,
         'compress'     => false,
         'strictOn'     => false,
         'failover'     => [],
-        'port'         => 3306,
+        'port'         => 5432,
         'numberNative' => false,
         'foundRows'    => false,
         'dateFormat'   => [
@@ -51,112 +52,6 @@ class Database extends Config
             'time'     => 'H:i:s',
         ],
     ];
-
-    //    /**
-    //     * Sample database connection for SQLite3.
-    //     *
-    //     * @var array<string, mixed>
-    //     */
-    //    public array $default = [
-    //        'database'    => 'database.db',
-    //        'DBDriver'    => 'SQLite3',
-    //        'DBPrefix'    => '',
-    //        'DBDebug'     => true,
-    //        'swapPre'     => '',
-    //        'failover'    => [],
-    //        'foreignKeys' => true,
-    //        'busyTimeout' => 1000,
-    //        'synchronous' => null,
-    //        'dateFormat'  => [
-    //            'date'     => 'Y-m-d',
-    //            'datetime' => 'Y-m-d H:i:s',
-    //            'time'     => 'H:i:s',
-    //        ],
-    //    ];
-
-    //    /**
-    //     * Sample database connection for Postgre.
-    //     *
-    //     * @var array<string, mixed>
-    //     */
-    //    public array $default = [
-    //        'DSN'        => '',
-    //        'hostname'   => 'localhost',
-    //        'username'   => 'root',
-    //        'password'   => 'root',
-    //        'database'   => 'ci4',
-    //        'schema'     => 'public',
-    //        'DBDriver'   => 'Postgre',
-    //        'DBPrefix'   => '',
-    //        'pConnect'   => false,
-    //        'DBDebug'    => true,
-    //        'charset'    => 'utf8',
-    //        'swapPre'    => '',
-    //        'failover'   => [],
-    //        'port'       => 5432,
-    //        'dateFormat' => [
-    //            'date'     => 'Y-m-d',
-    //            'datetime' => 'Y-m-d H:i:s',
-    //            'time'     => 'H:i:s',
-    //        ],
-    //    ];
-
-    //    /**
-    //     * Sample database connection for SQLSRV.
-    //     *
-    //     * @var array<string, mixed>
-    //     */
-    //    public array $default = [
-    //        'DSN'        => '',
-    //        'hostname'   => 'localhost',
-    //        'username'   => 'root',
-    //        'password'   => 'root',
-    //        'database'   => 'ci4',
-    //        'schema'     => 'dbo',
-    //        'DBDriver'   => 'SQLSRV',
-    //        'DBPrefix'   => '',
-    //        'pConnect'   => false,
-    //        'DBDebug'    => true,
-    //        'charset'    => 'utf8',
-    //        'swapPre'    => '',
-    //        'encrypt'    => false,
-    //        'failover'   => [],
-    //        'port'       => 1433,
-    //        'dateFormat' => [
-    //            'date'     => 'Y-m-d',
-    //            'datetime' => 'Y-m-d H:i:s',
-    //            'time'     => 'H:i:s',
-    //        ],
-    //    ];
-
-    //    /**
-    //     * Sample database connection for OCI8.
-    //     *
-    //     * You may need the following environment variables:
-    //     *   NLS_LANG                = 'AMERICAN_AMERICA.UTF8'
-    //     *   NLS_DATE_FORMAT         = 'YYYY-MM-DD HH24:MI:SS'
-    //     *   NLS_TIMESTAMP_FORMAT    = 'YYYY-MM-DD HH24:MI:SS'
-    //     *   NLS_TIMESTAMP_TZ_FORMAT = 'YYYY-MM-DD HH24:MI:SS'
-    //     *
-    //     * @var array<string, mixed>
-    //     */
-    //    public array $default = [
-    //        'DSN'        => 'localhost:1521/FREEPDB1',
-    //        'username'   => 'root',
-    //        'password'   => 'root',
-    //        'DBDriver'   => 'OCI8',
-    //        'DBPrefix'   => '',
-    //        'pConnect'   => false,
-    //        'DBDebug'    => true,
-    //        'charset'    => 'AL32UTF8',
-    //        'swapPre'    => '',
-    //        'failover'   => [],
-    //        'dateFormat' => [
-    //            'date'     => 'Y-m-d',
-    //            'datetime' => 'Y-m-d H:i:s',
-    //            'time'     => 'H:i:s',
-    //        ],
-    //    ];
 
     /**
      * This database connection is used when running PHPUnit database tests.
@@ -170,7 +65,7 @@ class Database extends Config
         'password'    => '',
         'database'    => ':memory:',
         'DBDriver'    => 'SQLite3',
-        'DBPrefix'    => 'db_',  // Needed to ensure we're working correctly with prefixes live. DO NOT REMOVE FOR CI DEVS
+        'DBPrefix'    => 'db_',
         'pConnect'    => false,
         'DBDebug'     => true,
         'charset'     => 'utf8',
@@ -195,11 +90,73 @@ class Database extends Config
     {
         parent::__construct();
 
-        // Ensure that we always set the database group to 'tests' if
-        // we are currently running an automated test suite, so that
-        // we don't overwrite live data on accident.
+        // Ensure that we always set the database group to 'tests' if testing
         if (ENVIRONMENT === 'testing') {
             $this->defaultGroup = 'tests';
+            return;
         }
+
+        $this->configureDatabaseFromEnv();
+    }
+
+    /**
+     * Automatically configure database parameters from Railway or local environment variables.
+     */
+    private function configureDatabaseFromEnv(): void
+    {
+        // 1. Fetch Railway / PostgreSQL specific env variables
+        $dbUrl  = env('DATABASE_URL', getenv('DATABASE_URL') ?: getenv('DATABASE_PUBLIC_URL'));
+        $pgHost = env('PGHOST', getenv('PGHOST') ?: getenv('POSTGRES_HOST'));
+        $pgDb   = env('PGDATABASE', getenv('PGDATABASE') ?: getenv('POSTGRES_DB'));
+        $pgUser = env('PGUSER', getenv('PGUSER') ?: getenv('POSTGRES_USER'));
+        $pgPass = env('PGPASSWORD', getenv('PGPASSWORD') ?: getenv('POSTGRES_PASSWORD'));
+        $pgPort = env('PGPORT', getenv('PGPORT') ?: getenv('POSTGRES_PORT'));
+
+        // 2. Fetch standard CodeIgniter env overrides
+        $ciDriver = env('database.default.DBDriver', getenv('database.default.DBDriver'));
+        $ciHost   = env('database.default.hostname', getenv('database.default.hostname'));
+        $ciDb     = env('database.default.database', getenv('database.default.database'));
+        $ciUser   = env('database.default.username', getenv('database.default.username'));
+        $ciPass   = env('database.default.password', getenv('database.default.password'));
+        $ciPort   = env('database.default.port', getenv('database.default.port'));
+
+        // If DATABASE_URL / DATABASE_PUBLIC_URL is provided, parse it
+        if (!empty($dbUrl)) {
+            $parsed = parse_url($dbUrl);
+            if ($parsed !== false) {
+                $pgHost = $parsed['host'] ?? $pgHost;
+                $pgPort = $parsed['port'] ?? $pgPort;
+                $pgUser = $parsed['user'] ?? $pgUser;
+                $pgPass = $parsed['pass'] ?? $pgPass;
+                if (!empty($parsed['path'])) {
+                    $pgDb = ltrim($parsed['path'], '/');
+                }
+            }
+        }
+
+        // Determine effective values
+        $host     = $pgHost ?: $ciHost;
+        $database = $pgDb ?: $ciDb;
+        $username = $pgUser ?: $ciUser;
+        $password = $pgPass !== null ? $pgPass : $ciPass;
+        $port     = $pgPort ?: ($ciPort ?: 5432);
+        $driver   = strtolower((string)$ciDriver) === 'mysqli' ? 'MySQLi' : 'Postgre';
+
+        // Check if database parameters are missing
+        if (empty($host) || empty($database) || empty($username)) {
+            throw new RuntimeException(
+                "Environment variable Database tidak lengkap. " .
+                "Harap atur PGHOST, PGDATABASE, PGUSER, dan PGPASSWORD di Railway atau .env file."
+            );
+        }
+
+        $this->default['DBDriver'] = $driver;
+        $this->default['hostname'] = $host;
+        $this->default['database'] = $database;
+        $this->default['username'] = $username;
+        $this->default['password'] = (string)$password;
+        $this->default['port']     = (int)$port;
+        $this->default['schema']   = 'public';
+        $this->default['charset']  = $driver === 'Postgre' ? 'utf8' : 'utf8mb4';
     }
 }
