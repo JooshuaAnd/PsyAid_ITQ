@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Psikolog;
 
+use App\Controllers\BaseController;
 use CodeIgniter\Controller;
 
 class PsikologController extends Controller

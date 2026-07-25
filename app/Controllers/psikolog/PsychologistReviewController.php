@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Psikolog;
 
+use App\Controllers\BaseController;
 use App\Models\AiAssessmentModel;
 use App\Models\DisasterInfoModel;
 use App\Models\PsychologicalHistoryModel;

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Bpbd;
 
+use App\Controllers\BaseController;
 use App\Models\PoskoModel;
 use App\Models\ProvinceModel;
 use App\Models\RegencyModel;

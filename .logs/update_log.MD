@@ -24,7 +24,8 @@ Format Entri: `[Timestamp], [Author], --> [Perubahan, Lokasi Perubahan]`
 - `[2026-07-25 18:48:00]`, `[Rafael Evan]`, --> `[Penambahan flash alert notifikasi dan link menuju halaman registrasi pada halaman login, app/Views/auth/login.php]`
 - `[2026-07-25 18:48:00]`, `[Rafael Evan]`, --> `[Pembaruan logika penyembunyian navbar untuk mendukung halaman registrasi, app/Views/layouts/main.php]`
 - `[2026-07-25 19:00:00]`, `[Rafael Evan]`, --> `[Pembaruan AuthController register & attemptRegister dengan default role bpbd_admin, app/Controllers/AuthController.php]`
-- `[2026-07-25 19:28:00]`, `[Rafael Evan]`, --> `[Refactoring arsitektur views berbasis peran (app/Views/bpbd/, app/Views/relawan/, app/Views/psikolog/) dengan deskripsi nama file fitur (CommandCenter.php, PoskoDetail.php, VictimDetail.php, Dashboard.php, Mapping.php, Review.php, ItqForm.php, ItqResult.php) serta pembaruan referensi view pada Controllers, app/Views/, app/Controllers/]`
+- `[2026-07-25 20:12:00]`, `[Rafael Evan]`, --> `[Refactoring arsitektur controllers ke dalam sub-folder berbasis peran (app/Controllers/auth/, bpbd/, relawan/, psikolog/), pembaruan namespace App\Controllers\<Role>, impor BaseController, dan pembaruan handler pada app/Config/Routes.php, app/Controllers/, app/Config/Routes.php]`
+
 
 
 

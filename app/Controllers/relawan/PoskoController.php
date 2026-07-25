@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Relawan;
 
+use App\Controllers\BaseController;
 use App\Models\UserModel;
 use App\Models\VictimModel;
 use CodeIgniter\Controller;

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Psikolog;
 
+use App\Controllers\BaseController;
 use App\Models\ClinicalActionModel;
 use App\Models\ItqAnswersModel;
 use App\Models\ItqResultModel;
