@@ -20,6 +20,8 @@ $routes->get('/forbidden', 'Auth\AuthController::forbidden');
 $routes->get('/command-center', 'Bpbd\CommandCenterController::index', ['filter' => ['auth', 'role:bpbd_admin']]);
 $routes->get('/command-center/get-regencies/(:num)', 'Bpbd\CommandCenterController::getRegencies/$1', ['filter' => ['auth', 'role:bpbd_admin']]);
 $routes->get('/command-center/get-stats', 'Bpbd\CommandCenterController::getStats', ['filter' => ['auth', 'role:bpbd_admin']]);
+$routes->get('/bpbd/earthquake-radar', 'Bpbd\EarthquakeRadarController::index', ['filter' => ['auth', 'role:bpbd_admin']]);
+$routes->get('/api/earthquake-data', 'Bpbd\EarthquakeRadarController::fetchBmkgData', ['filter' => ['auth']]);
 
 // Posko detail route (Relawan namespace)
 $routes->get('/posko/(:num)', 'Relawan\PoskoController::detail/$1', ['filter' => ['auth']]);

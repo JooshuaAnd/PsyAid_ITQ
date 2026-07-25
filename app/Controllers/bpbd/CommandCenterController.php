@@ -14,20 +14,20 @@ class CommandCenterController extends Controller
     public function index()
     {
         $provinceModel = new ProvinceModel();
-        $poskoModel    = new PoskoModel();
-        $victimModel   = new VictimModel();
+        $poskoModel = new PoskoModel();
+        $victimModel = new VictimModel();
 
-        $provinces     = $provinceModel->orderBy('name', 'ASC')->findAll();
-        $jenisBencana  = $poskoModel->getDistinctJenisBencana();
-        $initialStats  = $victimModel->getDashboardStats();
-        $poskoList     = $this->getFilteredPoskoList();
+        $provinces = $provinceModel->orderBy('name', 'ASC')->findAll();
+        $jenisBencana = $poskoModel->getDistinctJenisBencana();
+        $initialStats = $victimModel->getDashboardStats();
+        $poskoList = $this->getFilteredPoskoList();
 
         $data = [
-            'title'        => 'BPBD Command Center — PsyAid',
-            'provinces'    => $provinces,
+            'title' => 'BPBD Command Center - PsyAid',
+            'provinces' => $provinces,
             'jenisBencana' => $jenisBencana,
-            'stats'        => $initialStats,
-            'poskoList'    => $poskoList,
+            'stats' => $initialStats,
+            'poskoList' => $poskoList,
         ];
 
         return view('bpbd/CommandCenter', $data);
@@ -39,11 +39,11 @@ class CommandCenterController extends Controller
     public function getRegencies($provinceId)
     {
         $regencyModel = new RegencyModel();
-        $regencies    = $regencyModel->getByProvinceId((int) $provinceId);
+        $regencies = $regencyModel->getByProvinceId((int) $provinceId);
 
         return $this->response->setJSON([
             'status' => 'success',
-            'data'   => $regencies,
+            'data' => $regencies,
         ]);
     }
 
@@ -53,19 +53,19 @@ class CommandCenterController extends Controller
     public function getStats()
     {
         $filters = [
-            'province_id'   => $this->request->getGet('province_id'),
-            'regency_id'    => $this->request->getGet('regency_id'),
+            'province_id' => $this->request->getGet('province_id'),
+            'regency_id' => $this->request->getGet('regency_id'),
             'jenis_bencana' => $this->request->getGet('jenis_bencana'),
-            'status'        => $this->request->getGet('status'),
+            'status' => $this->request->getGet('status'),
         ];
 
         $victimModel = new VictimModel();
-        $stats       = $victimModel->getDashboardStats($filters);
-        $poskoList   = $this->getFilteredPoskoList($filters);
+        $stats = $victimModel->getDashboardStats($filters);
+        $poskoList = $this->getFilteredPoskoList($filters);
 
         return $this->response->setJSON([
-            'status'    => 'success',
-            'data'      => $stats,
+            'status' => 'success',
+            'data' => $stats,
             'poskoList' => $poskoList,
         ]);
     }
@@ -75,7 +75,7 @@ class CommandCenterController extends Controller
      */
     private function getFilteredPoskoList(array $filters = []): array
     {
-        $db      = \Config\Database::connect();
+        $db = \Config\Database::connect();
         $builder = $db->table('posko');
         $builder->select("
             posko.id, posko.name as posko_name, posko.jenis_bencana, posko.status,
@@ -92,16 +92,16 @@ class CommandCenterController extends Controller
         $builder->join('volunteer_screening', 'volunteer_screening.victim_id = victims.id', 'left');
         $builder->join('ai_assessment', 'ai_assessment.victim_id = victims.id', 'left');
 
-        if (! empty($filters['province_id'])) {
+        if (!empty($filters['province_id'])) {
             $builder->where('provinces.id', $filters['province_id']);
         }
-        if (! empty($filters['regency_id'])) {
+        if (!empty($filters['regency_id'])) {
             $builder->where('regencies.id', $filters['regency_id']);
         }
-        if (! empty($filters['jenis_bencana'])) {
+        if (!empty($filters['jenis_bencana'])) {
             $builder->where('posko.jenis_bencana', $filters['jenis_bencana']);
         }
-        if (! empty($filters['status'])) {
+        if (!empty($filters['status'])) {
             $builder->where('posko.status', $filters['status']);
         }
 
@@ -127,11 +127,11 @@ class CommandCenterController extends Controller
         }
 
         foreach ($list as &$item) {
-            $item['high_risk_count']     = (int) $item['high_risk_count'];
-            $item['medium_risk_count']   = (int) $item['medium_risk_count'];
-            $item['low_risk_count']      = (int) $item['low_risk_count'];
-            $item['total_korban']        = (int) $item['total_korban'];
-            $item['sudah_screening']     = (int) $item['sudah_screening'];
+            $item['high_risk_count'] = (int) $item['high_risk_count'];
+            $item['medium_risk_count'] = (int) $item['medium_risk_count'];
+            $item['low_risk_count'] = (int) $item['low_risk_count'];
+            $item['total_korban'] = (int) $item['total_korban'];
+            $item['sudah_screening'] = (int) $item['sudah_screening'];
             $item['is_highest_priority'] = ($maxHigh > 0 && $item['high_risk_count'] === $maxHigh);
         }
 

@@ -24,9 +24,23 @@ Format Entri: `[Timestamp], [Author], --> [Perubahan, Lokasi Perubahan]`
 - `[2026-07-25 18:48:00]`, `[Rafael Evan]`, --> `[Penambahan flash alert notifikasi dan link menuju halaman registrasi pada halaman login, app/Views/auth/login.php]`
 - `[2026-07-25 18:48:00]`, `[Rafael Evan]`, --> `[Pembaruan logika penyembunyian navbar untuk mendukung halaman registrasi, app/Views/layouts/main.php]`
 - `[2026-07-25 19:00:00]`, `[Rafael Evan]`, --> `[Pembaruan AuthController register & attemptRegister dengan default role bpbd_admin, app/Controllers/AuthController.php]`
+- `[2026-07-25 19:20:00]`, `[Rafael Evan]`, --> `[Perbaikan bug toggle icon password & konfirmasi password tanpa outline tambahan antara input dan icon toggle, app/Views/auth/register.php]`
+- `[2026-07-25 19:35:00]`, `[Rafael Evan]`, --> `[Penyesuaian placeholder password agar fit dan tidak terpotong, app/Views/auth/register.php]`
+- `[2026-07-25 19:50:00]`, `[Rafael Evan]`, --> `[Pembaruan halaman login terintegrasi dengan tema register page dan efek node/heartbeat canvas background, app/Views/auth/login.php, app/Views/auth/register.php]`
 - `[2026-07-25 20:12:00]`, `[Rafael Evan]`, --> `[Refactoring arsitektur controllers ke dalam sub-folder berbasis peran (app/Controllers/auth/, bpbd/, relawan/, psikolog/), pembaruan namespace App\Controllers\<Role>, impor BaseController, dan pembaruan handler pada app/Config/Routes.php, app/Controllers/, app/Config/Routes.php]`
-
-
-
-
-
+- `[2026-07-25 20:22:00]`, `[Rafael Evan]`, --> `[Pembaruan tata letak dengan Collapsible Sidebar berbasis peran (bpbd_admin, relawan, psikolog), pemindahan Logo PsyAid ke sidebar, tombol sticky toggle sidebar di luar top header, tombol Logout di bagian bawah sidebar, dan top header non-sticky, app/Views/layouts/main.php]`
+- `[2026-07-25 20:26:00]`, `[Rafael Evan]`, --> `[Penambahan dukungan mobile responsive dengan tombol toggle hamburger (garis tiga) pada top header dan dropdown menu sidebar berbasis peran pada layar kecil, app/Views/layouts/main.php]`
+- `[2026-07-25 20:28:00]`, `[Rafael Evan]`, --> `[Pembaruan tombol toggle mobile nav (garis tiga) menjadi sticky/fixed di pojok kiri atas viewport seluler sementara top header tetap non-sticky, app/Views/layouts/main.php]`
+- `[2026-07-25 20:32:00]`, `[Rafael Evan]`, --> `[Pembaruan perataan tombol Logout di sidebar desktop menjadi rata tengah (center aligned) secara khusus, sementara menu navigasi lainnya tetap rata kiri, app/Views/layouts/main.php]`
+- `[2026-07-25 20:51:00]`, `[Rafael Evan]`, --> `[Pembaruan top header dengan komponen Dynamic Liquid Glass Breadcrumb menggantikan judul statis dan penambahan gambar avatar profil pengguna menggunakan public/images/profile.svg di samping nama user, app/Views/layouts/main.php]`
+- `[2026-07-25 20:55:00]`, `[Rafael Evan]`, --> `[Pembaruan warna teks merek PsyAid disesuaikan dengan tema emerald sistem (#047857), font size diperkecil, serta penghapusan teks keterangan subtitle di bawahnya, app/Views/layouts/main.php]`
+- `[2026-07-25 21:09:00]`, `[Rafael Evan]`, --> `[Penambahan EarthquakeRadarController & endpoint API proxy /api/earthquake-data untuk konsumsi real-time BMKG TEWS JSON, app/Controllers/bpbd/EarthquakeRadarController.php]`
+- `[2026-07-25 21:09:00]`, `[Rafael Evan]`, --> `[Pembuatan view Peta Radar Gempa real-time dengan animasi Leaflet radar pulse waves, indikator live feed 30s, dan rincian dampak gempa, app/Views/bpbd/EarthquakeRadar.php]`
+- `[2026-07-25 21:09:00]`, `[Rafael Evan]`, --> `[Penambahan route GET /bpbd/earthquake-radar dan GET /api/earthquake-data, app/Config/Routes.php]`
+- `[2026-07-25 21:09:00]`, `[Rafael Evan]`, --> `[Penambahan item menu Peta Radar Gempa pada sidebar navigasi BPBD Admin, app/Views/layouts/main.php]`
+- `[2026-07-25 21:17:00]`, `[Rafael Evan]`, --> `[Pembaruan border-radius seluruh card, modal, badge, dan container peta pada view Peta Radar Gempa menjadi tepat 6px (rounded-6), app/Views/bpbd/EarthquakeRadar.php]`
+- `[2026-07-25 21:21:00]`, `[Rafael Evan]`, --> `[Pembaruan format teks Gempa Terakhir pada kartu statistik dengan pembersihan prefiks redundan BMKG dan line-clamp multi-line agar pas & informatif di dalam kartu, app/Views/bpbd/EarthquakeRadar.php]`
+- `[2026-07-25 21:23:00]`, `[Rafael Evan]`, --> `[Penyetaraan struktur HTML, ukuran font (h4 fw-bold), dan penataan posisi teks Gempa Terakhir pada kartu statistik agar 100% presisi dan sejajar dengan kartu KPI lainnya, app/Views/bpbd/EarthquakeRadar.php]`
+- `[2026-07-25 21:25:00]`, `[Rafael Evan]`, --> `[Penambahan dukungan mobile responsive pada Peta Radar Gempa (penyesuaian tinggi peta 420px pada seluler, scaling ikon & font kartu KPI, serta flex layout header), app/Views/bpbd/EarthquakeRadar.php]`
+- `[2026-07-25 21:30:00]`, `[Rafael Evan]`, --> `[Penambahan sistem notifikasi darurat gempa real-time (>= 5.0 SR) di latar belakang (background polling 30s) dengan efek suara peringatan Web Audio API dan modal darurat khusus peran BPBD Admin di seluruh halaman aplikasi, app/Views/layouts/main.php]`
+- `[2026-07-25 21:34:00]`, `[Rafael Evan]`, --> `[Perbaikan dan perapihan seluruh log catatan perubahan sistem agar tercatat lengkap secara kronologis tanpa ada yang terhapus, .logs/update_log.MD]`
