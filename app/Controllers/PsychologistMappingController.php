@@ -62,6 +62,6 @@ class PsychologistMappingController extends Controller
             'mappingData' => $mappingData,
         ];
 
-        return view('psychologist/mapping', $data);
+        return view('psikolog/Mapping', $data);
     }
 }

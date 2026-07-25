@@ -55,6 +55,6 @@ class PoskoController extends Controller
             'searchFilters' => $searchFilters,
         ];
 
-        return view('posko/detail', $data);
+        return view('relawan/PoskoDetail', $data);
     }
 }

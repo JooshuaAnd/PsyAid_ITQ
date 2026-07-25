@@ -3,7 +3,7 @@
 <?= $this->section('content') ?>
 <!-- Custom Styles following Landing Page Palette & Glassmorphism Theme -->
 <style>
-    .login-body-bg {
+    .register-body-bg {
         background-color: #f4fbf7;
         min-height: calc(100vh - 80px);
         position: relative;
@@ -25,7 +25,7 @@
         animation: pulseGlow 4s infinite ease-in-out;
     }
 
-    .login-glass-card {
+    .register-glass-card {
         background: linear-gradient(135deg, rgba(255, 255, 255, 0.88) 0%, rgba(236, 253, 245, 0.72) 100%);
         backdrop-filter: blur(16px) saturate(160%);
         -webkit-backdrop-filter: blur(16px) saturate(160%);
@@ -54,7 +54,7 @@
     }
 
     .custom-input-group .input-icon-text {
-        padding: 0.6rem 0.2rem 0.6rem 0.85rem;
+        padding: 0.55rem 0.2rem 0.55rem 0.75rem;
         color: #64748b;
         background: transparent;
         display: flex;
@@ -65,17 +65,17 @@
     .custom-input-group .form-control {
         border: none !important;
         box-shadow: none !important;
-        padding: 0.6rem 0.75rem;
+        padding: 0.55rem 0.5rem;
         background: transparent;
         color: #0f172a;
-        font-size: 0.9rem;
+        font-size: 0.875rem;
     }
 
     .custom-input-group .btn-toggle-eye {
         border: none;
         outline: none;
         background: transparent;
-        padding: 0.6rem 0.85rem;
+        padding: 0.55rem 0.75rem;
         color: #64748b;
         cursor: pointer;
         display: flex;
@@ -107,14 +107,14 @@
         transform: translateY(-1px);
     }
 
-    .testing-creds-box {
-        background-color: rgba(248, 250, 252, 0.85);
-        border: 1px solid #e2e8f0;
+    .admin-info-box {
+        background: linear-gradient(135deg, #fef2f2 0%, #fff1f2 100%);
+        border: 1px solid #fecdd3;
         border-radius: 0.5rem; /* rounded-lg */
     }
 </style>
 
-<div class="login-body-bg d-flex align-items-center justify-content-center py-4 px-3 overflow-hidden">
+<div class="register-body-bg d-flex align-items-center justify-content-center py-4 px-3 overflow-hidden">
     <!-- Interactive Mental Health Background (Canvas + Neural Nodes + Ambient Orbs) -->
     <div id="interactive-health-bg" class="position-fixed top-0 start-0 w-100 h-100 pointer-events-none overflow-hidden" style="z-index: 0;">
         <canvas id="health-canvas" class="w-100 h-100 d-block" style="opacity: 0.9;"></canvas>
@@ -129,22 +129,37 @@
     </div>
 
     <!-- Main Form Container -->
-    <div class="container position-relative" style="max-width: 520px; z-index: 10;">
-        <div class="login-glass-card p-4 p-md-5">
+    <div class="container position-relative" style="max-width: 540px; z-index: 10;">
+        <div class="register-glass-card p-4 p-md-5">
             <!-- Header Logo & Title -->
             <div class="text-center mb-4">
                 <a href="<?= site_url('/') ?>" class="d-inline-block mb-2">
                     <img src="<?= base_url('images/Logo_PsyAid.png') ?>" alt="PsyAid Logo"
                         style="height: 65px; width: auto; object-fit: contain;">
                 </a>
-                <h3 class="fw-bold text-dark mb-1">Masuk ke PsyAid</h3>
-                <p class="text-muted small mb-0">Disaster Mental Health Command Center</p>
+                <h3 class="fw-bold text-dark mb-1">Registrasi Admin BPBD</h3>
+                <p class="text-muted small mb-0">Disaster Mental Health Command Center PsyAid</p>
             </div>
 
-            <!-- Flash Message Alerts -->
-            <?php if (session()->getFlashdata('success')): ?>
-                <div class="alert alert-success rounded-md mb-4 p-3 border-0 small shadow-sm">
-                    <i class="bi bi-check-circle-fill me-1"></i> <?= esc(session()->getFlashdata('success')) ?>
+            <!-- Role Notification Box -->
+            <div class="admin-info-box p-3 mb-4 d-flex align-items-start gap-2 text-danger">
+                <i class="bi bi-shield-lock-fill fs-5 mt-1"></i>
+                <div class="small">
+                    <strong class="d-block text-dark">Akun Hak Akses Admin BPBD Command Center</strong>
+                    Pendaftaran di halaman ini secara otomatis akan mendapatkan role <strong>Admin BPBD</strong>. Untuk
+                    pendaftaran akun Relawan atau Psikolog dilakukan secara khusus melalui sistem Command Center.
+                </div>
+            </div>
+
+            <!-- Error Alerts -->
+            <?php if (session()->getFlashdata('errors')): ?>
+                <div class="alert alert-danger rounded-md mb-4 p-3 border-0 shadow-sm">
+                    <div class="fw-bold mb-1"><i class="bi bi-exclamation-triangle-fill me-1"></i> Mohon perbaiki kesalahan berikut:</div>
+                    <ul class="mb-0 ps-3 small">
+                        <?php foreach (session()->getFlashdata('errors') as $error): ?>
+                            <li><?= esc($error) ?></li>
+                        <?php endforeach ?>
+                    </ul>
                 </div>
             <?php endif; ?>
 
@@ -154,78 +169,81 @@
                 </div>
             <?php endif; ?>
 
-            <!-- Login Form -->
-            <form action="<?= site_url('/login') ?>" method="POST" id="loginForm">
+            <!-- Registration Form -->
+            <form action="<?= site_url('/register') ?>" method="POST" id="registerForm">
                 <?= csrf_field() ?>
 
-                <!-- Email Field -->
+                <!-- Name Input -->
                 <div class="mb-3">
-                    <label for="email" class="form-label fw-semibold text-dark small mb-1">Alamat Email <span class="text-danger">*</span></label>
+                    <label for="name" class="form-label fw-semibold text-dark small mb-1">Nama Lengkap Admin <span class="text-danger">*</span></label>
                     <div class="custom-input-group">
-                        <span class="input-icon-text"><i class="bi bi-envelope"></i></span>
-                        <input type="email" class="form-control" id="email" name="email" value="<?= old('email') ?>"
-                            placeholder="nama@psyaid.id" required autofocus>
+                        <span class="input-icon-text"><i class="bi bi-person"></i></span>
+                        <input type="text" class="form-control" id="name" name="name" value="<?= old('name') ?>"
+                            placeholder="Contoh: Budi Santoso, S.T." required autofocus>
                     </div>
                 </div>
 
-                <!-- Password Field -->
-                <div class="mb-4">
-                    <label for="password" class="form-label fw-semibold text-dark small mb-1">Password <span class="text-danger">*</span></label>
+                <!-- Email Input -->
+                <div class="mb-3">
+                    <label for="email" class="form-label fw-semibold text-dark small mb-1">Alamat Email Kedinasan / Admin <span class="text-danger">*</span></label>
                     <div class="custom-input-group">
-                        <span class="input-icon-text"><i class="bi bi-key"></i></span>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
-                        <button type="button" class="btn-toggle-eye" onclick="togglePassword('password', 'togglePassIcon')">
-                            <i class="bi bi-eye" id="togglePassIcon"></i>
-                        </button>
+                        <span class="input-icon-text"><i class="bi bi-envelope"></i></span>
+                        <input type="email" class="form-control" id="email" name="email" value="<?= old('email') ?>"
+                            placeholder="admin.bpbd@psyaid.id" required>
+                    </div>
+                </div>
+
+                <!-- Password Row -->
+                <div class="row g-3 mb-4">
+                    <div class="col-12 col-md-6">
+                        <label for="password" class="form-label fw-semibold text-dark small mb-1">
+                            Password <span class="text-danger">*</span> <span class="text-muted fw-normal" style="font-size: 0.725rem;">(min. 6 char)</span>
+                        </label>
+                        <div class="custom-input-group">
+                            <span class="input-icon-text"><i class="bi bi-lock"></i></span>
+                            <input type="password" class="form-control" id="password" name="password"
+                                placeholder="Password" required>
+                            <button type="button" class="btn-toggle-eye" onclick="togglePassword('password', 'togglePassIcon1')">
+                                <i class="bi bi-eye" id="togglePassIcon1"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label for="password_confirm" class="form-label fw-semibold text-dark small mb-1">
+                            Konfirmasi Password <span class="text-danger">*</span>
+                        </label>
+                        <div class="custom-input-group">
+                            <span class="input-icon-text"><i class="bi bi-shield-check"></i></span>
+                            <input type="password" class="form-control" id="password_confirm" name="password_confirm"
+                                placeholder="Password" required>
+                            <button type="button" class="btn-toggle-eye" onclick="togglePassword('password_confirm', 'togglePassIcon2')">
+                                <i class="bi bi-eye" id="togglePassIcon2"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Submit Button -->
                 <button type="submit" class="btn btn-emerald-submit w-100 mb-3">
-                    <i class="bi bi-box-arrow-in-right me-1"></i> Masuk Sistem
+                    <i class="bi bi-person-plus-fill me-1"></i> Daftarkan Akun Admin BPBD
                 </button>
             </form>
 
-            <!-- Register Navigation Link -->
-            <div class="text-center mb-3">
-                <span class="text-muted small">Belum memiliki akun Admin BPBD?</span>
-                <a href="<?= site_url('/register') ?>" class="fw-bold text-success text-decoration-none ms-1 small hover-underline">
-                    <i class="bi bi-person-plus-fill me-1"></i> Daftar Akun Baru
-                </a>
-            </div>
-
             <hr class="my-3 border-emerald-200">
 
-            <!-- Testing Credentials Helper -->
-            <div class="testing-creds-box p-3">
-                <div class="fw-bold text-dark small mb-2 d-flex align-items-center gap-1">
-                    <i class="bi bi-info-circle-fill text-primary"></i> Quick Testing Credentials:
-                </div>
-                <div class="d-grid gap-2">
-                    <button type="button" onclick="fillCreds('admin@psyaid.id', 'password123')"
-                        class="btn btn-outline-danger btn-sm text-start py-1 px-2 rounded-md fs-7">
-                        <i class="bi bi-person-fill-gear me-1"></i> <strong>Admin BPBD:</strong> admin@psyaid.id
-                    </button>
-                    <button type="button" onclick="fillCreds('relawan1@psyaid.id', 'password123')"
-                        class="btn btn-outline-success btn-sm text-start py-1 px-2 rounded-md fs-7">
-                        <i class="bi bi-person-badge-fill me-1"></i> <strong>Relawan Posko 1:</strong> relawan1@psyaid.id
-                    </button>
-                    <button type="button" onclick="fillCreds('psikolog1@psyaid.id', 'password123')"
-                        class="btn btn-outline-primary btn-sm text-start py-1 px-2 rounded-md fs-7">
-                        <i class="bi bi-heart-pulse-fill me-1"></i> <strong>Psikolog 1:</strong> psikolog1@psyaid.id
-                    </button>
-                </div>
+            <!-- Footer Link to Login -->
+            <div class="text-center">
+                <span class="text-muted small">Sudah memiliki akun Admin BPBD?</span>
+                <a href="<?= site_url('/login') ?>"
+                    class="fw-bold text-success text-decoration-none ms-1 small hover-underline">
+                    <i class="bi bi-box-arrow-in-right me-1"></i> Masuk Sekarang
+                </a>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    function fillCreds(email, password) {
-        document.getElementById('email').value = email;
-        document.getElementById('password').value = password;
-    }
-
     function togglePassword(inputId, iconId) {
         const input = document.getElementById(inputId);
         const icon = document.getElementById(iconId);

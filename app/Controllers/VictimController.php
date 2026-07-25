@@ -107,7 +107,7 @@ class VictimController extends Controller
         ];
 
 
-        return view('victim/detail', $data);
+        return view('relawan/VictimDetail', $data);
     }
 
     /**

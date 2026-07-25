@@ -16,7 +16,7 @@ class App extends BaseConfig
      *
      * E.g., http://example.com/
      */
-    public string $baseURL = 'https://psyaiditq-production.up.railway.app/';
+    public string $baseURL = 'http://localhost:8081/';
 
     /**
      * Allowed Hostnames in the Site URL other than the hostname in the baseURL.
@@ -180,7 +180,9 @@ class App extends BaseConfig
      *
      * @var array<string, string>
      */
-    public array $proxyIPs = [];
+    public array $proxyIPs = [
+        '0.0.0.0/0' => 'X-Forwarded-For',
+    ];
 
     /**
      * --------------------------------------------------------------------------

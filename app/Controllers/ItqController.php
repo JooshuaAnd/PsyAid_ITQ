@@ -106,7 +106,7 @@ class ItqController extends Controller
             'itqQuestions' => $itqQuestions,
         ];
 
-        return view('itq/form', $data);
+        return view('psikolog/ItqForm', $data);
     }
 
     /**
@@ -191,7 +191,7 @@ class ItqController extends Controller
             'clinicalAction' => $clinicalAction,
         ];
 
-        return view('itq/result', $data);
+        return view('psikolog/ItqResult', $data);
     }
 
     /**

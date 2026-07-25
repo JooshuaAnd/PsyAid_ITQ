@@ -44,6 +44,6 @@ class PsikologController extends Controller
             'assignedVictims' => $assignedVictims,
         ];
 
-        return view('dashboard/psikolog', $data);
+        return view('psikolog/Dashboard', $data);
     }
 }

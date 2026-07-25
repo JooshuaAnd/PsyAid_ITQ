@@ -18,3 +18,14 @@ Format Entri: `[Timestamp], [Author], --> [Perubahan, Lokasi Perubahan]`
 - `[2026-07-24 21:42:00]`, `[Rafael Evan]`, --> `[Pengubahan warna top header navbar menjadi perpaduan hijau muda soft dan putih (.navbar-soft-green), app/Views/layouts/main.php]`
 - `[2026-07-24 21:43:00]`, `[Rafael Evan]`, --> `[Mengubah warna top header navbar menjadi hijau muda (soft light green #d1fae5), app/Views/layouts/main.php]`
 - `[2026-07-24 21:48:00]`, `[Rafael Evan]`, --> `[Penambahan popup modal konfirmasi logout Bootstrap 5 dengan tombol konfirmasi berwarna merah bertuliskan putih, app/Views/layouts/main.php]`
+- `[2026-07-25 18:08:00]`, `[Rafael Evan]`, --> `[Pengembalian default baseURL ke localhost:8080/ & penambahan trust proxyIPs untuk Railway SSL, app/Config/App.php]`
+- `[2026-07-25 18:21:00]`, `[Rafael Evan]`, --> `[Perbaikan kompatibilitas PostgreSQL Strict GROUP BY pada getFilteredPoskoList, app/Controllers/CommandCenterController.php]`
+- `[2026-07-25 18:48:00]`, `[Rafael Evan]`, --> `[Penambahan route GET dan POST /register untuk pendaftaran akun, app/Config/Routes.php]`
+- `[2026-07-25 18:48:00]`, `[Rafael Evan]`, --> `[Penambahan flash alert notifikasi dan link menuju halaman registrasi pada halaman login, app/Views/auth/login.php]`
+- `[2026-07-25 18:48:00]`, `[Rafael Evan]`, --> `[Pembaruan logika penyembunyian navbar untuk mendukung halaman registrasi, app/Views/layouts/main.php]`
+- `[2026-07-25 19:00:00]`, `[Rafael Evan]`, --> `[Pembaruan AuthController register & attemptRegister dengan default role bpbd_admin, app/Controllers/AuthController.php]`
+- `[2026-07-25 19:28:00]`, `[Rafael Evan]`, --> `[Refactoring arsitektur views berbasis peran (app/Views/bpbd/, app/Views/relawan/, app/Views/psikolog/) dengan deskripsi nama file fitur (CommandCenter.php, PoskoDetail.php, VictimDetail.php, Dashboard.php, Mapping.php, Review.php, ItqForm.php, ItqResult.php) serta pembaruan referensi view pada Controllers, app/Views/, app/Controllers/]`
+
+
+
+

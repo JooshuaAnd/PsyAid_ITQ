@@ -29,7 +29,7 @@ class CommandCenterController extends Controller
             'poskoList'    => $poskoList,
         ];
 
-        return view('dashboard/command_center', $data);
+        return view('bpbd/CommandCenter', $data);
     }
 
     /**
@@ -104,7 +104,14 @@ class CommandCenterController extends Controller
             $builder->where('posko.status', $filters['status']);
         }
 
-        $builder->groupBy('posko.id');
+        $builder->groupBy([
+            'posko.id',
+            'posko.name',
+            'posko.jenis_bencana',
+            'posko.status',
+            'regencies.name',
+            'provinces.name',
+        ]);
         $builder->orderBy('posko.name', 'ASC');
 
         $list = $builder->get()->getResultArray();

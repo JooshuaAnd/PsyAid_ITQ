@@ -11,6 +11,8 @@ $routes->get('/landing', 'LandingController::index');
 // Authentication routes
 $routes->get('/login', 'AuthController::login');
 $routes->post('/login', 'AuthController::attemptLogin');
+$routes->get('/register', 'AuthController::register');
+$routes->post('/register', 'AuthController::attemptRegister');
 $routes->get('/logout', 'AuthController::logout');
 $routes->get('/forbidden', 'AuthController::forbidden');
 

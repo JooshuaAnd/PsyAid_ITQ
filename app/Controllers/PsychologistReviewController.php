@@ -66,7 +66,7 @@ class PsychologistReviewController extends Controller
             'review'         => $review,
         ];
 
-        return view('psychologist/review', $data);
+        return view('psikolog/Review', $data);
     }
 
     /**
