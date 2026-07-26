@@ -746,7 +746,7 @@ $isLoginPage = ($hideNavbar ?? false)
 
     <!-- Modal Peringatan Darurat Gempa (>= 5.0 SR) Khusus Peran BPBD Admin -->
     <?php if (session()->get('logged_in') && session()->get('role') === 'bpbd_admin'): ?>
-        <div class="modal fade" id="earthquakeEmergencyModal" tabindex="-1" aria-labelledby="earthquakeEmergencyLabel" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal fade" id="earthquakeEmergencyModal" tabindex="-1" aria-labelledby="earthquakeEmergencyLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content border-0 shadow-lg rounded-6 overflow-hidden">
                     <div class="modal-header border-0 bg-danger text-white py-3">
@@ -840,32 +840,116 @@ $isLoginPage = ($hideNavbar ?? false)
                 const BACKGROUND_POLL_INTERVAL = 30000; // 30 seconds real-time background polling
                 let lastNotifiedEvents = JSON.parse(localStorage.getItem('psyaid_notified_earthquakes') || '[]');
 
+                // AudioContext instance management & auto-unlock on user gesture
+                let psyaidAudioCtx = null;
+
+                function getPsyaidAudioContext() {
+                    if (!psyaidAudioCtx) {
+                        const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+                        if (AudioCtxClass) {
+                            psyaidAudioCtx = new AudioCtxClass();
+                        }
+                    }
+                    return psyaidAudioCtx;
+                }
+
+                function unlockAudioContext() {
+                    const ctx = getPsyaidAudioContext();
+                    if (ctx && ctx.state === 'suspended') {
+                        ctx.resume().catch(e => console.log('AudioContext unlock catch:', e));
+                    }
+                }
+
+                ['click', 'touchstart', 'keydown', 'pointerdown'].forEach(evt => {
+                    window.addEventListener(evt, unlockAudioContext, { passive: true });
+                });
+
+                function scheduleSirenBeep(ctx, startTime, freqStart, freqEnd, duration) {
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(freqStart, startTime);
+                    osc.frequency.exponentialRampToValueAtTime(freqEnd, startTime + duration);
+
+                    gain.gain.setValueAtTime(0.7, startTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, startTime + duration);
+
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+
+                    osc.start(startTime);
+                    osc.stop(startTime + duration);
+                }
+
+                function playSirenTones(ctx) {
+                    try {
+                        const now = ctx.currentTime;
+                        // 3 Loud & Urgent Disaster Emergency Siren Pulses
+                        scheduleSirenBeep(ctx, now + 0.00, 960, 680, 0.35);
+                        scheduleSirenBeep(ctx, now + 0.40, 960, 680, 0.35);
+                        scheduleSirenBeep(ctx, now + 0.80, 1080, 750, 0.45);
+                    } catch (err) {
+                        console.error('Error rendering siren tones:', err);
+                    }
+                }
+
                 function playWarningChime() {
                     try {
-                        const AudioContext = window.AudioContext || window.webkitAudioContext;
-                        if (!AudioContext) return;
-                        const ctx = new AudioContext();
-                        const now = ctx.currentTime;
-                        const osc = ctx.createOscillator();
-                        const gain = ctx.createGain();
+                        const ctx = getPsyaidAudioContext();
+                        if (!ctx) return;
 
-                        osc.type = 'sawtooth';
-                        osc.frequency.setValueAtTime(880, now);
-                        osc.frequency.setValueAtTime(587.33, now + 0.25);
-                        osc.frequency.setValueAtTime(880, now + 0.5);
-
-                        gain.gain.setValueAtTime(0.3, now);
-                        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.85);
-
-                        osc.connect(gain);
-                        gain.connect(ctx.destination);
-
-                        osc.start(now);
-                        osc.stop(now + 0.85);
+                        if (ctx.state === 'suspended') {
+                            ctx.resume().then(() => playSirenTones(ctx)).catch(() => playSirenTones(ctx));
+                        } else {
+                            playSirenTones(ctx);
+                        }
                     } catch (e) {
                         console.log('Web Audio chime error:', e);
                     }
                 }
+
+                let sirenRepeatInterval = null;
+
+                function startSirenLoop() {
+                    stopSirenLoop();
+                    playWarningChime();
+                    sirenRepeatInterval = setInterval(function () {
+                        playWarningChime();
+                    }, 1700); // Continuous 3-pulse emergency siren repeat every 1.7 seconds
+                }
+
+                function stopSirenLoop() {
+                    if (sirenRepeatInterval) {
+                        clearInterval(sirenRepeatInterval);
+                        sirenRepeatInterval = null;
+                    }
+                }
+
+                // Stop repeating siren sound & cleanup backdrop state as soon as BPBD Admin closes or dismisses modal
+                const modalEl = document.getElementById('earthquakeEmergencyModal');
+
+                function cleanupEmergencyModalState() {
+                    stopSirenLoop();
+                    setTimeout(function () {
+                        document.querySelectorAll('.modal-backdrop').forEach(function (el) {
+                            el.remove();
+                        });
+                        document.body.classList.remove('modal-open');
+                        document.body.style.removeProperty('overflow');
+                        document.body.style.removeProperty('padding-right');
+                    }, 150);
+                }
+
+                if (modalEl) {
+                    modalEl.addEventListener('hidden.bs.modal', cleanupEmergencyModalState);
+                    modalEl.addEventListener('hide.bs.modal', cleanupEmergencyModalState);
+                }
+
+                // Expose globally so views (like Earthquake Radar) can trigger audio test or control loop
+                window.playEarthquakeWarningSound = playWarningChime;
+                window.startEarthquakeSirenLoop = startSirenLoop;
+                window.stopEarthquakeSirenLoop = stopSirenLoop;
 
                 function checkBackgroundEarthquakes() {
                     fetch('<?= site_url('/api/earthquake-data') ?>')
@@ -882,7 +966,6 @@ $isLoginPage = ($hideNavbar ?? false)
                                         if (lastNotifiedEvents.length > 50) lastNotifiedEvents.shift();
                                         localStorage.setItem('psyaid_notified_earthquakes', JSON.stringify(lastNotifiedEvents));
 
-                                        playWarningChime();
                                         showEmergencyModal(item);
                                     }
                                 });
@@ -893,9 +976,9 @@ $isLoginPage = ($hideNavbar ?? false)
 
                 function showEmergencyModal(item) {
                     const modalBody = document.getElementById('earthquakeEmergencyBody');
-                    const modalEl = document.getElementById('earthquakeEmergencyModal');
+                    const modalElement = document.getElementById('earthquakeEmergencyModal');
 
-                    if (modalBody && modalEl) {
+                    if (modalBody && modalElement) {
                         modalBody.innerHTML = `
                             <div class="mb-3">
                                 <span class="badge bg-danger fs-4 px-3 py-2 rounded-6 fw-bold shadow-sm">
@@ -927,9 +1010,11 @@ $isLoginPage = ($hideNavbar ?? false)
                                 <div class="small">${item.dirasakan || 'Tidak ada catatan spesifik MMI.'}</div>
                             </div>
                         `;
-
-                        const modal = new bootstrap.Modal(modalEl);
+                        const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
                         modal.show();
+
+                        // Start continuous siren loop until modal is closed
+                        startSirenLoop();
                     }
                 }
 
