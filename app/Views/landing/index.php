@@ -558,11 +558,48 @@
                 <span class="font-bold text-emerald-950">PsyAid</span>
                 <span>- Disaster Mental Health Command Center</span>
             </div>
-            <div>
-                &copy; <?= date('Y') ?> PsyAid. All rights reserved.
+            <div class="flex items-center gap-4 flex-wrap justify-center">
+                <a href="<?= site_url('/rekrutmen-relawan') ?>"
+                    class="text-slate-600 hover:text-emerald-700 font-semibold transition-colors">
+                    Rekrutmen Relawan
+                </a>
+                <span class="text-slate-400">•</span>
+                <span>&copy; <?= date('Y') ?> PsyAid. All rights reserved.</span>
             </div>
         </div>
     </footer>
+
+    <!-- Floating Bouncing Popup Widget: Rekrutmen Relawan (iOS Liquid Glass Theme) -->
+    <div id="volunteer-popup-widget"
+        class="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-50 animate-bounce transition-all duration-300">
+        <div
+            class="relative liquid-glass-card border-2 border-emerald-500/60 shadow-2xl rounded-2xl p-4 sm:p-4.5 max-w-[280px] sm:max-w-xs flex flex-col gap-3 text-left">
+            <!-- Close Button -->
+            <button id="close-volunteer-popup" type="button" aria-label="Tutup Popup"
+                class="absolute -top-2.5 -right-2.5 w-7 h-7 bg-emerald-950 hover:bg-slate-900 text-white rounded-full flex items-center justify-center text-xs shadow-md transition-transform hover:scale-110">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+
+            <!-- Popup Header & Icon -->
+            <div class="flex items-center gap-2.5">
+                <div
+                    class="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-700 flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <i data-lucide="heart-handshake" class="w-5 h-5 text-emerald-600"></i>
+                </div>
+                <div>
+                    <h4 class="text-xs sm:text-sm font-bold text-emerald-950 leading-snug">
+                        Ambil Peran Jadi Relawan Sekarang
+                    </h4>
+                </div>
+            </div>
+
+            <!-- CTA Button Link with Liquid Glass Styling -->
+            <a href="<?= site_url('/rekrutmen-relawan') ?>"
+                class="w-full liquid-glass-btn text-emerald-950 font-bold text-xs py-2.5 px-4 rounded-xl shadow-md flex items-center justify-center gap-2 transition-all hover:scale-[1.02]">
+                <span>Jadilah Relawan Sekarang</span>
+            </a>
+        </div>
+    </div>
 
     <!-- Interactive Scripts: Lucide Icons, Light Mode Canvas Mental Health Node Animation, Framer Motion Scroll Trigger -->
     <script>
@@ -571,6 +608,15 @@
             if (window.lucide) {
                 lucide.createIcons();
             }
+
+            // Close Volunteer Popup Widget
+            const popupWidget = document.getElementById('volunteer-popup-widget');
+            const closeBtn = document.getElementById('close-volunteer-popup');
+            closeBtn?.addEventListener('click', () => {
+                if (popupWidget) {
+                    popupWidget.style.display = 'none';
+                }
+            });
 
             // Mobile menu toggle
             const menuBtn = document.getElementById('mobile-menu-btn');

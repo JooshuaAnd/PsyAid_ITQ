@@ -100,7 +100,7 @@ class AuthController extends BaseController
     public function attemptLogin()
     {
         $rules = [
-            'email'    => 'required|valid_email',
+            'email'    => 'required',
             'password' => 'required',
         ];
 
@@ -108,14 +108,14 @@ class AuthController extends BaseController
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
-        $email    = $this->request->getPost('email');
+        $email    = trim($this->request->getPost('email'));
         $password = $this->request->getPost('password');
 
         $userModel = new UserModel();
         $user      = $userModel->findByEmail($email);
 
         if (! $user) {
-            return redirect()->back()->withInput()->with('error', 'Email tidak terdaftar.');
+            return redirect()->back()->withInput()->with('error', 'Email atau Nomor WhatsApp tidak terdaftar.');
         }
 
         if (! password_verify($password, $user['password_hash'])) {

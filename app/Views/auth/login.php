@@ -158,13 +158,13 @@
             <form action="<?= site_url('/login') ?>" method="POST" id="loginForm">
                 <?= csrf_field() ?>
 
-                <!-- Email Field -->
+                <!-- Email / WhatsApp Field -->
                 <div class="mb-3">
-                    <label for="email" class="form-label fw-semibold text-dark small mb-1">Alamat Email <span class="text-danger">*</span></label>
+                    <label for="email" class="form-label fw-semibold text-dark small mb-1">Email / No. WhatsApp <span class="text-danger">*</span></label>
                     <div class="custom-input-group">
-                        <span class="input-icon-text"><i class="bi bi-envelope"></i></span>
-                        <input type="email" class="form-control" id="email" name="email" value="<?= old('email') ?>"
-                            placeholder="nama@psyaid.id" required autofocus>
+                        <span class="input-icon-text"><i class="bi bi-person-badge"></i></span>
+                        <input type="text" class="form-control" id="email" name="email" value="<?= old('email') ?>"
+                            placeholder="Email / No. WhatsApp (0812...)" required autofocus>
                     </div>
                 </div>
 

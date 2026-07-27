@@ -491,11 +491,43 @@ $isLoginPage = ($hideNavbar ?? false)
                             <i class="bi bi-diagram-3-fill text-primary"></i>
                             <span class="sidebar-label">Pemetaan Psikolog</span>
                         </a>
-                        <a href="<?= site_url('/register') ?>" class="sidebar-nav-item <?= url_is('register*') ? 'active' : '' ?>"
-                            title="Registrasi Admin BPBD">
-                            <i class="bi bi-person-plus-fill text-success"></i>
-                            <span class="sidebar-label">Registrasi Admin</span>
-                        </a>
+
+                        <!-- Dropdown Registrasi Akun -->
+                        <?php $isRegisterActive = url_is('bpbd/register*') || (url_is('register*') && ! url_is('bpbd/register*')); ?>
+                        <div class="sidebar-dropdown-container mb-1">
+                            <a href="#desktopRegisterSubmenu" data-bs-toggle="collapse"
+                                class="sidebar-nav-item d-flex align-items-center justify-content-between <?= $isRegisterActive ? 'active' : '' ?>"
+                                role="button" aria-expanded="<?= $isRegisterActive ? 'true' : 'false' ?>" aria-controls="desktopRegisterSubmenu"
+                                title="Registrasi Akun">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-person-plus-fill text-success"></i>
+                                    <span class="sidebar-label">Registrasi Akun</span>
+                                </div>
+                                <i class="bi bi-chevron-down ms-auto sidebar-label" style="font-size: 0.75rem;"></i>
+                            </a>
+                            <div class="collapse <?= $isRegisterActive ? 'show' : '' ?>" id="desktopRegisterSubmenu">
+                                <div class="ps-3 py-1">
+                                    <a href="<?= site_url('/bpbd/register-relawan') ?>"
+                                        class="sidebar-nav-item py-1.5 <?= url_is('bpbd/register-relawan*') ? 'active' : '' ?>"
+                                        title="Registrasi Akun Relawan Baru">
+                                        <i class="bi bi-person-heart text-success" style="font-size: 0.95rem;"></i>
+                                        <span class="sidebar-label">Registrasi Relawan</span>
+                                    </a>
+                                    <a href="<?= site_url('/bpbd/register-psikolog') ?>"
+                                        class="sidebar-nav-item py-1.5 <?= url_is('bpbd/register-psikolog*') ? 'active' : '' ?>"
+                                        title="Registrasi Akun Psikolog Klinis Baru">
+                                        <i class="bi bi-person-badge-fill text-primary" style="font-size: 0.95rem;"></i>
+                                        <span class="sidebar-label">Registrasi Psikolog</span>
+                                    </a>
+                                    <a href="<?= site_url('/register') ?>"
+                                        class="sidebar-nav-item py-1.5 <?= (url_is('register*') && ! url_is('bpbd/register*')) ? 'active' : '' ?>"
+                                        title="Registrasi Admin BPBD Baru">
+                                        <i class="bi bi-shield-plus text-danger" style="font-size: 0.95rem;"></i>
+                                        <span class="sidebar-label">Registrasi Admin BPBD</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
 
                     <?php elseif ($role === 'relawan'): ?>
                         <!-- Relawan Posko Menu -->
@@ -635,10 +667,33 @@ $isLoginPage = ($hideNavbar ?? false)
                             class="sidebar-nav-item py-2 px-3 mb-1 <?= url_is('psychologist-mapping*') ? 'active' : '' ?>">
                             <i class="bi bi-diagram-3-fill text-primary"></i> Pemetaan Psikolog
                         </a>
-                        <a href="<?= site_url('/register') ?>"
-                            class="sidebar-nav-item py-2 px-3 mb-1 <?= url_is('register*') ? 'active' : '' ?>">
-                            <i class="bi bi-person-plus-fill text-success"></i> Registrasi Admin BPBD
-                        </a>
+
+                        <!-- Mobile Dropdown Registrasi Akun -->
+                        <?php $isRegisterActive = url_is('bpbd/register*') || (url_is('register*') && ! url_is('bpbd/register*')); ?>
+                        <div class="mb-1">
+                            <a href="#mobileRegisterSubmenu" data-bs-toggle="collapse"
+                                class="sidebar-nav-item py-2 px-3 d-flex align-items-center justify-content-between <?= $isRegisterActive ? 'active' : '' ?>"
+                                role="button" aria-expanded="<?= $isRegisterActive ? 'true' : 'false' ?>">
+                                <div>
+                                    <i class="bi bi-person-plus-fill text-success me-2"></i> Registrasi Akun
+                                </div>
+                                <i class="bi bi-chevron-down" style="font-size: 0.75rem;"></i>
+                            </a>
+                            <div class="collapse <?= $isRegisterActive ? 'show' : '' ?> ps-3 mt-1" id="mobileRegisterSubmenu">
+                                <a href="<?= site_url('/bpbd/register-relawan') ?>"
+                                    class="sidebar-nav-item py-1.5 px-3 mb-1 <?= url_is('bpbd/register-relawan*') ? 'active' : '' ?>">
+                                    <i class="bi bi-person-heart text-success me-2"></i> Registrasi Relawan
+                                </a>
+                                <a href="<?= site_url('/bpbd/register-psikolog') ?>"
+                                    class="sidebar-nav-item py-1.5 px-3 mb-1 <?= url_is('bpbd/register-psikolog*') ? 'active' : '' ?>">
+                                    <i class="bi bi-person-badge-fill text-primary me-2"></i> Registrasi Psikolog
+                                </a>
+                                <a href="<?= site_url('/register') ?>"
+                                    class="sidebar-nav-item py-1.5 px-3 mb-1 <?= (url_is('register*') && ! url_is('bpbd/register*')) ? 'active' : '' ?>">
+                                    <i class="bi bi-shield-plus text-danger me-2"></i> Registrasi Admin BPBD
+                                </a>
+                            </div>
+                        </div>
 
                     <?php elseif ($role === 'relawan'): ?>
                         <?php $poskoId = session()->get('posko_id') ?? 1; ?>

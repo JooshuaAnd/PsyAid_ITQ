@@ -7,6 +7,7 @@ use CodeIgniter\Router\RouteCollection;
 // Root & Landing page
 $routes->get('/', 'LandingController::index');
 $routes->get('/landing', 'LandingController::index');
+$routes->get('/rekrutmen-relawan', 'LandingController::rekrutmen');
 
 // Authentication routes (Auth namespace)
 $routes->get('/login', 'Auth\AuthController::login');
@@ -21,6 +22,10 @@ $routes->get('/command-center', 'Bpbd\CommandCenterController::index', ['filter'
 $routes->get('/command-center/get-regencies/(:num)', 'Bpbd\CommandCenterController::getRegencies/$1', ['filter' => ['auth', 'role:bpbd_admin']]);
 $routes->get('/command-center/get-stats', 'Bpbd\CommandCenterController::getStats', ['filter' => ['auth', 'role:bpbd_admin']]);
 $routes->get('/bpbd/earthquake-radar', 'Bpbd\EarthquakeRadarController::index', ['filter' => ['auth', 'role:bpbd_admin']]);
+$routes->get('/bpbd/register-relawan', 'Bpbd\VolunteerRegisterController::index', ['filter' => ['auth', 'role:bpbd_admin']]);
+$routes->post('/bpbd/register-relawan', 'Bpbd\VolunteerRegisterController::store', ['filter' => ['auth', 'role:bpbd_admin']]);
+$routes->get('/bpbd/register-psikolog', 'Bpbd\VolunteerRegisterController::psikologPage', ['filter' => ['auth', 'role:bpbd_admin']]);
+$routes->post('/bpbd/register-psikolog', 'Bpbd\VolunteerRegisterController::storePsikolog', ['filter' => ['auth', 'role:bpbd_admin']]);
 $routes->get('/api/earthquake-data', 'Bpbd\EarthquakeRadarController::fetchBmkgData', ['filter' => ['auth']]);
 
 // Posko detail route (Relawan namespace)
