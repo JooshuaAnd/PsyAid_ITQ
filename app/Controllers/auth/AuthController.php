@@ -5,9 +5,9 @@ namespace App\Controllers\Auth;
 use App\Controllers\BaseController;
 use App\Models\PoskoModel;
 use App\Models\UserModel;
-use CodeIgniter\Controller;
+// use CodeIgniter\Controller;
 
-class AuthController extends Controller
+class AuthController extends BaseController
 {
     /**
      * Show Registration Form
