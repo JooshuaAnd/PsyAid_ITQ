@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers\bpbd;
+namespace App\Controllers\Bpbd;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
