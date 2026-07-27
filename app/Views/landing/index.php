@@ -516,31 +516,49 @@
 
                 <!-- Creator Photo Card 1 -->
                 <div
-                    class="glass-card rounded-xl overflow-hidden p-2.5 border border-white hover:border-emerald-500/60 transition-all duration-500 hover:scale-[1.03] group shadow-xl">
+                    class="glass-card rounded-xl overflow-hidden p-2.5 border border-white hover:border-emerald-500/60 transition-all duration-500 hover:scale-[1.03] group shadow-xl flex flex-col items-center">
                     <div
                         class="relative w-full h-[450px] sm:h-[500px] md:h-[540px] lg:h-[580px] rounded-lg overflow-hidden bg-slate-100">
-                        <img src="<?= base_url('images/creator1.jpeg') ?>" alt="Creator 1"
+                        <img src="<?= base_url('images/creator1.jpeg') ?>" alt="Clara Angelita Karunia Dewi"
                             class="w-full h-full object-cover rounded-lg filter brightness-95 group-hover:brightness-105 transition-all duration-500" />
+                    </div>
+                    <div class="pt-3.5 pb-1 px-2 text-center w-full">
+                        <h3
+                            class="font-bold text-emerald-700 text-sm sm:text-base tracking-tight group-hover:text-emerald-700 transition-colors">
+                            Clara Angelita Karunia Dewi
+                        </h3>
                     </div>
                 </div>
 
                 <!-- Creator Photo Card 2 -->
                 <div
-                    class="glass-card rounded-xl overflow-hidden p-2.5 border border-white hover:border-emerald-500/60 transition-all duration-500 hover:scale-[1.03] group shadow-xl">
+                    class="glass-card rounded-xl overflow-hidden p-2.5 border border-white hover:border-emerald-500/60 transition-all duration-500 hover:scale-[1.03] group shadow-xl flex flex-col items-center">
                     <div
                         class="relative w-full h-[450px] sm:h-[500px] md:h-[540px] lg:h-[580px] rounded-lg overflow-hidden bg-slate-100">
-                        <img src="<?= base_url('images/creator2.jpeg') ?>" alt="Creator 2"
+                        <img src="<?= base_url('images/creator2.jpeg') ?>" alt="Joshua Andrean Mulyadinata"
                             class="w-full h-full object-cover rounded-lg filter brightness-95 group-hover:brightness-105 transition-all duration-500" />
+                    </div>
+                    <div class="pt-3.5 pb-1 px-2 text-center w-full">
+                        <h3
+                            class="font-bold text-emerald-700 text-sm sm:text-base tracking-tight group-hover:text-emerald-700 transition-colors">
+                            Joshua Andrean Mulyadinata
+                        </h3>
                     </div>
                 </div>
 
                 <!-- Creator Photo Card 3 -->
                 <div
-                    class="glass-card rounded-xl overflow-hidden p-2.5 border border-white hover:border-emerald-500/60 transition-all duration-500 hover:scale-[1.03] group shadow-xl">
+                    class="glass-card rounded-xl overflow-hidden p-2.5 border border-white hover:border-emerald-500/60 transition-all duration-500 hover:scale-[1.03] group shadow-xl flex flex-col items-center">
                     <div
                         class="relative w-full h-[450px] sm:h-[500px] md:h-[540px] lg:h-[580px] rounded-lg overflow-hidden bg-slate-100">
-                        <img src="<?= base_url('images/creator3.jpeg') ?>" alt="Creator 3"
+                        <img src="<?= base_url('images/creator3.jpeg') ?>" alt="Rafael Evan Kristanto"
                             class="w-full h-full object-cover rounded-lg filter brightness-95 group-hover:brightness-105 transition-all duration-500" />
+                    </div>
+                    <div class="pt-3.5 pb-1 px-2 text-center w-full">
+                        <h3
+                            class="font-bold text-emerald-700 text-sm sm:text-base tracking-tight group-hover:text-emerald-700 transition-colors">
+                            Rafael Evan Kristanto
+                        </h3>
                     </div>
                 </div>
 
