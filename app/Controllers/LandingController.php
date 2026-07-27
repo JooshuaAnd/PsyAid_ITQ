@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\PoskoModel;
+use App\Models\VolunteerRegistrationModel;
 
 class LandingController extends BaseController
 {
@@ -99,6 +100,43 @@ class LandingController extends BaseController
             'isLoggedIn'          => session()->get('logged_in') ?? false,
             'role'                => session()->get('role') ?? null,
             'poskoId'             => session()->get('posko_id') ?? null,
+        ]);
+    }
+
+    /**
+     * Handle AJAX/Fetch submission of volunteer request from chatbot
+     */
+    public function storeVolunteerRequest()
+    {
+        $regModel = new VolunteerRegistrationModel();
+
+        $nik       = trim($this->request->getPost('nik') ?? '');
+        $nama      = trim($this->request->getPost('nama') ?? '');
+        $provinsi  = trim($this->request->getPost('provinsi') ?? '');
+        $tglLahir  = trim($this->request->getPost('tgl_lahir') ?? '');
+        $whatsapp  = trim($this->request->getPost('whatsapp') ?? '');
+        $poskoName = trim($this->request->getPost('posko_name') ?? '');
+
+        if (empty($nik) || empty($nama) || empty($whatsapp)) {
+            return $this->response->setJSON([
+                'status'  => 'error',
+                'message' => 'Data pendaftaran tidak lengkap.',
+            ])->setStatusCode(400);
+        }
+
+        $regModel->insert([
+            'nik'        => $nik,
+            'nama'       => $nama,
+            'provinsi'   => $provinsi,
+            'tgl_lahir'  => ! empty($tglLahir) ? $tglLahir : null,
+            'whatsapp'   => $whatsapp,
+            'posko_name' => $poskoName,
+            'status'     => 'pending',
+        ]);
+
+        return $this->response->setJSON([
+            'status'  => 'success',
+            'message' => 'Permohonan akun relawan berhasil terkirim ke BPBD Command Center.',
         ]);
     }
 }

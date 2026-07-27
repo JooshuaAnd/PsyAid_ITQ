@@ -757,11 +757,32 @@
                     formData.whatsapp = inputVal;
                     currentStep = 6;
 
+                    // Send data to backend API for BPBD Approval
+                    const bodyPayload = new FormData();
+                    bodyPayload.append('nik', formData.nik);
+                    bodyPayload.append('nama', formData.nama);
+                    bodyPayload.append('provinsi', formData.provinsi);
+                    bodyPayload.append('tgl_lahir', formData.tgl_lahir);
+                    bodyPayload.append('whatsapp', formData.whatsapp);
+                    bodyPayload.append('posko_name', activePoskoName);
+
+                    fetch('<?= site_url('/api/register-volunteer-request') ?>', {
+                        method: 'POST',
+                        body: bodyPayload
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log('Permohonan relawan tersimpan ke BPBD:', data);
+                    })
+                    .catch(err => {
+                        console.error('Error menyimpan permohonan relawan:', err);
+                    });
+
                     // Complete!
                     chatInputForm.classList.add('d-none');
                     chatCompletedContainer.classList.remove('d-none');
 
-                    appendBotBubble(`🎉 **Pendaftaran Relawan Berhasil Terkirim!**\n\nData pendaftaran Anda untuk **${activePoskoName}** telah berhasil disimpan oleh BPBD Command Center.\n\n**Ringkasan Biodata Relawan:**\n• **NIK**: ${formData.nik}\n• **Nama**: ${formData.nama}\n• **Domisili**: ${formData.provinsi}\n• **Tgl Lahir**: ${formData.tgl_lahir}\n• **No WhatsApp**: ${formData.whatsapp}\n\nPetugas BPBD akan segera menghubungi nomor WhatsApp Anda untuk koordinasi lapangan & penugasan posko.`);
+                    appendBotBubble(`🎉 **Pendaftaran Relawan Berhasil Terkirim!**\n\nData pendaftaran Anda untuk **${activePoskoName}** telah berhasil dikirimkan ke BPBD Command Center untuk peninjauan (approval).\n\n**Ringkasan Biodata Relawan:**\n• **NIK**: ${formData.nik}\n• **Nama**: ${formData.nama}\n• **Domisili**: ${formData.provinsi}\n• **Tgl Lahir**: ${formData.tgl_lahir}\n• **No WhatsApp**: ${formData.whatsapp}\n\nPetugas BPBD akan melakukan verifikasi & menghubungi nomor WhatsApp Anda setelah akun disetujui.`);
                 }
             }
         });

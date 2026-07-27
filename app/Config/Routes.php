@@ -24,8 +24,11 @@ $routes->get('/command-center/get-stats', 'Bpbd\CommandCenterController::getStat
 $routes->get('/bpbd/earthquake-radar', 'Bpbd\EarthquakeRadarController::index', ['filter' => ['auth', 'role:bpbd_admin']]);
 $routes->get('/bpbd/register-relawan', 'Bpbd\VolunteerRegisterController::index', ['filter' => ['auth', 'role:bpbd_admin']]);
 $routes->post('/bpbd/register-relawan', 'Bpbd\VolunteerRegisterController::store', ['filter' => ['auth', 'role:bpbd_admin']]);
+$routes->post('/bpbd/approval-relawan/approve/(:num)', 'Bpbd\VolunteerRegisterController::approve/$1', ['filter' => ['auth', 'role:bpbd_admin']]);
+$routes->post('/bpbd/approval-relawan/reject/(:num)', 'Bpbd\VolunteerRegisterController::reject/$1', ['filter' => ['auth', 'role:bpbd_admin']]);
 $routes->get('/bpbd/register-psikolog', 'Bpbd\VolunteerRegisterController::psikologPage', ['filter' => ['auth', 'role:bpbd_admin']]);
 $routes->post('/bpbd/register-psikolog', 'Bpbd\VolunteerRegisterController::storePsikolog', ['filter' => ['auth', 'role:bpbd_admin']]);
+$routes->post('/api/register-volunteer-request', 'LandingController::storeVolunteerRequest');
 $routes->get('/api/earthquake-data', 'Bpbd\EarthquakeRadarController::fetchBmkgData', ['filter' => ['auth']]);
 
 // Posko detail route (Relawan namespace)

@@ -174,16 +174,21 @@
         }
 
         body.sidebar-collapsed .sidebar-nav-item {
-            justify-content: center;
+            justify-content: center !important;
             padding: 0.65rem 0;
         }
 
         body.sidebar-collapsed .sidebar-nav-item i {
-            margin-right: 0;
+            margin-right: 0 !important;
         }
 
-        body.sidebar-collapsed .sidebar-label {
-            display: none;
+        body.sidebar-collapsed .sidebar-label,
+        body.sidebar-collapsed .dropdown-chevron {
+            display: none !important;
+        }
+
+        body.sidebar-collapsed .sidebar-dropdown-container .collapse {
+            display: none !important;
         }
 
         /* Sidebar Footer (Logout Button at Very Bottom) */
@@ -429,15 +434,23 @@
 <?php
 $req = service('request');
 $uriPath = strtolower(trim($req->getUri()->getPath(), '/'));
+
+// Internal dashboard routes (BPBD, Relawan, Psikolog) must always show sidebar and top header
+$isBpbdRoute = (strpos($uriPath, 'bpbd') !== false)
+    || (strpos($uriPath, 'command-center') !== false)
+    || (strpos($uriPath, 'psychologist-mapping') !== false)
+    || (strpos($uriPath, 'relawan') !== false)
+    || (strpos($uriPath, 'psikolog') !== false);
+
 $isLoginPage = ($hideNavbar ?? false)
-    || url_is('login*')
-    || url_is('register*')
-    || url_is('login')
-    || url_is('register')
-    || url_is('/')
-    || strpos($uriPath, 'login') !== false
-    || strpos($uriPath, 'register') !== false
-    || ($uriPath === '' && !session()->get('logged_in'));
+    || (!$isBpbdRoute && (
+        url_is('login*')
+        || url_is('login')
+        || url_is('register')
+        || $uriPath === 'login'
+        || $uriPath === 'register'
+        || ($uriPath === '' && !session()->get('logged_in'))
+    ));
 ?>
 
 <body class="<?= $isLoginPage ? 'no-sidebar' : '' ?>">
@@ -499,19 +512,17 @@ $isLoginPage = ($hideNavbar ?? false)
                                 class="sidebar-nav-item d-flex align-items-center justify-content-between <?= $isRegisterActive ? 'active' : '' ?>"
                                 role="button" aria-expanded="<?= $isRegisterActive ? 'true' : 'false' ?>" aria-controls="desktopRegisterSubmenu"
                                 title="Registrasi Akun">
-                                <div class="d-flex align-items-center">
-                                    <i class="bi bi-person-plus-fill text-success"></i>
-                                    <span class="sidebar-label">Registrasi Akun</span>
-                                </div>
-                                <i class="bi bi-chevron-down ms-auto sidebar-label" style="font-size: 0.75rem;"></i>
+                                <i class="bi bi-person-plus-fill text-success"></i>
+                                <span class="sidebar-label">Registrasi Akun</span>
+                                <i class="bi bi-chevron-down ms-auto sidebar-label dropdown-chevron" style="font-size: 0.75rem;"></i>
                             </a>
                             <div class="collapse <?= $isRegisterActive ? 'show' : '' ?>" id="desktopRegisterSubmenu">
                                 <div class="ps-3 py-1">
                                     <a href="<?= site_url('/bpbd/register-relawan') ?>"
                                         class="sidebar-nav-item py-1.5 <?= url_is('bpbd/register-relawan*') ? 'active' : '' ?>"
-                                        title="Registrasi Akun Relawan Baru">
-                                        <i class="bi bi-person-heart text-success" style="font-size: 0.95rem;"></i>
-                                        <span class="sidebar-label">Registrasi Relawan</span>
+                                        title="Approval & Review Akun Relawan">
+                                        <i class="bi bi-person-check-fill text-success" style="font-size: 0.95rem;"></i>
+                                        <span class="sidebar-label">Approval Akun Relawan</span>
                                     </a>
                                     <a href="<?= site_url('/bpbd/register-psikolog') ?>"
                                         class="sidebar-nav-item py-1.5 <?= url_is('bpbd/register-psikolog*') ? 'active' : '' ?>"
@@ -682,7 +693,7 @@ $isLoginPage = ($hideNavbar ?? false)
                             <div class="collapse <?= $isRegisterActive ? 'show' : '' ?> ps-3 mt-1" id="mobileRegisterSubmenu">
                                 <a href="<?= site_url('/bpbd/register-relawan') ?>"
                                     class="sidebar-nav-item py-1.5 px-3 mb-1 <?= url_is('bpbd/register-relawan*') ? 'active' : '' ?>">
-                                    <i class="bi bi-person-heart text-success me-2"></i> Registrasi Relawan
+                                    <i class="bi bi-person-check-fill text-success me-2"></i> Approval Akun Relawan
                                 </a>
                                 <a href="<?= site_url('/bpbd/register-psikolog') ?>"
                                     class="sidebar-nav-item py-1.5 px-3 mb-1 <?= url_is('bpbd/register-psikolog*') ? 'active' : '' ?>">
