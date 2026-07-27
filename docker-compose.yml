@@ -10,7 +10,7 @@ services:
     environment:
       - CI_ENVIRONMENT=development
       - PORT=8080
-      - app.baseURL=http://localhost:8080/
+      - app.baseURL=psyaid.up.railway.app
       - database.default.hostname=db
       - database.default.database=psyaid_db
       - database.default.username=psyaid_user
