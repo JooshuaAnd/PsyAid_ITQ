@@ -30,13 +30,15 @@ class LandingController extends BaseController
 
         $builder = $poskoModel->select('posko.*, regencies.name as regency_name, provinces.name as province_name')
             ->join('regencies', 'regencies.id = posko.regency_id', 'left')
-            ->join('provinces', 'provinces.id = regencies.province_id', 'left');
+            ->join('provinces', 'provinces.id = regencies.province_id', 'left')
+            ->where('posko.status', 'aktif');
 
         if (! empty($search)) {
             $builder->groupStart()
                 ->like('posko.name', $search)
                 ->orLike('posko.jenis_bencana', $search)
                 ->orLike('regencies.name', $search)
+                ->orLike('provinces.name', $search)
                 ->groupEnd();
         }
 
@@ -44,50 +46,60 @@ class LandingController extends BaseController
             $builder->where('posko.jenis_bencana', $bencana);
         }
 
-        $poskoList = $builder->orderBy('posko.id', 'ASC')->findAll();
+        $allPosko = $builder->orderBy('posko.id', 'ASC')->findAll();
 
-        // Enhance each posko with recruitment metadata posted by BPBD
-        $recruitmentListings = array_map(function ($posko) {
-            $id = $posko['id'];
+        $volModel = new VolunteerRegistrationModel();
 
-            $recruitmentSpecs = [
-                1 => [
-                    'quota'          => 15,
-                    'filled'         => 8,
-                    'urgency'        => 'Urgent',
-                    'positions'      => ['Relawan Pendampingan Psikososial', 'Relawan Asesmen ITQ', 'Relawan Logistik Posko'],
-                    'requirements'   => ['Pria/Wanita min. 18 tahun', 'Komunikatif & memiliki kepedulian sosial tinggi', 'Bersedia bertugas di area Cianjur'],
-                    'contact_person' => 'BPBD Command Center Cianjur (0812-3456-7890)',
-                ],
-                2 => [
-                    'quota'          => 20,
-                    'filled'         => 12,
-                    'urgency'        => 'Urgent',
-                    'positions'      => ['Relawan Dapur Umum & Logistik', 'Relawan Medis / P3K', 'Relawan Pendamping Anak'],
-                    'requirements'   => ['Sehat jasmani & rohani', 'Siap ditempatkan di Posko Magelang', 'Mengikuti pengarahan keselamatan BPBD'],
-                    'contact_person' => 'BPBD Command Center Magelang (0813-9876-5432)',
-                ],
-                3 => [
-                    'quota'          => 10,
-                    'filled'         => 6,
-                    'urgency'        => 'Terbuka',
-                    'positions'      => ['Relawan Pemulihan Mental', 'Relawan Distribusi Bantuan'],
-                    'requirements'   => ['Dapat bekerja dalam tim', 'Penempatan Karanganyar'],
-                    'contact_person' => 'BPBD Command Center Karanganyar (0815-1122-3344)',
-                ],
-            ];
+        $recruitmentListings = [];
 
-            $spec = $recruitmentSpecs[$id] ?? [
-                'quota'          => 10,
-                'filled'         => 4,
-                'urgency'        => 'Terbuka',
-                'positions'      => ['Relawan Posko Bencana', 'Relawan Pendampingan ITQ'],
-                'requirements'   => ['Sehat jasmani & rohani', 'Bersedia ditugaskan di lokasi posko'],
-                'contact_person' => 'BPBD Command Center (0812-0000-1111)',
-            ];
+        foreach ($allPosko as $posko) {
+            $poskoName = $posko['name'];
 
-            return array_merge($posko, $spec);
-        }, $poskoList);
+            // Count approved volunteers for this posko
+            $approvedCount = $volModel->where('posko_name', $poskoName)->where('status', 'approved')->countAllResults();
+
+            $quota  = ! empty($posko['quota']) && intval($posko['quota']) > 0 ? intval($posko['quota']) : 10;
+            $filled = $approvedCount > 0 ? $approvedCount : (isset($posko['filled']) ? intval($posko['filled']) : 0);
+
+            // Filter out posko if volunteer slots are full (filled >= quota)
+            if ($filled >= $quota) {
+                continue;
+            }
+
+            // Parse positions needed
+            if (! empty($posko['positions'])) {
+                if (is_array($posko['positions'])) {
+                    $positions = $posko['positions'];
+                } else {
+                    $positions = array_map('trim', explode(',', $posko['positions']));
+                }
+            } else {
+                $positions = ['Relawan Pendampingan Psikososial', 'Relawan Asesmen ITQ', 'Relawan Logistik Posko'];
+            }
+
+            // Parse requirements
+            if (! empty($posko['requirements'])) {
+                if (is_array($posko['requirements'])) {
+                    $requirements = $posko['requirements'];
+                } else {
+                    $requirements = array_map('trim', explode(',', $posko['requirements']));
+                }
+            } else {
+                $requirements = ['Pria/Wanita min. 18 tahun', 'Komunikatif & memiliki kepedulian sosial tinggi', 'Bersedia bertugas di lokasi posko'];
+            }
+
+            $urgency = ! empty($posko['urgency']) ? $posko['urgency'] : 'Urgent';
+            $contact = ! empty($posko['contact_person']) ? $posko['contact_person'] : 'BPBD Command Center (0812-3456-7890)';
+
+            $posko['quota']          = $quota;
+            $posko['filled']         = $filled;
+            $posko['urgency']        = $urgency;
+            $posko['positions']      = $positions;
+            $posko['requirements']   = $requirements;
+            $posko['contact_person'] = $contact;
+
+            $recruitmentListings[] = $posko;
+        }
 
         $distinctBencana = $poskoModel->getDistinctJenisBencana();
 
@@ -108,35 +120,49 @@ class LandingController extends BaseController
      */
     public function storeVolunteerRequest()
     {
-        $regModel = new VolunteerRegistrationModel();
+        $input = $this->request->getJSON(true) ?? $this->request->getPost();
 
-        $nik       = trim($this->request->getPost('nik') ?? '');
-        $nama      = trim($this->request->getPost('nama') ?? '');
-        $provinsi  = trim($this->request->getPost('provinsi') ?? '');
-        $tglLahir  = trim($this->request->getPost('tgl_lahir') ?? '');
-        $whatsapp  = trim($this->request->getPost('whatsapp') ?? '');
-        $poskoName = trim($this->request->getPost('posko_name') ?? '');
+        $nik        = trim($input['nik'] ?? '');
+        $nama       = trim($input['nama'] ?? '');
+        $provinsi   = trim($input['provinsi'] ?? '');
+        $tglLahir   = trim($input['tgl_lahir'] ?? '');
+        $whatsapp   = trim($input['whatsapp'] ?? '');
+        $poskoName  = trim($input['posko_name'] ?? '');
 
         if (empty($nik) || empty($nama) || empty($whatsapp)) {
             return $this->response->setJSON([
                 'status'  => 'error',
-                'message' => 'Data pendaftaran tidak lengkap.',
-            ])->setStatusCode(400);
+                'message' => 'NIK, Nama Lengkap, dan Nomor WhatsApp wajib diisi.',
+            ]);
         }
 
-        $regModel->insert([
+        $model = new VolunteerRegistrationModel();
+
+        $existing = $model->where('nik', $nik)->first();
+        if ($existing) {
+            return $this->response->setJSON([
+                'status'  => 'error',
+                'message' => 'NIK Anda sudah terdaftar dalam sistem pendaftaran relawan.',
+            ]);
+        }
+
+        $data = [
             'nik'        => $nik,
             'nama'       => $nama,
             'provinsi'   => $provinsi,
             'tgl_lahir'  => ! empty($tglLahir) ? $tglLahir : null,
             'whatsapp'   => $whatsapp,
-            'posko_name' => $poskoName,
+            'posko_name' => ! empty($poskoName) ? $poskoName : null,
             'status'     => 'pending',
-        ]);
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ];
+
+        $model->insert($data);
 
         return $this->response->setJSON([
             'status'  => 'success',
-            'message' => 'Permohonan akun relawan berhasil terkirim ke BPBD Command Center.',
+            'message' => 'Pendaftaran relawan Anda berhasil dikirim ke BPBD. Tim kami akan menghubungi via WhatsApp.',
         ]);
     }
 }

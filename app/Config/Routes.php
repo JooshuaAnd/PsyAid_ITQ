@@ -22,6 +22,14 @@ $routes->get('/command-center', 'Bpbd\CommandCenterController::index', ['filter'
 $routes->get('/command-center/get-regencies/(:num)', 'Bpbd\CommandCenterController::getRegencies/$1', ['filter' => ['auth', 'role:bpbd_admin']]);
 $routes->get('/command-center/get-stats', 'Bpbd\CommandCenterController::getStats', ['filter' => ['auth', 'role:bpbd_admin']]);
 $routes->get('/bpbd/earthquake-radar', 'Bpbd\EarthquakeRadarController::index', ['filter' => ['auth', 'role:bpbd_admin']]);
+
+// BPBD Posko Management CRUD routes
+$routes->get('/bpbd/manage-posko', 'Bpbd\PoskoManagementController::index', ['filter' => ['auth', 'role:bpbd_admin']]);
+$routes->get('/bpbd/manage-posko/get-regencies/(:num)', 'Bpbd\PoskoManagementController::getRegencies/$1', ['filter' => ['auth', 'role:bpbd_admin']]);
+$routes->post('/bpbd/manage-posko/store', 'Bpbd\PoskoManagementController::store', ['filter' => ['auth', 'role:bpbd_admin']]);
+$routes->post('/bpbd/manage-posko/update/(:num)', 'Bpbd\PoskoManagementController::update/$1', ['filter' => ['auth', 'role:bpbd_admin']]);
+$routes->post('/bpbd/manage-posko/delete/(:num)', 'Bpbd\PoskoManagementController::delete/$1', ['filter' => ['auth', 'role:bpbd_admin']]);
+
 $routes->get('/bpbd/register-relawan', 'Bpbd\VolunteerRegisterController::index', ['filter' => ['auth', 'role:bpbd_admin']]);
 $routes->post('/bpbd/register-relawan', 'Bpbd\VolunteerRegisterController::store', ['filter' => ['auth', 'role:bpbd_admin']]);
 $routes->post('/bpbd/approval-relawan/approve/(:num)', 'Bpbd\VolunteerRegisterController::approve/$1', ['filter' => ['auth', 'role:bpbd_admin']]);

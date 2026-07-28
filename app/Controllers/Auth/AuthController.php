@@ -3,33 +3,25 @@
 namespace App\Controllers\Auth;
 
 use App\Controllers\BaseController;
-use App\Models\PoskoModel;
 use App\Models\UserModel;
-// use CodeIgniter\Controller;
 
 class AuthController extends BaseController
 {
     /**
-     * Show Registration Form
+     * Show Registration Form for BPBD Admin
      */
     public function register()
     {
-        if (session()->get('logged_in')) {
-            return $this->redirectUserByRole(session()->get('role'), session()->get('posko_id'));
-        }
-
-        return view('auth/register', [
-            'hideNavbar' => true,
-        ]);
+        return view('auth/register', ['hideNavbar' => true]);
     }
 
     /**
-     * Process Registration Request for Admin BPBD
+     * Process Registration for BPBD Admin
      */
     public function attemptRegister()
     {
         $rules = [
-            'name'             => 'required|min_length[3]|max_length[150]',
+            'name'             => 'required|min_length[3]',
             'email'            => 'required|valid_email|is_unique[users.email]',
             'password'         => 'required|min_length[6]',
             'password_confirm' => 'required|matches[password]',
@@ -86,7 +78,6 @@ class AuthController extends BaseController
      */
     public function login()
     {
-        // If already logged in, redirect to user dashboard
         if (session()->get('logged_in')) {
             return $this->redirectUserByRole(session()->get('role'), session()->get('posko_id'));
         }
@@ -122,10 +113,11 @@ class AuthController extends BaseController
             return redirect()->back()->withInput()->with('error', 'Password salah.');
         }
 
-        // Set session data
+        // Set session data (storing both 'name' and 'user_name' for compatibility)
         session()->set([
             'user_id'   => $user['id'],
             'user_name' => $user['name'],
+            'name'      => $user['name'],
             'email'     => $user['email'],
             'role'      => $user['role'],
             'posko_id'  => $user['posko_id'],

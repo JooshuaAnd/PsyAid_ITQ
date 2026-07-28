@@ -10,7 +10,18 @@ class PoskoModel extends Model
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
-    protected $allowedFields    = ['name', 'regency_id', 'jenis_bencana', 'status'];
+    protected $allowedFields    = [
+        'name',
+        'regency_id',
+        'jenis_bencana',
+        'status',
+        'quota',
+        'filled',
+        'urgency',
+        'positions',
+        'requirements',
+        'contact_person'
+    ];
 
     public function getDistinctJenisBencana(): array
     {
