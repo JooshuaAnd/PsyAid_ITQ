@@ -639,7 +639,7 @@
 <div class="mb-5">
     <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
         <h5 class="fw-bold text-dark mb-0">
-            <i class="bi bi-grid-3x3-gap-fill text-danger me-2"></i> Grid Kartu Posko & Breakdown Risiko AI
+            <i class="bi bi-grid-3x3-gap-fill text-success me-2"></i> Grid Kartu Posko & Breakdown Risiko AI
         </h5>
         <div class="d-flex align-items-center gap-2 flex-wrap">
             <a href="<?= site_url('/bpbd/manage-posko') ?>" class="frost-btn-posko">
@@ -707,7 +707,8 @@
                                             <div class="risk-lbl">High</div>
                                         </div>
                                         <div class="risk-card-medium p-1.5 flex-fill">
-                                            <div class="risk-val fs-6 tabular-nums"><?= esc($posko['medium_risk_count']) ?></div>
+                                            <div class="risk-val fs-6 tabular-nums"><?= esc($posko['medium_risk_count']) ?>
+                                            </div>
                                             <div class="risk-lbl">Medium</div>
                                         </div>
                                         <div class="risk-card-low p-1.5 flex-fill">
@@ -740,19 +741,19 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const provSelect = document.getElementById('filter-provinsi');
-        const kabSelect  = document.getElementById('filter-kabupaten');
+        const kabSelect = document.getElementById('filter-kabupaten');
         const bencSelect = document.getElementById('filter-bencana');
         const statSelect = document.getElementById('filter-status');
 
-        const resetBtn    = document.getElementById('btn-reset-filter');
+        const resetBtn = document.getElementById('btn-reset-filter');
         const resetBtnMob = document.getElementById('btn-reset-filter-mobile');
 
         // Setup Custom Floating Dropdown Interactivity
         function setupCustomDropdown(key, defaultText) {
             const wrapper = document.getElementById('custom-wrapper-' + key);
             const trigger = document.getElementById('trigger-' + key);
-            const menu    = document.getElementById('menu-' + key);
-            const native  = document.getElementById('filter-' + key);
+            const menu = document.getElementById('menu-' + key);
+            const native = document.getElementById('filter-' + key);
 
             if (!wrapper || !trigger || !menu || !native) return;
 
@@ -813,7 +814,7 @@
         provSelect.addEventListener('change', function () {
             const provinceId = this.value;
             const triggerKab = document.getElementById('trigger-kabupaten');
-            const menuKab    = document.getElementById('menu-kabupaten');
+            const menuKab = document.getElementById('menu-kabupaten');
 
             kabSelect.innerHTML = '<option value="">Semua Kabupaten</option>';
             kabSelect.value = '';
@@ -961,14 +962,14 @@
         }
 
         function updateCards(d) {
-            if (document.getElementById('stat-total-korban'))     document.getElementById('stat-total-korban').textContent     = d.total_korban;
+            if (document.getElementById('stat-total-korban')) document.getElementById('stat-total-korban').textContent = d.total_korban;
             if (document.getElementById('stat-sudah-screening')) document.getElementById('stat-sudah-screening').textContent = d.sudah_screening;
             if (document.getElementById('stat-belum-screening')) document.getElementById('stat-belum-screening').textContent = d.belum_screening;
-            if (document.getElementById('stat-risk-high'))       document.getElementById('stat-risk-high').textContent       = d.risk_high;
-            if (document.getElementById('stat-risk-medium'))     document.getElementById('stat-risk-medium').textContent     = d.risk_medium;
-            if (document.getElementById('stat-risk-low'))        document.getElementById('stat-risk-low').textContent        = d.risk_low;
+            if (document.getElementById('stat-risk-high')) document.getElementById('stat-risk-high').textContent = d.risk_high;
+            if (document.getElementById('stat-risk-medium')) document.getElementById('stat-risk-medium').textContent = d.risk_medium;
+            if (document.getElementById('stat-risk-low')) document.getElementById('stat-risk-low').textContent = d.risk_low;
             if (document.getElementById('stat-jumlah-psikolog')) document.getElementById('stat-jumlah-psikolog').textContent = d.jumlah_psikolog + ' Orang';
-            if (document.getElementById('stat-jumlah-relawan'))  document.getElementById('stat-jumlah-relawan').textContent  = d.jumlah_relawan + ' Orang';
+            if (document.getElementById('stat-jumlah-relawan')) document.getElementById('stat-jumlah-relawan').textContent = d.jumlah_relawan + ' Orang';
 
             const pct = d.total_korban > 0 ? Math.round((d.sudah_screening / d.total_korban) * 100) : 0;
             const progBar = document.getElementById('prog-screening');
