@@ -4,34 +4,117 @@
 <!-- Leaflet CSS & Radar Custom Animations -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <style>
-    /* Native CSS 6px border-radius helper */
-    .rounded-6 {
-        border-radius: 6px !important;
+    .tabular-nums {
+        font-variant-numeric: tabular-nums;
+        font-feature-settings: "tnum";
     }
 
-    .rounded-top-6 {
-        border-top-left-radius: 6px !important;
-        border-top-right-radius: 6px !important;
+    /* Strict Max Rounded 8px (lg) Policy Matching PoskoManagement.php */
+    .frost-card,
+    .frost-hero,
+    .frost-btn-primary,
+    .frost-btn-reset,
+    .posko-item-card,
+    .posko-info-box,
+    .posko-details-box,
+    .btn,
+    .modal-content,
+    .badge,
+    .form-control,
+    .form-select,
+    .progress,
+    .radar-container,
+    #earthquakeMap,
+    .glass-radar-card {
+        border-radius: 8px !important;
     }
 
-    .rounded-bottom-6 {
-        border-bottom-left-radius: 6px !important;
-        border-bottom-right-radius: 6px !important;
+    /* Frosted Glass UI Card System */
+    .frost-card {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(244, 251, 247, 0.75) 100%);
+        backdrop-filter: blur(12px) saturate(160%);
+        -webkit-backdrop-filter: blur(12px) saturate(160%);
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.06),
+            0 2px 6px -1px rgba(15, 23, 42, 0.02),
+            inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.95);
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* LIGHT GREEN PSYAID HERO CARD SYSTEM */
+    .frost-hero {
+        background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 60%, #a7f3d0 100%);
+        border: 1.5px solid #a7f3d0;
+        color: #064e3b;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 30px -4px rgba(16, 185, 129, 0.12),
+            inset 0 1.5px 2px rgba(255, 255, 255, 0.85);
+    }
+
+    /* LIGHT GREEN BUTTON: PRIMARY ACTION (MATCHING COMMANDCENTER FROST-BTN-POSKO) */
+    .frost-btn-primary {
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        color: #065f46 !important;
+        border: 1.5px solid #34d399;
+        border-radius: 8px !important;
+        font-weight: 700;
+        font-size: 0.8125rem;
+        padding: 0.45rem 0.95rem;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        box-shadow: 0 2px 6px rgba(16, 185, 129, 0.15);
+        cursor: pointer;
+    }
+
+    .frost-btn-primary:hover {
+        background: linear-gradient(135deg, #a7f3d0 0%, #6ee7b7 100%);
+        color: #064e3b !important;
+        border-color: #10b981;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+        transform: translateY(-1px);
+    }
+
+    /* INNER POSKO ITEM CARD: SOFT MINT & PURE WHITE DISTINCT SURFACE */
+    .posko-item-card {
+        background: #ffffff !important;
+        border: 1.5px solid #d1fae5 !important;
+        border-radius: 8px !important;
+        box-shadow: 0 4px 12px -2px rgba(16, 185, 129, 0.08), 0 2px 5px -1px rgba(15, 23, 42, 0.04) !important;
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+
+    .posko-item-card:hover {
+        background: #ffffff !important;
+        border-color: #34d399 !important;
+        box-shadow: 0 12px 28px -4px rgba(16, 185, 129, 0.18), 0 4px 10px -2px rgba(15, 23, 42, 0.04) !important;
+        transform: translateY(-2px) !important;
+    }
+
+    .badge-status-aktif {
+        background-color: #059669 !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        font-size: 0.75rem !important;
+        padding: 0.35rem 0.65rem !important;
     }
 
     .radar-container {
         position: relative;
-        border-radius: 6px !important;
+        border-radius: 8px !important;
         overflow: hidden;
         box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-        border: 1px solid #cbd5e1;
+        border: 1.5px solid #cbd5e1;
     }
 
     #earthquakeMap {
         height: 620px;
         width: 100%;
         background-color: #0f172a;
-        border-radius: 6px !important;
+        border-radius: 8px !important;
     }
 
     /* Radar Pulsating Marker Wave CSS */
@@ -97,206 +180,239 @@
     }
 
     .badge-mag-high {
-        background-color: #fef2f2;
-        color: #dc2626;
-        border: 1px solid #fecdd3;
+        background-color: #fef2f2 !important;
+        color: #dc2626 !important;
+        border: 1px solid #fecdd3 !important;
+        font-weight: 700 !important;
     }
 
     .badge-mag-medium {
-        background-color: #fffbeb;
-        color: #d97706;
-        border: 1px solid #fde68a;
+        background-color: #fffbeb !important;
+        color: #d97706 !important;
+        border: 1px solid #fde68a !important;
+        font-weight: 700 !important;
     }
 
     .badge-mag-low {
-        background-color: #ecfdf5;
-        color: #059669;
-        border: 1px solid #a7f3d0;
+        background-color: #ecfdf5 !important;
+        color: #047857 !important;
+        border: 1px solid #a7f3d0 !important;
+        font-weight: 700 !important;
     }
 
     .earthquake-item {
         transition: all 0.2s ease-in-out;
         cursor: pointer;
-        border-left: 4px solid transparent;
+        border: 1.5px solid #e2e8f0 !important;
+        border-radius: 8px !important;
+        margin-bottom: 8px;
+        background-color: #ffffff;
     }
 
     .earthquake-item:hover {
-        background-color: #f8fafc;
-        border-left-color: #059669;
-        transform: translateX(3px);
+        background-color: #f4fbf7 !important;
+        border-color: #34d399 !important;
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15) !important;
     }
 
     .earthquake-item.active {
-        background-color: #ecfdf5;
-        border-left-color: #047857;
+        background-color: #ecfdf5 !important;
+        border-color: #059669 !important;
+        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.20) !important;
     }
 
     .glass-radar-card {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        border-radius: 6px !important;
-        border: 1px solid #e2e8f0;
+        background: rgba(255, 255, 255, 0.96);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 8px !important;
+        border: 1.5px solid #d1fae5;
+        box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.12);
+    }
+
+    @keyframes spin {
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .spin-anim {
+        animation: spin 1s linear infinite;
+        display: inline-block;
+    }
+
+    .fs-7 {
+        font-size: 0.8125rem;
+    }
+
+    .fs-8 {
+        font-size: 0.75rem;
+    }
+
+    .fs-9 {
+        font-size: 0.6875rem;
     }
 
     /* Mobile Responsive Controls (< 768px) */
     @media (max-width: 767.98px) {
         #earthquakeMap {
-            height: 420px !important;
+            height: 360px !important;
         }
 
-        .kpi-icon-box {
-            padding: 0.55rem !important;
+        #earthquakeListContainer {
+            max-height: 380px !important;
+            padding: 0.25rem !important;
         }
 
-        .kpi-icon-box i {
-            font-size: 1.2rem !important;
-        }
-
-        .kpi-card-body {
-            padding: 0.75rem !important;
-            gap: 0.5rem !important;
-        }
-
-        .kpi-val-text {
-            font-size: 1.1rem !important;
-        }
-
-        .kpi-label-text {
-            font-size: 0.68rem !important;
-            line-height: 1.15;
+        .earthquake-item {
+            padding: 0.7rem 0.85rem !important;
+            margin-bottom: 6px !important;
         }
 
         .glass-radar-card {
-            max-width: 210px !important;
-            padding: 0.65rem !important;
-            font-size: 0.72rem !important;
-            margin: 0.5rem !important;
-        }
-
-        .header-title-text {
-            font-size: 1.15rem !important;
+            max-width: 190px !important;
+            padding: 0.5rem 0.65rem !important;
+            font-size: 0.7rem !important;
+            margin: 0.4rem !important;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15) !important;
         }
     }
 </style>
 
 <div class="container-fluid px-0">
-    <!-- Header Controls -->
-    <div class="row align-items-center mb-4">
-        <div class="col-md-7">
-            <h4 class="fw-bold text-dark mb-1 d-flex align-items-center gap-2 header-title-text">
-                <i class="bi bi-radar text-success fs-3"></i>
-                <span>Peta Radar Gempa Dirasakan (BMKG TEWS)</span>
-            </h4>
-            <p class="text-muted small mb-0">
-                Pemantauan aktivitas gempa bumi terdeteksi BMKG secara real-time untuk kewaspadaan dini BPBD (Sumber: BMKG)
-            </p>
-        </div>
-        <div class="col-md-5 text-md-end mt-3 mt-md-0 d-flex align-items-center justify-content-md-end gap-2 flex-wrap">
-            <!-- Live Indicator Badge -->
-            <span
-                class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2 rounded-6 fw-semibold small d-inline-flex align-items-center gap-2">
-                <span class="spinner-grow spinner-grow-sm text-success" role="status"></span>
-                <span id="liveBadgeText">LIVE FEED (Refresh in <span id="countdownSeconds">30</span>s)</span>
-            </span>
 
-            <button type="button"
-                class="btn btn-outline-success btn-sm rounded-6 px-3 fw-semibold d-inline-flex align-items-center gap-1 shadow-sm"
-                id="btnManualRefresh">
-                <i class="bi bi-arrow-clockwise" id="refreshSpinner"></i> Refresh Radar
-            </button>
-        </div>
-    </div>
+    <!-- 1. Hero Header Card (Matching PoskoManagement.php) -->
+    <div class="card frost-hero mb-4">
+        <div class="card-body p-4 position-relative">
+            <div class="row align-items-center g-3">
+                <div class="col-12 col-lg-7">
+                    <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+                        <span class="badge px-3 py-1.5 fs-8 fw-bold"
+                            style="background-color: rgba(6, 95, 70, 0.12); color: #065f46; border: 1px solid rgba(6, 95, 70, 0.25);">
+                            <i class="bi bi-radar me-1"></i> BMKG TEWS RADAR SYSTEM
+                        </span>
+                        <span class="badge px-3 py-1.5 fs-8"
+                            style="background-color: rgba(6, 95, 70, 0.08); color: #047857; border: 1px solid rgba(6, 95, 70, 0.18);">
+                            BPBD Radar Panel
+                        </span>
+                    </div>
+                    <h3 class="fw-bold mb-1" style="color: #064e3b;">
+                        <i class="bi bi-geo-alt-fill me-2" style="color: #059669;"></i> Peta Radar Gempa Dirasakan (BMKG
+                        TEWS)
+                    </h3>
+                    <p class="small mb-0" style="color: #047857; max-width: 75ch;">
+                        Pemantauan aktivitas gempa bumi terdeteksi BMKG secara real-time untuk kewaspadaan dini BPBD.
+                        Data terhubung langsung melalui API resmi BMKG Indonesia.
+                    </p>
+                </div>
+                <div class="col-12 col-lg-5 d-flex align-items-center justify-content-lg-end gap-2 flex-wrap">
+                    <!-- Live Indicator Badge -->
+                    <span class="badge px-3 py-2 fs-8 fw-bold d-inline-flex align-items-center gap-2"
+                        style="background-color: rgba(6, 95, 70, 0.12); color: #065f46; border: 1px solid rgba(6, 95, 70, 0.25);">
+                        <span class="spinner-grow spinner-grow-sm text-success" role="status"></span>
+                        <span id="liveBadgeText">LIVE FEED (Refresh in <span id="countdownSeconds">30</span>s)</span>
+                    </span>
 
-    <!-- Summary KPI Cards (Strict 6px border-radius & Mobile Responsive) -->
-    <div class="row g-2 g-md-3 mb-4">
-        <div class="col-6 col-md-3">
-            <div class="card border-0 shadow-sm rounded-6 h-100 bg-white">
-                <div class="card-body p-3 kpi-card-body d-flex align-items-center gap-3">
-                    <div class="p-3 kpi-icon-box bg-danger bg-opacity-10 text-danger rounded-6 flex-shrink-0">
-                        <i class="bi bi-activity fs-3"></i>
-                    </div>
-                    <div class="flex-grow-1 overflow-hidden">
-                        <div class="text-muted small kpi-label-text fw-semibold">Total Gempa Dirasakan</div>
-                        <h4 class="fw-bold text-dark mb-0 text-truncate kpi-val-text" id="statTotalGempa">-</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="card border-0 shadow-sm rounded-6 h-100 bg-white">
-                <div class="card-body p-3 kpi-card-body d-flex align-items-center gap-3">
-                    <div class="p-3 kpi-icon-box bg-warning bg-opacity-10 text-warning rounded-6 flex-shrink-0">
-                        <i class="bi bi-lightning-charge-fill fs-3"></i>
-                    </div>
-                    <div class="flex-grow-1 overflow-hidden">
-                        <div class="text-muted small kpi-label-text fw-semibold">Magnitudo Terkuat</div>
-                        <h4 class="fw-bold text-dark mb-0 text-truncate kpi-val-text" id="statMaxMag">-</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="card border-0 shadow-sm rounded-6 h-100 bg-white">
-                <div class="card-body p-3 kpi-card-body d-flex align-items-center gap-3">
-                    <div class="p-3 kpi-icon-box bg-primary bg-opacity-10 text-primary rounded-6 flex-shrink-0">
-                        <i class="bi bi-geo-alt-fill fs-3"></i>
-                    </div>
-                    <div class="flex-grow-1 overflow-hidden">
-                        <div class="text-muted small kpi-label-text fw-semibold">Gempa Terakhir</div>
-                        <h4 class="fw-bold text-dark mb-0 text-truncate kpi-val-text" id="statLatestWilayah">-</h4>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="card border-0 shadow-sm rounded-6 h-100 bg-white">
-                <div class="card-body p-3 kpi-card-body d-flex align-items-center gap-3">
-                    <div class="p-3 kpi-icon-box bg-emerald-100 text-emerald-700 rounded-6 flex-shrink-0">
-                        <i class="bi bi-clock-history fs-3"></i>
-                    </div>
-                    <div class="flex-grow-1 overflow-hidden">
-                        <div class="text-muted small kpi-label-text fw-semibold">Waktu Terakhir BMKG</div>
-                        <h4 class="fw-bold text-dark mb-0 text-truncate kpi-val-text" id="statLatestTime">-</h4>
-                    </div>
+                    <button type="button" class="frost-btn-primary" id="btnManualRefresh">
+                        <i class="bi bi-arrow-clockwise" id="refreshSpinner"></i> Refresh Radar
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Main Content: Interactive Map & Live Sidebar List -->
-    <div class="row g-4">
+    <!-- 2. Summary KPI Cards (Refined Clean Layout Matching CommandCenter.php) -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="card posko-item-card p-3 p-md-3.5 h-100">
+                <div class="text-secondary fs-8 fw-bold text-uppercase" style="letter-spacing: 0.03em;">Total Gempa
+                    Dirasakan</div>
+                <hr class="my-2 opacity-25" style="color: #059669;" />
+                <div class="fs-3 fw-bold mb-1 text-truncate tabular-nums" style="color: #064e3b;" id="statTotalGempa">-
+                </div>
+                <div class="fs-9 text-muted fw-semibold">Kejadian BMKG</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card posko-item-card p-3 p-md-3.5 h-100">
+                <div class="text-secondary fs-8 fw-bold text-uppercase" style="letter-spacing: 0.03em;">Magnitudo
+                    Terkuat</div>
+                <hr class="my-2 opacity-25" style="color: #059669;" />
+                <div class="fs-3 fw-bold mb-1 text-truncate tabular-nums" style="color: #064e3b;" id="statMaxMag">-
+                </div>
+                <div class="fs-9 text-muted fw-semibold">Skala Richter (SR)</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card posko-item-card p-3 p-md-3.5 h-100">
+                <div class="text-secondary fs-8 fw-bold text-uppercase" style="letter-spacing: 0.03em;">Gempa Terakhir
+                </div>
+                <hr class="my-2 opacity-25" style="color: #059669;" />
+                <div class="fs-3 fw-bold mb-1 text-truncate" style="color: #064e3b;" id="statLatestWilayah">-</div>
+                <div class="fs-9 text-muted fw-semibold text-truncate">Lokasi Kejadian</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card posko-item-card p-3 p-md-3.5 h-100">
+                <div class="text-secondary fs-8 fw-bold text-uppercase" style="letter-spacing: 0.03em;">Waktu Terakhir
+                    BMKG</div>
+                <hr class="my-2 opacity-25" style="color: #059669;" />
+                <div class="fs-3 fw-bold mb-1 text-truncate tabular-nums" style="color: #064e3b;" id="statLatestTime">-
+                </div>
+                <div class="fs-9 text-muted fw-semibold">Waktu WIB / UTC+7</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Main Content: Interactive Map & Live Sidebar List -->
+    <div class="row g-4 mb-5">
         <!-- Interactive Leaflet Map -->
-        <div class="col-lg-8">
-            <div class="radar-container bg-dark position-relative rounded-6">
-                <div id="earthquakeMap" class="rounded-6"></div>
-
-                <!-- Floating Legend -->
-                <div class="position-absolute bottom-0 start-0 m-3 glass-radar-card p-3 shadow-lg rounded-6"
-                    style="z-index: 1000; max-width: 260px;">
-                    <div class="fw-bold text-dark small mb-2 d-flex align-items-center gap-1">
-                        <i class="bi bi-info-circle text-primary"></i> Skala Magnitudo Gempa
+        <div class="col-12 col-lg-8">
+            <div class="card frost-card p-3 p-md-4 h-100">
+                <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-3 gap-2">
+                    <div class="d-flex align-items-center gap-2 min-w-0">
+                        <i class="bi bi-geo-alt-fill text-success fs-5 flex-shrink-0"></i>
+                        <h6 class="fw-bold mb-0 text-truncate" style="color: #064e3b; font-size: 0.9375rem;">Peta Spasial Gempa BMKG</h6>
                     </div>
-                    <div class="d-flex flex-column gap-1 small">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <span class="d-inline-flex align-items-center gap-1 text-danger fw-semibold">
-                                <span class="d-inline-block rounded-circle mag-high"
-                                    style="width:10px; height:10px;"></span> &ge; 5.0 SR (Tinggi)
-                            </span>
-                            <span class="badge badge-mag-high rounded-6 px-2">Bahaya</span>
+                    <span class="badge px-2.5 py-1 fs-8 flex-shrink-0 d-none d-md-inline-flex align-items-center"
+                        style="background-color: rgba(6, 95, 70, 0.08); color: #047857; border: 1px solid rgba(6, 95, 70, 0.18); font-weight: 700; border-radius: 8px !important;">
+                        <i class="bi bi-layers-fill me-1"></i> Live CartoDB Map
+                    </span>
+                </div>
+                <div class="radar-container bg-dark position-relative" style="border-radius: 8px !important;">
+                    <div id="earthquakeMap" style="border-radius: 8px !important;"></div>
+
+                    <!-- Floating Glass Legend -->
+                    <div class="position-absolute bottom-0 start-0 m-3 glass-radar-card p-3 shadow-lg"
+                        style="z-index: 1000; max-width: 260px; border-radius: 8px !important;">
+                        <div class="fw-bold text-dark small mb-2 d-flex align-items-center gap-1">
+                            <i class="bi bi-info-circle text-primary me-1"></i> Skala Magnitudo Gempa
                         </div>
-                        <div class="d-flex align-items-center justify-content-between">
-                            <span class="d-inline-flex align-items-center gap-1 text-warning fw-semibold">
-                                <span class="d-inline-block rounded-circle mag-medium"
-                                    style="width:10px; height:10px;"></span> 4.0 - 4.9 SR (Sedang)
-                            </span>
-                            <span class="badge badge-mag-medium rounded-6 px-2">Waspada</span>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between">
-                            <span class="d-inline-flex align-items-center gap-1 text-success fw-semibold">
-                                <span class="d-inline-block rounded-circle mag-low"
-                                    style="width:10px; height:10px;"></span> &lt; 4.0 SR (Rendah)
-                            </span>
-                            <span class="badge badge-mag-low rounded-6 px-2">Kecil</span>
+                        <div class="d-flex flex-column gap-1.5 small">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="d-inline-flex align-items-center gap-1 text-danger fw-semibold">
+                                    <span class="d-inline-block rounded-circle mag-high"
+                                        style="width:10px; height:10px;"></span> &ge; 5.0 SR (Tinggi)
+                                </span>
+                                <span class="badge badge-mag-high px-2"
+                                    style="border-radius: 8px !important;">Bahaya</span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="d-inline-flex align-items-center gap-1 text-warning fw-semibold">
+                                    <span class="d-inline-block rounded-circle mag-medium"
+                                        style="width:10px; height:10px;"></span> 4.0 - 4.9 SR (Sedang)
+                                </span>
+                                <span class="badge badge-mag-medium px-2"
+                                    style="border-radius: 8px !important;">Waspada</span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <span class="d-inline-flex align-items-center gap-1 text-success fw-semibold">
+                                    <span class="d-inline-block rounded-circle mag-low"
+                                        style="width:10px; height:10px;"></span> &lt; 4.0 SR (Rendah)
+                                </span>
+                                <span class="badge badge-mag-low px-2"
+                                    style="border-radius: 8px !important;">Kecil</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -304,16 +420,18 @@
         </div>
 
         <!-- Live Earthquake List Sidebar -->
-        <div class="col-lg-4">
-            <div class="card border-0 shadow-sm rounded-6 h-100">
-                <div
-                    class="card-header bg-white border-bottom py-3 d-flex align-items-center justify-content-between rounded-top-6">
-                    <h6 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2">
-                        <i class="bi bi-list-stars text-success"></i> Daftar Gempa Dirasakan
-                    </h6>
-                    <span class="badge bg-secondary rounded-6" id="badgeCountGempa">0 Kejadian</span>
+        <div class="col-12 col-lg-4">
+            <div class="card frost-card p-3 p-md-4 h-100 overflow-hidden">
+                <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-3 gap-2">
+                    <div class="d-flex align-items-center gap-2 min-w-0">
+                        <i class="bi bi-list-stars text-success fs-5 flex-shrink-0"></i>
+                        <h6 class="fw-bold mb-0 text-truncate" style="color: #064e3b; font-size: 0.9375rem;">Gempa Dirasakan</h6>
+                    </div>
+                    <span class="badge px-2.5 py-1 fs-8 flex-shrink-0" id="badgeCountGempa"
+                        style="background-color: rgba(6, 95, 70, 0.08); color: #047857; border: 1px solid rgba(6, 95, 70, 0.18); font-weight: 700; border-radius: 8px !important;">0
+                        Kejadian</span>
                 </div>
-                <div class="card-body p-0 rounded-bottom-6" style="max-height: 550px; overflow-y: auto;"
+                <div class="p-1.5 overflow-y-auto" style="max-height: 570px; border-radius: 8px !important;"
                     id="earthquakeListContainer">
                     <div class="text-center py-5 text-muted">
                         <div class="spinner-border text-success mb-2" role="status"></div>
@@ -328,19 +446,22 @@
 <!-- Modal Detail Gempa -->
 <div class="modal fade" id="modalGempaDetail" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg rounded-6">
-            <div class="modal-header border-0 bg-light rounded-top-6 py-3">
-                <h6 class="modal-title fw-bold text-dark d-flex align-items-center gap-2">
-                    <i class="bi bi-radar text-danger fs-5"></i> Rincian Kejadian Gempa BMKG
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 8px !important;">
+            <div class="modal-header border-bottom p-4"
+                style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);">
+                <h6 class="modal-title fw-bold text-dark d-flex align-items-center gap-2"
+                    style="color: #064e3b !important;">
+                    <i class="bi bi-radar text-success fs-5"></i> Rincian Kejadian Gempa BMKG
                 </h6>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body p-4" id="modalGempaBody">
                 <!-- Dynamic Content -->
             </div>
-            <div class="modal-footer border-0 bg-light rounded-bottom-6 justify-content-end py-2 px-3">
-                <button type="button" class="btn btn-secondary btn-sm rounded-6 px-3"
-                    data-bs-dismiss="modal">Tutup</button>
+            <div class="modal-footer border-top bg-light justify-content-end py-2.5 px-3"
+                style="border-radius: 0 0 8px 8px !important;">
+                <button type="button" class="btn btn-light border fw-semibold fs-8"
+                    style="border-radius: 8px !important;" data-bs-dismiss="modal">Tutup</button>
             </div>
         </div>
     </div>
@@ -457,7 +578,7 @@
                     const popupContent = `
                         <div class="p-2" style="min-width: 220px;">
                             <div class="d-flex align-items-center justify-content-between mb-2">
-                                <span class="badge ${item.magnitude >= 5.0 ? 'bg-danger' : (item.magnitude >= 4.0 ? 'bg-warning text-dark' : 'bg-success')} fw-bold rounded-6">
+                                <span class="badge ${item.magnitude >= 5.0 ? 'bg-danger' : (item.magnitude >= 4.0 ? 'bg-warning text-dark' : 'bg-success')} fw-bold" style="border-radius: 8px !important;">
                                     M ${item.magnitude}
                                 </span>
                                 <span class="small text-muted">${item.jam}</span>
@@ -465,7 +586,7 @@
                             <h6 class="fw-bold mb-1 text-dark">${item.wilayah}</h6>
                             <div class="small text-muted mb-1"><i class="bi bi-arrow-down-circle"></i> Kedalaman: ${item.kedalaman}</div>
                             <div class="small text-muted mb-2"><i class="bi bi-geo-alt"></i> ${item.lintang}, ${item.bujur}</div>
-                            <button class="btn btn-sm btn-outline-success w-100 fw-bold rounded-6 btn-detail-gempa" data-index="${index}">
+                            <button class="frost-btn-primary w-100 justify-content-center btn-detail-gempa" data-index="${index}">
                                 Rincian Dampak
                             </button>
                         </div>
@@ -481,11 +602,11 @@
                 else if (item.magnitude >= 4.0) magBadgeClass = 'badge-mag-medium';
 
                 const listEl = document.createElement('div');
-                listEl.className = 'earthquake-item p-3 border-bottom';
+                listEl.className = 'earthquake-item p-3';
                 listEl.setAttribute('data-index', index);
                 listEl.innerHTML = `
                     <div class="d-flex align-items-center justify-content-between mb-1">
-                        <span class="badge ${magBadgeClass} fw-bold rounded-6">M ${item.magnitude} SR</span>
+                        <span class="badge ${magBadgeClass} fw-bold" style="border-radius: 8px !important;">M ${item.magnitude} SR</span>
                         <span class="small text-muted fw-semibold">${item.jam}</span>
                     </div>
                     <div class="fw-bold text-dark small mb-1 line-clamp-2">${item.wilayah}</div>
@@ -533,7 +654,7 @@
             const modalBody = document.getElementById('modalGempaBody');
             modalBody.innerHTML = `
                 <div class="text-center mb-4">
-                    <span class="badge ${magBadgeClass} fs-4 px-3 py-2 rounded-6 fw-bold mb-2">
+                    <span class="badge ${magBadgeClass} fs-4 px-3 py-2 fw-bold mb-2" style="border-radius: 8px !important;">
                         Magnitude ${item.magnitude} SR
                     </span>
                     <h5 class="fw-bold text-dark mb-1">${item.wilayah}</h5>
@@ -542,20 +663,20 @@
 
                 <div class="row g-3 mb-3">
                     <div class="col-6">
-                        <div class="p-3 bg-light rounded-6 text-center">
+                        <div class="p-3 bg-light text-center" style="border-radius: 8px !important; border: 1px solid #e2e8f0;">
                             <div class="text-muted small fw-semibold">Kedalaman</div>
                             <div class="fw-bold text-dark fs-6"><i class="bi bi-arrow-down-circle text-primary me-1"></i> ${item.kedalaman}</div>
                         </div>
                     </div>
                     <div class="col-6">
-                        <div class="p-3 bg-light rounded-6 text-center">
+                        <div class="p-3 bg-light text-center" style="border-radius: 8px !important; border: 1px solid #e2e8f0;">
                             <div class="text-muted small fw-semibold">Koordinat</div>
                             <div class="fw-bold text-dark fs-6"><i class="bi bi-geo-alt text-danger me-1"></i> ${item.lintang}, ${item.bujur}</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="p-3 bg-emerald-50 rounded-6 border border-emerald-100">
+                <div class="p-3 bg-emerald-50 border border-emerald-100" style="border-radius: 8px !important;">
                     <div class="fw-bold text-emerald-950 small mb-1"><i class="bi bi-broadcast text-success me-1"></i> Wilayah Dirasakan (MMI):</div>
                     <div class="text-dark small">${item.dirasakan || 'Tidak ada laporan wilayah dirasakan spesifik.'}</div>
                 </div>
