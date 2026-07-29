@@ -1,11 +1,135 @@
 <?= $this->extend('layouts/main') ?>
 
 <?= $this->section('content') ?>
+<!-- Swiper 11 CSS & JS CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
 <!-- Frosted Glass UI Custom Styling & PsyAid Light Green Theme (Matching landing/index.php) -->
 <style>
+    /* BPBD Dynamic Swiper Card Styling System */
+    .bpbd-swiper-container {
+        width: 100%;
+        position: relative;
+        padding-bottom: 2.25rem !important;
+        overflow: hidden;
+        border-radius: 14px !important;
+    }
+
+    .bpbd-swiper-slide {
+        height: auto;
+    }
+
+    .swiper-card-inner {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 253, 244, 0.88) 100%);
+        backdrop-filter: blur(16px) saturate(180%);
+        -webkit-backdrop-filter: blur(16px) saturate(180%);
+        border: 1.5px solid rgba(16, 185, 129, 0.28);
+        border-radius: 14px !important;
+        padding: 1.35rem 1.65rem;
+        box-shadow: 0 10px 30px -5px rgba(6, 78, 59, 0.08), inset 0 1px 2px rgba(255, 255, 255, 1);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .swiper-card-inner::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background: linear-gradient(180deg, #10b981 0%, #059669 100%);
+        border-radius: 14px 0 0 14px;
+    }
+
+    .swiper-card-emergency::before {
+        background: linear-gradient(180deg, #ef4444 0%, #dc2626 100%);
+    }
+
+    .swiper-card-triase::before {
+        background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
+    }
+
+    .swiper-card-personnel::before {
+        background: linear-gradient(180deg, #10b981 0%, #047857 100%);
+    }
+
+    .swiper-card-radar::before {
+        background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%);
+    }
+
+    .swiper-card-onboarding::before {
+        background: linear-gradient(180deg, #8b5cf6 0%, #6d28d9 100%);
+    }
+
+    /* Swiper Controls & Progress Indicator */
+    .bpbd-swiper-container .swiper-pagination {
+        bottom: 0px !important;
+    }
+
+    .bpbd-swiper-container .swiper-pagination-bullet {
+        width: 10px;
+        height: 10px;
+        background: #cbd5e1;
+        opacity: 0.7;
+        transition: all 0.3s ease;
+    }
+
+    .bpbd-swiper-container .swiper-pagination-bullet-active {
+        width: 26px;
+        border-radius: 6px;
+        background: #059669 !important;
+        opacity: 1;
+    }
+
+    .bpbd-swiper-container .swiper-button-next,
+    .bpbd-swiper-container .swiper-button-prev {
+        width: 34px;
+        height: 34px;
+        background: #ffffff;
+        border: 1px solid #a7f3d0;
+        border-radius: 50%;
+        color: #047857;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        transition: all 0.2s ease;
+        top: 45% !important;
+    }
+
+    .bpbd-swiper-container .swiper-button-next::after,
+    .bpbd-swiper-container .swiper-button-prev::after {
+        font-size: 0.85rem !important;
+        font-weight: 800;
+    }
+
+    .bpbd-swiper-container .swiper-button-next:hover,
+    .bpbd-swiper-container .swiper-button-prev:hover {
+        background: #ecfdf5;
+        color: #064e3b;
+        transform: scale(1.1);
+    }
     .tabular-nums {
         font-variant-numeric: tabular-nums;
         font-feature-settings: "tnum";
+    }
+
+    /* Strict Max Rounded 8px (lg) Policy */
+    .frost-card,
+    .frost-hero,
+    .frost-custom-trigger,
+    .frost-custom-menu,
+    .frost-btn-posko,
+    .frost-btn-reset,
+    .frost-btn-primary,
+    .posko-item-card,
+    .btn,
+    .modal-content,
+    .badge,
+    .form-control,
+    .form-select,
+    .progress {
+        border-radius: 8px !important;
     }
 
     /* Frosted Glass UI Card System */
@@ -14,7 +138,6 @@
         backdrop-filter: blur(12px) saturate(160%);
         -webkit-backdrop-filter: blur(12px) saturate(160%);
         border: 1px solid rgba(255, 255, 255, 0.85);
-        border-radius: 8px;
         box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.06),
             0 2px 6px -1px rgba(15, 23, 42, 0.02),
             inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.95);
@@ -41,7 +164,6 @@
     .frost-hero {
         background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 60%, #a7f3d0 100%);
         border: 1.5px solid #a7f3d0;
-        border-radius: 8px;
         color: #064e3b;
         position: relative;
         overflow: hidden;
@@ -115,31 +237,97 @@
         letter-spacing: 0.05em;
     }
 
-    /* LIGHT GREEN BUTTON: BUKA POSKO / KELOLA POSKO (Matching landing/index.php) */
+    /* LIGHT GREEN BUTTON: PRIMARY ACTION */
+    .frost-btn-primary,
     .frost-btn-posko {
         background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
         color: #065f46 !important;
         border: 1.5px solid #34d399;
-        border-radius: 6px;
+        border-radius: 8px !important;
         font-weight: 700;
-        font-size: 0.8125rem;
-        padding: 0.4rem 0.95rem;
+        font-size: 0.78125rem;
+        padding: 0.4rem 0.85rem;
         transition: all 0.2s ease;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
         gap: 0.35rem;
         box-shadow: 0 2px 6px rgba(16, 185, 129, 0.15);
+        cursor: pointer;
         white-space: nowrap;
         flex-shrink: 0;
     }
 
+    .frost-btn-primary:hover,
     .frost-btn-posko:hover {
         background: linear-gradient(135deg, #a7f3d0 0%, #6ee7b7 100%);
         color: #064e3b !important;
         border-color: #10b981;
         box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
         transform: translateY(-1px);
+    }
+
+    /* INNER POSKO ITEM CARD: SOFT MINT & PURE WHITE DISTINCT SURFACE */
+    .posko-item-card {
+        background: #ffffff !important;
+        border: 1.5px solid #d1fae5 !important;
+        border-radius: 8px !important;
+        box-shadow: 0 4px 12px -2px rgba(16, 185, 129, 0.08), 0 2px 5px -1px rgba(15, 23, 42, 0.04) !important;
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+
+    .posko-item-card:hover {
+        background: #ffffff !important;
+        border-color: #34d399 !important;
+        box-shadow: 0 12px 28px -4px rgba(16, 185, 129, 0.18), 0 4px 10px -2px rgba(15, 23, 42, 0.04) !important;
+        transform: translateY(-3px) !important;
+    }
+
+    .posko-card-header-bar {
+        background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%) !important;
+        border-bottom: 1px solid #d1fae5 !important;
+        padding: 0.85rem 1.15rem !important;
+    }
+
+    .posko-card-body {
+        padding: 1.15rem !important;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+    }
+
+    .badge-bencana {
+        background-color: #eff6ff !important;
+        color: #1d4ed8 !important;
+        border: 1px solid #bfdbfe !important;
+        font-weight: 600 !important;
+        font-size: 0.75rem !important;
+        padding: 0.35rem 0.65rem !important;
+    }
+
+    .badge-status-aktif {
+        background-color: #059669 !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        font-size: 0.75rem !important;
+        padding: 0.35rem 0.65rem !important;
+    }
+
+    .badge-status-recovery {
+        background-color: #d97706 !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        font-size: 0.75rem !important;
+        padding: 0.35rem 0.65rem !important;
+    }
+
+    .badge-status-closed {
+        background-color: #64748b !important;
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        font-size: 0.75rem !important;
+        padding: 0.35rem 0.65rem !important;
     }
 
     /* CUSTOM FROSTED DROPDOWN COMPONENT */
@@ -155,7 +343,6 @@
     .frost-custom-trigger {
         background: #ffffff;
         border: 1.5px solid #cbd5e1;
-        border-radius: 8px;
         padding: 0.55rem 0.85rem;
         font-size: 0.875rem;
         font-weight: 600;
@@ -209,7 +396,6 @@
         backdrop-filter: blur(20px) saturate(180%);
         -webkit-backdrop-filter: blur(20px) saturate(180%);
         border: 1px solid rgba(5, 150, 105, 0.3);
-        border-radius: 8px;
         box-shadow: 0 16px 40px -4px rgba(15, 23, 42, 0.18), 0 4px 16px rgba(0, 0, 0, 0.06);
         max-height: 260px;
         overflow-y: auto;
@@ -267,7 +453,6 @@
         background: #ffffff;
         color: #475569;
         border: 1.5px solid #cbd5e1;
-        border-radius: 8px;
         font-weight: 600;
         font-size: 0.8125rem;
         padding: 0.5rem 0.95rem;
@@ -312,6 +497,17 @@
         font-size: 0.6875rem;
     }
 
+    .posko-header-title-group {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem !important;
+    }
+
+    .posko-header-title-text {
+        display: flex;
+        align-items: center;
+    }
+
     @keyframes fadeInDown {
         from {
             opacity: 0;
@@ -324,7 +520,7 @@
         }
     }
 
-    /* Mobile Responsive Spacing & Padding Optimization for Filter Card */
+    /* Mobile Responsive Spacing & Layout Optimization for Filter Card & Section Header */
     @media (max-width: 767.98px) {
         .frost-card-filter {
             padding: 1.25rem 1rem !important;
@@ -337,9 +533,10 @@
         }
 
         .frost-custom-trigger {
-            min-height: 46px;
+            min-height: 44px;
             font-size: 0.875rem;
-            padding: 0.65rem 0.95rem;
+            padding-top: 0.6rem;
+            padding-bottom: 0.6rem;
         }
 
         .frost-custom-option {
@@ -365,52 +562,96 @@
             margin-top: 1.15rem !important;
             padding-top: 0.85rem !important;
         }
+
+        /* Section Header Mobile Optimizations: Clean 2-Row Mobile Layout */
+        .posko-main-card-container {
+            padding: 1rem 0.85rem !important;
+        }
+
+        .posko-main-card-header {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0.75rem !important;
+            padding-bottom: 0.75rem !important;
+            margin-bottom: 1rem !important;
+        }
+
+        .posko-header-title-group {
+            width: 100% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 0.5rem !important;
+        }
+
+        .posko-header-title-text i {
+            margin-right: 0.5rem !important;
+        }
+
+        .posko-header-badge {
+            font-size: 0.7rem !important;
+            padding: 0.25rem 0.5rem !important;
+        }
+
+        .posko-header-btn-wrapper {
+            width: 100% !important;
+        }
+
+        .posko-header-btn-wrapper .frost-btn-primary {
+            width: 100% !important;
+            justify-content: center !important;
+            padding: 0.5rem 0.85rem !important;
+            font-size: 0.8125rem !important;
+        }
     }
 </style>
 
-<!-- 1. Header Command Center Hero Banner (PsyAid Light Green Theme) -->
+<?php
+// Safely resolve jenis bencana variable from controller (handles both jenisBencana and distinctJenisBencana)
+$bencanaOptions = $jenisBencana ?? $distinctJenisBencana ?? [];
+?>
+
+<!-- 1. Hero Command Center Card (With original "BPBD Command Center", "Real Time Data", and live device time badge) -->
 <div class="card frost-hero mb-4">
     <div class="card-body p-4 position-relative">
         <div class="row align-items-center g-3">
-            <div class="col-12 col-md-8">
+            <div class="col-12 col-lg-8">
                 <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
-                    <span class="badge px-3 py-1.5 fs-8 fw-bold rounded-2"
+                    <span class="badge px-3 py-1.5 fs-8 fw-bold"
                         style="background-color: rgba(6, 95, 70, 0.12); color: #065f46; border: 1px solid rgba(6, 95, 70, 0.25);">
-                        <i class="bi bi-circle-fill me-1" style="font-size: 0.5rem; vertical-align: middle;"></i> DATA
-                        TERINTEGRASI REAL-TIME
+                        <i class="bi bi-shield-fill-check me-1"></i> BPBD Command Center
                     </span>
-                    <span class="badge px-3 py-1.5 fs-8 rounded-2"
+                    <span class="badge px-3 py-1.5 fs-8 fw-bold"
                         style="background-color: rgba(6, 95, 70, 0.08); color: #047857; border: 1px solid rgba(6, 95, 70, 0.18);">
-                        BPBD Command Center
+                        <i class="bi bi-broadcast me-1 text-success"></i> Real Time Data
                     </span>
                 </div>
                 <h3 class="fw-bold mb-1" style="color: #064e3b;">
-                    <i class="bi bi-shield-shaded me-2" style="color: #059669;"></i> Command Center BPBD
+                    <i class="bi bi-shield-fill-check me-2" style="color: #059669;"></i> Command Center BPBD
                 </h3>
-                <p class="small mb-0" style="color: #047857; max-width: 65ch;">
-                    Pemantauan real-time kesehatan mental penyintas, alokasi relawan posko, dan penugasan psikolog
-                    klinis.
+                <p class="small mb-0" style="color: #047857; max-width: 75ch;">
+                    Monitoring real-time sebaran posko bencana, triase kesehatan mental penyintas (AI Assessment), dan
+                    kesiapan personel lapangan di seluruh wilayah Indonesia.
                 </p>
             </div>
-            <div class="col-12 col-md-4 text-md-end">
-                <div class="d-inline-block text-start rounded-2 p-2.5 px-3"
-                    style="background-color: rgba(255, 255, 255, 0.65); border: 1px solid rgba(16, 185, 129, 0.35);">
-                    <div class="fs-8 fw-semibold text-uppercase" style="color: #047857;">Waktu Terkini</div>
-                    <div class="fw-bold small tabular-nums" style="color: #064e3b;"><i class="bi bi-clock me-1"
-                            style="color: #059669;"></i>
-                        <span class="live-device-clock"><?= date('d M Y — H:i') ?> WIB</span>
-                    </div>
-                </div>
+            <div class="col-12 col-lg-4 text-lg-end">
+                <span
+                    class="badge px-3 py-2 fs-8 fw-bold live-device-clock text-uppercase d-inline-flex align-items-center gap-2"
+                    data-live-clock
+                    style="background-color: rgba(6, 95, 70, 0.1); color: #065f46; border: 1px solid rgba(6, 95, 70, 0.22); border-radius: 8px;">
+                    <i class="bi bi-clock-history me-2" style="color: #059669; font-size: 0.85rem;"></i>
+                    <span class="time-text"></span>
+                </span>
             </div>
         </div>
     </div>
 </div>
 
-<!-- 2. Cascading Select Filter Bar -->
+<!-- 2. Cascading Select Filter Bar (Frosted Floating Dropdown UI System) -->
 <div class="card frost-card frost-card-filter p-3.5 p-md-4 mb-4">
     <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-3 flex-wrap gap-2">
         <h6 class="fw-bold text-dark mb-0 d-flex align-items-center">
-            <i class="bi bi-funnel-fill text-success me-2 fs-5"></i> Filter Wilayah & Posko Kebencanaan
+            <i class="bi bi-funnel-fill text-success me-2 fs-5"></i> Filter Pembagian Posko
         </h6>
         <!-- Desktop Reset Button -->
         <div class="d-none d-md-flex align-items-center">
@@ -420,27 +661,27 @@
         </div>
     </div>
 
-    <form id="filter-form" class="row g-3" onsubmit="return false;">
-        <!-- Hidden Native Selects for Seamless Real-Time AJAX & Form Sync -->
-        <select id="filter-provinsi" name="province_id" class="d-none">
+    <form id="filter-form" class="row g-3">
+        <!-- Hidden Native Selects for Logic & Sync -->
+        <select id="filter-provinsi" class="d-none">
             <option value="">Semua Provinsi</option>
             <?php foreach ($provinces as $prov): ?>
                 <option value="<?= esc($prov['id']) ?>"><?= esc($prov['name']) ?></option>
             <?php endforeach; ?>
         </select>
 
-        <select id="filter-kabupaten" name="regency_id" class="d-none" disabled>
+        <select id="filter-kabupaten" class="d-none" disabled>
             <option value="">Pilih Provinsi Dahulu</option>
         </select>
 
-        <select id="filter-bencana" name="jenis_bencana" class="d-none">
+        <select id="filter-bencana" class="d-none">
             <option value="">Semua Bencana</option>
-            <?php foreach ($jenisBencana as $jb): ?>
+            <?php foreach ($bencanaOptions as $jb): ?>
                 <option value="<?= esc($jb) ?>"><?= esc($jb) ?></option>
             <?php endforeach; ?>
         </select>
 
-        <select id="filter-status" name="status" class="d-none">
+        <select id="filter-status" class="d-none">
             <option value="">Semua Status</option>
             <option value="aktif">Aktif</option>
             <option value="recovery">Recovery</option>
@@ -467,7 +708,7 @@
             </div>
         </div>
 
-        <!-- 2. Custom Floating Dropdown: Kabupaten (Populated via AJAX) -->
+        <!-- 2. Custom Floating Dropdown: Kabupaten (Populated via Cascading AJAX) -->
         <div class="col-12 col-sm-6 col-lg-3">
             <label class="form-label small fw-bold text-secondary mb-1.5 d-flex align-items-center">
                 <span class="step-num-badge">2</span> Kabupaten / Kota
@@ -495,7 +736,7 @@
                 </div>
                 <div class="frost-custom-menu" id="menu-bencana">
                     <div class="frost-custom-option selected" data-value="">Semua Bencana</div>
-                    <?php foreach ($jenisBencana as $jb): ?>
+                    <?php foreach ($bencanaOptions as $jb): ?>
                         <div class="frost-custom-option" data-value="<?= esc($jb) ?>"><?= esc($jb) ?></div>
                     <?php endforeach; ?>
                 </div>
@@ -635,26 +876,37 @@
     </div>
 </div>
 
-<!-- 4. Grid Kartu Posko Kebencanaan (Frosted Glass UI Cards) -->
-<div class="mb-5">
-    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
-        <h5 class="fw-bold text-dark mb-0">
-            <i class="bi bi-grid-3x3-gap-fill text-success me-2"></i> Grid Kartu Posko & Breakdown Risiko AI
-        </h5>
-        <div class="d-flex align-items-center gap-2 flex-wrap">
-            <a href="<?= site_url('/bpbd/manage-posko') ?>" class="frost-btn-posko">
+<!-- 4. Posko Grid Main Card Container (Unified Parent Container with Side-by-Side Mobile Header & Styled Total Badge) -->
+<div class="card frost-card posko-main-card-container p-3.5 p-md-4 mb-5">
+    <!-- Main Card Header: Clean 2-Row Mobile (<768px) / 1-Row Desktop (>=768px) Layout -->
+    <div
+        class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-3 border-bottom pb-3 gap-3 posko-main-card-header">
+        <!-- Title & Total Badge Group -->
+        <div
+            class="d-flex align-items-center justify-content-between justify-content-md-start gap-3 min-w-0 posko-header-title-group">
+            <h6 class="fw-bold text-dark mb-0 d-flex align-items-center posko-header-title-text">
+                <i class="bi bi-grid-3x3-gap-fill text-success me-2 fs-5 flex-shrink-0"></i>
+                <span>Daftar Posko Kebencanaan</span>
+            </h6>
+            <span class="badge px-2.5 py-1 fs-8 flex-shrink-0 posko-header-badge ms-md-1"
+                style="background-color: rgba(6, 95, 70, 0.08); color: #047857; border: 1px solid rgba(6, 95, 70, 0.18); font-weight: 700;"
+                id="posko-card-count-badge">
+                <i class="bi bi-layers-fill me-1" style="font-size: 0.7rem;"></i> <?= count($poskoList) ?> Total
+            </span>
+        </div>
+        <!-- Primary Action Button Wrapper -->
+        <div class="posko-header-btn-wrapper">
+            <a href="<?= site_url('/bpbd/manage-posko') ?>" class="frost-btn-primary rounded-lg text-decoration-none">
                 <i class="bi bi-house-gear-fill me-1"></i> Kelola &amp; Tambah Posko
             </a>
-            <span class="badge bg-light text-dark border px-3 py-2 fw-semibold rounded-2" id="posko-card-count-badge">
-                <?= count($poskoList) ?> Posko Tampil
-            </span>
         </div>
     </div>
 
+    <!-- Inner Posko Cards Grid -->
     <div class="row g-3" id="posko-cards-container">
         <?php if (empty($poskoList)): ?>
             <div class="col-12">
-                <div class="card frost-card p-5 text-center text-muted">
+                <div class="p-4 text-center text-muted">
                     <i class="bi bi-inbox fs-2 d-block mb-2 text-secondary"></i>
                     <h6 class="fw-bold text-dark mb-1">Tidak Ada Data Posko</h6>
                     <p class="small text-muted mb-0">Tidak ada data posko yang sesuai dengan filter yang dipilih.</p>
@@ -664,7 +916,7 @@
             <?php foreach ($poskoList as $posko): ?>
                 <div class="col-12 col-md-6 col-lg-4">
                     <div
-                        class="card frost-card h-100 overflow-hidden <?= $posko['is_highest_priority'] ? 'border-danger border-2' : '' ?>">
+                        class="card posko-item-card h-100 overflow-hidden <?= $posko['is_highest_priority'] ? 'border-danger border-2' : '' ?>">
                         <?php if ($posko['is_highest_priority']): ?>
                             <div class="frost-badge-priority d-flex align-items-center justify-content-between">
                                 <span><i class="bi bi-exclamation-triangle-fill me-1 text-danger"></i> Prioritas Operasional</span>
@@ -672,29 +924,36 @@
                             </div>
                         <?php endif; ?>
 
-                        <div class="card-body p-3 d-flex flex-column justify-content-between">
-                            <div>
-                                <div class="d-flex align-items-start justify-content-between mb-2">
-                                    <h6 class="fw-bold text-dark mb-0 pe-2">
-                                        <a href="<?= site_url('/posko/' . $posko['id']) ?>"
-                                            class="text-decoration-none text-dark hover-danger">
-                                            <?= esc($posko['posko_name']) ?>
-                                        </a>
-                                    </h6>
-                                    <?php if ($posko['status'] === 'aktif'): ?>
-                                        <span class="badge bg-success rounded-1">Aktif</span>
-                                    <?php elseif ($posko['status'] === 'recovery'): ?>
-                                        <span class="badge bg-warning text-dark rounded-1">Recovery</span>
-                                    <?php else: ?>
-                                        <span class="badge bg-secondary rounded-1">Closed</span>
-                                    <?php endif; ?>
-                                </div>
+                        <!-- Soft Mint Header Bar -->
+                        <div class="posko-card-header-bar d-flex align-items-center justify-content-between gap-2">
+                            <h6 class="fw-bold mb-0 text-truncate" title="<?= esc($posko['posko_name']) ?>"
+                                style="color: #064e3b !important;">
+                                <a href="<?= site_url('/posko/' . $posko['id']) ?>" class="text-decoration-none"
+                                    style="color: #064e3b !important;">
+                                    <?= esc($posko['posko_name']) ?>
+                                </a>
+                            </h6>
+                            <?php if ($posko['status'] === 'aktif'): ?>
+                                <span class="badge badge-status-aktif rounded-2 flex-shrink-0">Aktif</span>
+                            <?php elseif ($posko['status'] === 'recovery'): ?>
+                                <span class="badge badge-status-recovery rounded-2 flex-shrink-0">Recovery</span>
+                            <?php else: ?>
+                                <span class="badge badge-status-closed rounded-2 flex-shrink-0">Closed</span>
+                            <?php endif; ?>
+                        </div>
 
-                                <div class="small text-muted mb-3">
-                                    <i class="bi bi-geo-alt me-1 text-danger"></i> <?= esc($posko['regency_name']) ?>,
-                                    <?= esc($posko['province_name']) ?>
-                                    <span
-                                        class="ms-2 badge bg-light text-secondary border rounded-1"><?= esc($posko['jenis_bencana']) ?></span>
+                        <!-- Posko Card Body -->
+                        <div class="posko-card-body">
+                            <div>
+                                <!-- Location Info & Jenis Bencana -->
+                                <div
+                                    class="small text-muted mb-3 d-flex align-items-center justify-content-between flex-wrap gap-1">
+                                    <span>
+                                        <i class="bi bi-geo-alt-fill text-danger me-1"></i>
+                                        <strong class="text-dark"><?= esc($posko['regency_name']) ?></strong>,
+                                        <?= esc($posko['province_name']) ?>
+                                    </span>
+                                    <span class="badge badge-bencana rounded-2"><?= esc($posko['jenis_bencana']) ?></span>
                                 </div>
 
                                 <!-- AI Risk Breakdown Grid -->
@@ -719,13 +978,14 @@
                                 </div>
                             </div>
 
+                            <!-- Card Footer Action Bar -->
                             <div
                                 class="d-flex align-items-center justify-content-between border-top pt-2.5 mt-2 flex-wrap gap-2">
                                 <div class="small text-muted me-auto">
                                     Total: <strong class="text-dark tabular-nums"><?= $posko['total_korban'] ?></strong>
                                     Penyintas
                                 </div>
-                                <a href="<?= site_url('/posko/' . $posko['id']) ?>" class="frost-btn-posko">
+                                <a href="<?= site_url('/posko/' . $posko['id']) ?>" class="frost-btn-primary">
                                     Buka Posko <i class="bi bi-arrow-right ms-1"></i>
                                 </a>
                             </div>
@@ -740,6 +1000,32 @@
 <!-- JavaScript for Custom Floating Dropdowns & Cascading Real-Time Filtering -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // Initialize BPBD Executive Dynamic Swiper Carousel with 4s Autoplay
+        if (typeof Swiper !== 'undefined') {
+            new Swiper('.bpbdSwiper', {
+                slidesPerView: 1,
+                spaceBetween: 20,
+                loop: true,
+                autoplay: {
+                    delay: 4000,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                effect: 'fade',
+                fadeEffect: {
+                    crossFade: true,
+                },
+            });
+        }
+
         const provSelect = document.getElementById('filter-provinsi');
         const kabSelect = document.getElementById('filter-kabupaten');
         const bencSelect = document.getElementById('filter-bencana');
@@ -982,14 +1268,14 @@
         function updatePoskoCardsGrid(list) {
             const container = document.getElementById('posko-cards-container');
             const badge = document.getElementById('posko-card-count-badge');
-            if (badge) badge.textContent = list.length + ' Posko Tampil';
+            if (badge) badge.innerHTML = `<i class="bi bi-layers-fill me-1" style="font-size: 0.7rem;"></i> ${list.length} Total`;
 
             if (!container) return;
 
             if (list.length === 0) {
                 container.innerHTML = `
                 <div class="col-12">
-                    <div class="card frost-card p-5 text-center text-muted">
+                    <div class="p-4 text-center text-muted">
                         <i class="bi bi-inbox fs-2 d-block mb-2 text-secondary"></i>
                         <h6 class="fw-bold text-dark mb-1">Tidak Ada Data Posko</h6>
                         <p class="small text-muted mb-0">Tidak ada data posko yang sesuai dengan filter yang dipilih.</p>
@@ -1002,11 +1288,11 @@
 
             let html = '';
             list.forEach(p => {
-                let statusBadge = '<span class="badge bg-secondary rounded-1">Closed</span>';
+                let statusBadge = '<span class="badge badge-status-closed rounded-2 flex-shrink-0">Closed</span>';
                 if (p.status === 'aktif') {
-                    statusBadge = '<span class="badge bg-success rounded-1">Aktif</span>';
+                    statusBadge = '<span class="badge badge-status-aktif rounded-2 flex-shrink-0">Aktif</span>';
                 } else if (p.status === 'recovery') {
-                    statusBadge = '<span class="badge bg-warning text-dark rounded-1">Recovery</span>';
+                    statusBadge = '<span class="badge badge-status-recovery rounded-2 flex-shrink-0">Recovery</span>';
                 }
 
                 const priorityHeader = p.is_highest_priority ? `
@@ -1019,22 +1305,25 @@
 
                 html += `
                 <div class="col-12 col-md-6 col-lg-4">
-                    <div class="card frost-card h-100 overflow-hidden ${borderClass}">
+                    <div class="card posko-item-card h-100 overflow-hidden ${borderClass}">
                         ${priorityHeader}
-                        <div class="card-body p-3 d-flex flex-column justify-content-between">
-                            <div>
-                                <div class="d-flex align-items-start justify-content-between mb-2">
-                                    <h6 class="fw-bold text-dark mb-0 pe-2">
-                                        <a href="${basePoskoUrl}${p.id}" class="text-decoration-none text-dark hover-danger">
-                                            ${escapeHtml(p.posko_name)}
-                                        </a>
-                                    </h6>
-                                    ${statusBadge}
-                                </div>
+                        <div class="posko-card-header-bar d-flex align-items-center justify-content-between gap-2">
+                            <h6 class="fw-bold mb-0 text-truncate" title="${escapeHtml(p.posko_name)}" style="color: #064e3b !important;">
+                                <a href="${basePoskoUrl}${p.id}" class="text-decoration-none" style="color: #064e3b !important;">
+                                    ${escapeHtml(p.posko_name)}
+                                </a>
+                            </h6>
+                            ${statusBadge}
+                        </div>
 
-                                <div class="small text-muted mb-3">
-                                    <i class="bi bi-geo-alt me-1 text-danger"></i> ${escapeHtml(p.regency_name)}, ${escapeHtml(p.province_name)}
-                                    <span class="ms-2 badge bg-light text-secondary border rounded-1">${escapeHtml(p.jenis_bencana)}</span>
+                        <div class="posko-card-body">
+                            <div>
+                                <div class="small text-muted mb-3 d-flex align-items-center justify-content-between flex-wrap gap-1">
+                                    <span>
+                                        <i class="bi bi-geo-alt-fill text-danger me-1"></i>
+                                        <strong class="text-dark">${escapeHtml(p.regency_name)}</strong>, ${escapeHtml(p.province_name)}
+                                    </span>
+                                    <span class="badge badge-bencana rounded-2">${escapeHtml(p.jenis_bencana)}</span>
                                 </div>
 
                                 <div class="bg-light bg-opacity-75 p-2.5 rounded-2 mb-3 border">
@@ -1060,7 +1349,7 @@
                                 <div class="small text-muted me-auto">
                                     Total: <strong class="text-dark tabular-nums">${p.total_korban}</strong> Penyintas
                                 </div>
-                                <a href="${basePoskoUrl}${p.id}" class="frost-btn-posko">
+                                <a href="${basePoskoUrl}${p.id}" class="frost-btn-primary">
                                     Buka Posko <i class="bi bi-arrow-right ms-1"></i>
                                 </a>
                             </div>

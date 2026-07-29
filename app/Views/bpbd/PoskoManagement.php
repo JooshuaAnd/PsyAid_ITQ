@@ -17,6 +17,8 @@
     .frost-btn-reset,
     .frost-search-input,
     .frost-btn-search-submit,
+    .frost-btn-primary,
+    .posko-item-card,
     .posko-info-box,
     .posko-details-box,
     .btn,
@@ -66,27 +68,29 @@
             inset 0 1.5px 2px rgba(255, 255, 255, 0.85);
     }
 
-    /* LIGHT GREEN BUTTON: PRIMARY ACTION */
+    /* LIGHT GREEN BUTTON: PRIMARY ACTION (MATCHING COMMANDCENTER FROST-BTN-POSKO) */
     .frost-btn-primary {
-        background: linear-gradient(135deg, #059669 0%, #047857 100%);
-        color: #ffffff !important;
-        border: 1px solid #047857;
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        color: #065f46 !important;
+        border: 1.5px solid #34d399;
+        border-radius: 8px !important;
         font-weight: 700;
-        font-size: 0.85rem;
-        padding: 0.5rem 1.1rem;
+        font-size: 0.78125rem;
+        padding: 0.4rem 0.85rem;
         transition: all 0.2s ease;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
-        gap: 0.4rem;
-        box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25);
+        gap: 0.35rem;
+        box-shadow: 0 2px 6px rgba(16, 185, 129, 0.15);
         cursor: pointer;
     }
 
     .frost-btn-primary:hover {
-        background: linear-gradient(135deg, #047857 0%, #064e3b 100%);
-        color: #ffffff !important;
-        box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35);
+        background: linear-gradient(135deg, #a7f3d0 0%, #6ee7b7 100%);
+        color: #064e3b !important;
+        border-color: #10b981;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
         transform: translateY(-1px);
     }
 
@@ -193,7 +197,7 @@
         font-weight: 600;
     }
 
-    /* CUSTOM FROSTED SEARCH BAR WITH ACTION BUTTON */
+    /* CUSTOM FROSTED SEARCH BAR WITH ACTION BUTTON (MATCHING COMMANDCENTER FROST-BTN-POSKO) */
     .frost-search-group {
         display: flex;
         align-items: center;
@@ -224,6 +228,7 @@
         font-size: 0.875rem;
         font-weight: 600;
         color: #0f172a;
+        text-align: left;
         transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
     }
@@ -255,9 +260,10 @@
     }
 
     .frost-btn-search-submit {
-        background: linear-gradient(135deg, #059669 0%, #047857 100%);
-        color: #ffffff !important;
-        border: 1.5px solid #047857;
+        background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        color: #065f46 !important;
+        border: 1.5px solid #34d399;
+        border-radius: 8px !important;
         font-weight: 700;
         font-size: 0.85rem;
         padding: 0.6rem 1.25rem;
@@ -267,20 +273,44 @@
         gap: 0.4rem;
         cursor: pointer;
         transition: all 0.2s ease;
-        box-shadow: 0 2px 6px rgba(5, 150, 105, 0.2);
+        box-shadow: 0 2px 6px rgba(16, 185, 129, 0.15);
         white-space: nowrap;
         flex-shrink: 0;
     }
 
     .frost-btn-search-submit:hover {
-        background: linear-gradient(135deg, #047857 0%, #064e3b 100%);
-        box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+        background: linear-gradient(135deg, #a7f3d0 0%, #6ee7b7 100%);
+        color: #064e3b !important;
+        border-color: #10b981;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
         transform: translateY(-1px);
+    }
+
+    /* INNER POSKO ITEM CARD: SOFT MINT & PURE WHITE DISTINCT SURFACE */
+    .posko-item-card {
+        background: #ffffff !important;
+        border: 1.5px solid #d1fae5 !important;
+        border-radius: 8px !important;
+        box-shadow: 0 4px 12px -2px rgba(16, 185, 129, 0.08), 0 2px 5px -1px rgba(15, 23, 42, 0.04) !important;
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    }
+
+    .posko-item-card:hover {
+        background: #ffffff !important;
+        border-color: #34d399 !important;
+        box-shadow: 0 12px 28px -4px rgba(16, 185, 129, 0.18), 0 4px 10px -2px rgba(15, 23, 42, 0.04) !important;
+        transform: translateY(-3px) !important;
+    }
+
+    .posko-card-header-bar {
+        background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%) !important;
+        border-bottom: 1px solid #d1fae5 !important;
+        padding: 0.85rem 1.15rem !important;
     }
 
     /* POSKO CARD POLISHED STYLING & HIGH CONTRAST BADGES */
     .posko-card-body {
-        padding: 1.25rem !important;
+        padding: 1.15rem !important;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -339,11 +369,11 @@
     }
 
     .posko-info-box {
-        background-color: #ffffff !important;
+        background-color: #f8fafc !important;
         border: 1px solid #e2e8f0 !important;
         border-radius: 8px !important;
         padding: 0.85rem !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
     }
 
     .posko-details-box {
@@ -406,16 +436,42 @@
         gap: 0.3rem;
     }
 
-    .fs-7 { font-size: 0.8125rem; }
-    .fs-8 { font-size: 0.75rem; }
-    .fs-9 { font-size: 0.6875rem; }
-
-    @keyframes fadeInDown {
-        from { opacity: 0; transform: translateY(-6px); }
-        to { opacity: 1; transform: translateY(0); }
+    .fs-7 {
+        font-size: 0.8125rem;
     }
 
-    /* Mobile Responsive Spacing & Padding Optimization for Filter Card */
+    .fs-8 {
+        font-size: 0.75rem;
+    }
+
+    .fs-9 {
+        font-size: 0.6875rem;
+    }
+
+    .posko-header-title-group {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem !important;
+    }
+
+    .posko-header-title-text {
+        display: flex;
+        align-items: center;
+    }
+
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-6px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Mobile Responsive Spacing & Layout Optimization for Filter Card & Search Bar */
     @media (max-width: 767.98px) {
         .frost-card-filter {
             padding: 1.25rem 1rem !important;
@@ -429,10 +485,10 @@
 
         .frost-custom-trigger,
         .frost-search-input {
-            min-height: 46px;
+            min-height: 44px;
             font-size: 0.875rem;
-            padding-top: 0.65rem;
-            padding-bottom: 0.65rem;
+            padding-top: 0.6rem;
+            padding-bottom: 0.6rem;
         }
 
         .frost-custom-option {
@@ -458,24 +514,119 @@
             margin-top: 1.15rem !important;
             padding-top: 0.85rem !important;
         }
+
+        /* Section 3 Header Mobile Optimizations: Clean 2-Row Mobile Layout */
+        .posko-main-card-container {
+            padding: 1rem 0.85rem !important;
+        }
+
+        .posko-main-card-header {
+            flex-direction: column !important;
+            align-items: stretch !important;
+            gap: 0.75rem !important;
+            padding-bottom: 0.75rem !important;
+            margin-bottom: 1rem !important;
+        }
+
+        .posko-header-title-group {
+            width: 100% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: space-between !important;
+            gap: 0.5rem !important;
+        }
+
+        .posko-header-title-text i {
+            margin-right: 0.5rem !important;
+        }
+
+        .posko-header-badge {
+            font-size: 0.7rem !important;
+            padding: 0.25rem 0.5rem !important;
+        }
+
+        .posko-header-btn-wrapper {
+            width: 100% !important;
+        }
+
+        .posko-header-btn-wrapper .frost-btn-primary {
+            width: 100% !important;
+            justify-content: center !important;
+            padding: 0.5rem 0.85rem !important;
+            font-size: 0.8125rem !important;
+        }
     }
 
+    /* Mobile Layout Optimizations for Search Bar (< 575.98px) */
     @media (max-width: 575.98px) {
         .frost-search-group {
-            flex-direction: column;
-            gap: 0.6rem;
+            flex-direction: row !important;
+            gap: 0.4rem !important;
+            align-items: center !important;
+            width: 100% !important;
+        }
+
+        .frost-search-input-wrapper {
+            flex: 1 !important;
+            min-width: 0 !important;
+            width: 100% !important;
+        }
+
+        .frost-search-input {
+            text-align: left !important;
+            padding-left: 2.35rem !important;
+            padding-right: 2rem !important;
+            font-size: 0.8125rem !important;
         }
 
         .frost-btn-search-submit {
-            width: 100%;
-            padding: 0.65rem 1rem;
+            width: auto !important;
+            padding: 0.5rem 0.75rem !important;
+            font-size: 0.75rem !important;
+            gap: 0.25rem !important;
+            flex-shrink: 0 !important;
+            border-radius: 8px !important;
+        }
+
+        .frost-btn-search-submit span {
+            font-size: 0.75rem !important;
+        }
+
+        .posko-card-header-bar {
+            padding: 0.7rem 0.85rem !important;
+        }
+
+        .posko-card-header-bar h6 {
+            font-size: 0.875rem !important;
+            line-height: 1.3 !important;
+        }
+
+        .posko-card-body {
+            padding: 0.85rem !important;
+        }
+
+        .posko-info-box,
+        .posko-details-box {
+            padding: 0.7rem 0.75rem !important;
+            border-radius: 6px !important;
+        }
+
+        .posko-details-box {
+            font-size: 0.78125rem !important;
+        }
+
+        .posko-card-body .btn-outline-primary,
+        .posko-card-body .btn-outline-danger {
+            padding: 0.35rem 0.65rem !important;
+            font-size: 0.75rem !important;
         }
     }
 </style>
 
 <!-- Alert Notifications -->
 <?php if (session()->getFlashdata('success')): ?>
-    <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" role="alert" style="background-color: #ecfdf5; color: #047857; border-left: 4px solid #10b981 !important;">
+    <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" role="alert"
+        style="background-color: #ecfdf5; color: #047857; border-left: 4px solid #10b981 !important;">
         <i class="bi bi-check-circle-fill me-2 fs-5 align-middle"></i>
         <strong>Berhasil!</strong> <?= session()->getFlashdata('success') ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -483,7 +634,8 @@
 <?php endif; ?>
 
 <?php if (session()->getFlashdata('error')): ?>
-    <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm mb-4" role="alert" style="background-color: #fef2f2; color: #991b1b; border-left: 4px solid #ef4444 !important;">
+    <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm mb-4" role="alert"
+        style="background-color: #fef2f2; color: #991b1b; border-left: 4px solid #ef4444 !important;">
         <i class="bi bi-exclamation-triangle-fill me-2 fs-5 align-middle"></i>
         <strong>Gagal!</strong> <?= session()->getFlashdata('error') ?>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -509,7 +661,8 @@
                     <i class="bi bi-geo-alt-fill me-2" style="color: #059669;"></i> Kelola Posko Kebencanaan
                 </h3>
                 <p class="small mb-0" style="color: #047857; max-width: 75ch;">
-                    Tambah, perbarui, dan atur kuota relawan posko bencana berdasarkan Provinsi, Kabupaten/Kota, dan Jenis Bencana. Posko aktif secara otomatis akan ditayangkan pada portal Rekrutmen Relawan.
+                    Tambah, perbarui, dan atur kuota relawan posko bencana berdasarkan Provinsi, Kabupaten/Kota, dan
+                    Jenis Bencana. Posko aktif secara otomatis akan ditayangkan pada portal Rekrutmen Relawan.
                 </p>
             </div>
         </div>
@@ -524,7 +677,8 @@
         </h6>
         <!-- Desktop Reset Button -->
         <div class="d-none d-md-flex align-items-center">
-            <a href="<?= site_url('/bpbd/manage-posko') ?>" id="btn-reset-filter" class="frost-btn-reset text-decoration-none">
+            <a href="<?= site_url('/bpbd/manage-posko') ?>" id="btn-reset-filter"
+                class="frost-btn-reset text-decoration-none">
                 <i class="bi bi-arrow-counterclockwise"></i> Reset Filter
             </a>
         </div>
@@ -603,9 +757,11 @@
                     <i class="bi bi-chevron-down chevron-icon"></i>
                 </div>
                 <div class="frost-custom-menu" id="menu-provinsi">
-                    <div class="frost-custom-option <?= empty($filterProvinceId) ? 'selected' : '' ?>" data-value="">Semua Provinsi</div>
+                    <div class="frost-custom-option <?= empty($filterProvinceId) ? 'selected' : '' ?>" data-value="">
+                        Semua Provinsi</div>
                     <?php foreach ($provinces as $prov): ?>
-                        <div class="frost-custom-option <?= $filterProvinceId == $prov['id'] ? 'selected' : '' ?>" data-value="<?= esc($prov['id']) ?>">
+                        <div class="frost-custom-option <?= $filterProvinceId == $prov['id'] ? 'selected' : '' ?>"
+                            data-value="<?= esc($prov['id']) ?>">
                             <?= esc($prov['name']) ?>
                         </div>
                     <?php endforeach; ?>
@@ -619,7 +775,8 @@
                 <span class="step-num-badge">2</span> Kabupaten / Kota
             </label>
             <div class="frost-custom-select-wrapper" id="custom-wrapper-kabupaten">
-                <div class="frost-custom-trigger <?= empty($filterProvinceId) ? 'disabled' : '' ?>" id="trigger-kabupaten">
+                <div class="frost-custom-trigger <?= empty($filterProvinceId) ? 'disabled' : '' ?>"
+                    id="trigger-kabupaten">
                     <span class="trigger-label text-truncate"><?= esc($selectedKabName) ?></span>
                     <i class="bi bi-chevron-down chevron-icon"></i>
                 </div>
@@ -628,7 +785,8 @@
                         <?= empty($filterProvinceId) ? 'Pilih Provinsi Dahulu' : 'Semua Kabupaten' ?>
                     </div>
                     <?php foreach ($regencies as $reg): ?>
-                        <div class="frost-custom-option <?= $filterRegencyId == $reg['id'] ? 'selected' : '' ?>" data-value="<?= esc($reg['id']) ?>">
+                        <div class="frost-custom-option <?= $filterRegencyId == $reg['id'] ? 'selected' : '' ?>"
+                            data-value="<?= esc($reg['id']) ?>">
                             <?= esc($reg['name']) ?>
                         </div>
                     <?php endforeach; ?>
@@ -647,9 +805,11 @@
                     <i class="bi bi-chevron-down chevron-icon"></i>
                 </div>
                 <div class="frost-custom-menu" id="menu-bencana">
-                    <div class="frost-custom-option <?= empty($filterJenisBencana) ? 'selected' : '' ?>" data-value="">Semua Jenis Bencana</div>
+                    <div class="frost-custom-option <?= empty($filterJenisBencana) ? 'selected' : '' ?>" data-value="">
+                        Semua Jenis Bencana</div>
                     <?php foreach ($distinctJenisBencana as $jb): ?>
-                        <div class="frost-custom-option <?= $filterJenisBencana == $jb ? 'selected' : '' ?>" data-value="<?= esc($jb) ?>">
+                        <div class="frost-custom-option <?= $filterJenisBencana == $jb ? 'selected' : '' ?>"
+                            data-value="<?= esc($jb) ?>">
                             <?= esc($jb) ?>
                         </div>
                     <?php endforeach; ?>
@@ -668,28 +828,34 @@
                     <i class="bi bi-chevron-down chevron-icon"></i>
                 </div>
                 <div class="frost-custom-menu" id="menu-status">
-                    <div class="frost-custom-option <?= empty($filterStatus) ? 'selected' : '' ?>" data-value="">Semua Status</div>
-                    <div class="frost-custom-option <?= $filterStatus === 'aktif' ? 'selected' : '' ?>" data-value="aktif">Aktif</div>
-                    <div class="frost-custom-option <?= $filterStatus === 'recovery' ? 'selected' : '' ?>" data-value="recovery">Recovery</div>
-                    <div class="frost-custom-option <?= $filterStatus === 'closed' ? 'selected' : '' ?>" data-value="closed">Closed</div>
+                    <div class="frost-custom-option <?= empty($filterStatus) ? 'selected' : '' ?>" data-value="">Semua
+                        Status</div>
+                    <div class="frost-custom-option <?= $filterStatus === 'aktif' ? 'selected' : '' ?>"
+                        data-value="aktif">Aktif</div>
+                    <div class="frost-custom-option <?= $filterStatus === 'recovery' ? 'selected' : '' ?>"
+                        data-value="recovery">Recovery</div>
+                    <div class="frost-custom-option <?= $filterStatus === 'closed' ? 'selected' : '' ?>"
+                        data-value="closed">Closed</div>
                 </div>
             </div>
         </div>
 
-        <!-- Custom Search Bar with Working Search Button -->
+        <!-- Custom Search Bar with Working Search Button (Mobile Inline & Right Aligned Button) -->
         <div class="col-12">
             <div class="frost-search-group">
                 <div class="frost-search-input-wrapper">
                     <i class="bi bi-search frost-search-icon-inside"></i>
                     <input type="text" name="q" id="search-input-query" class="frost-search-input"
-                        placeholder="Cari nama posko, lokasi, atau jenis bencana..."
-                        value="<?= esc($searchQuery) ?>" autocomplete="off">
+                        placeholder="Cari nama posko, lokasi, atau jenis bencana..." value="<?= esc($searchQuery) ?>"
+                        autocomplete="off">
                     <?php if (!empty($searchQuery)): ?>
-                        <button type="button" id="btn-clear-search" class="frost-search-clear-inside" title="Bersihkan Pencarian">
+                        <button type="button" id="btn-clear-search" class="frost-search-clear-inside"
+                            title="Bersihkan Pencarian">
                             <i class="bi bi-x-circle-fill"></i>
                         </button>
                     <?php else: ?>
-                        <button type="button" id="btn-clear-search" class="frost-search-clear-inside d-none" title="Bersihkan Pencarian">
+                        <button type="button" id="btn-clear-search" class="frost-search-clear-inside d-none"
+                            title="Bersihkan Pencarian">
                             <i class="bi bi-x-circle-fill"></i>
                         </button>
                     <?php endif; ?>
@@ -711,72 +877,94 @@
             <span class="fs-8 fw-semibold text-muted me-1"><i class="bi bi-tags me-1"></i> Filter Aktif:</span>
             <div id="active-chips-list" class="d-flex flex-wrap gap-1.5">
                 <?php if (!empty($filterProvinceId)): ?>
-                    <span class="badge bg-light text-dark border px-2 py-1 fs-8 me-1">Prov: <?= esc($selectedProvName) ?></span>
+                    <span class="badge bg-light text-dark border px-2 py-1 fs-8 me-1">Prov:
+                        <?= esc($selectedProvName) ?></span>
                 <?php endif; ?>
                 <?php if (!empty($filterRegencyId)): ?>
-                    <span class="badge bg-light text-dark border px-2 py-1 fs-8 me-1">Kab: <?= esc($selectedKabName) ?></span>
+                    <span class="badge bg-light text-dark border px-2 py-1 fs-8 me-1">Kab:
+                        <?= esc($selectedKabName) ?></span>
                 <?php endif; ?>
                 <?php if (!empty($filterJenisBencana)): ?>
-                    <span class="badge bg-light text-dark border px-2 py-1 fs-8 me-1">Bencana: <?= esc($filterJenisBencana) ?></span>
+                    <span class="badge bg-light text-dark border px-2 py-1 fs-8 me-1">Bencana:
+                        <?= esc($filterJenisBencana) ?></span>
                 <?php endif; ?>
                 <?php if (!empty($filterStatus)): ?>
-                    <span class="badge bg-light text-dark border px-2 py-1 fs-8 me-1">Status: <?= esc(ucfirst($filterStatus)) ?></span>
+                    <span class="badge bg-light text-dark border px-2 py-1 fs-8 me-1">Status:
+                        <?= esc(ucfirst($filterStatus)) ?></span>
                 <?php endif; ?>
                 <?php if (!empty($searchQuery)): ?>
-                    <span class="badge bg-light text-dark border px-2 py-1 fs-8 me-1">Cari: "<?= esc($searchQuery) ?>"</span>
+                    <span class="badge bg-light text-dark border px-2 py-1 fs-8 me-1">Cari:
+                        "<?= esc($searchQuery) ?>"</span>
                 <?php endif; ?>
             </div>
         </div>
     </div>
 
     <!-- Mobile Reset Button -->
-    <div class="d-flex d-md-none align-items-center justify-content-end frost-mobile-reset-wrapper border-top mt-3 pt-2">
+    <div
+        class="d-flex d-md-none align-items-center justify-content-end frost-mobile-reset-wrapper border-top mt-3 pt-2">
         <a href="<?= site_url('/bpbd/manage-posko') ?>" class="frost-btn-reset-sm text-decoration-none">
             <i class="bi bi-arrow-counterclockwise"></i> Reset Filter
         </a>
     </div>
 </div>
 
-<!-- 3. Posko Grid System (High Contrast & Polished UI Cards) -->
-<div class="mb-5">
-    <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
-        <h5 class="fw-bold text-dark mb-0 d-flex align-items-center">
-            <i class="bi bi-grid-3x3-gap-fill text-success me-2 fs-5"></i> Daftar Posko Kebencanaan (<?= count($poskoList) ?> Total)
-        </h5>
-        <button type="button" class="frost-btn-primary" data-bs-toggle="modal" data-bs-target="#createPoskoModal">
-            <i class="bi bi-plus-lg fs-6 me-1"></i> Tambah Posko Baru
-        </button>
+<!-- 3. Posko Grid Main Card Container (Mobile Responsive Clean Layout) -->
+<div class="card frost-card posko-main-card-container p-3.5 p-md-4 mb-5">
+    <!-- Main Card Header: Clean 2-Row Mobile (<768px) / 1-Row Desktop (>=768px) Layout -->
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-3 border-bottom pb-3 gap-3 posko-main-card-header">
+        <!-- Title & Total Badge Group -->
+        <div class="d-flex align-items-center justify-content-between justify-content-md-start gap-3 min-w-0 posko-header-title-group">
+            <h6 class="fw-bold text-dark mb-0 d-flex align-items-center posko-header-title-text">
+                <i class="bi bi-grid-3x3-gap-fill text-success me-2 fs-5 flex-shrink-0"></i>
+                <span>Daftar Posko Kebencanaan</span>
+            </h6>
+            <span class="badge px-2.5 py-1 fs-8 flex-shrink-0 posko-header-badge ms-md-1"
+                style="background-color: rgba(6, 95, 70, 0.08); color: #047857; border: 1px solid rgba(6, 95, 70, 0.18); font-weight: 700;">
+                <i class="bi bi-layers-fill me-1" style="font-size: 0.7rem;"></i> <?= count($poskoList) ?> Total
+            </span>
+        </div>
+        <!-- Primary Action Button Wrapper -->
+        <div class="posko-header-btn-wrapper">
+            <button type="button" class="frost-btn-primary rounded-lg" data-bs-toggle="modal" data-bs-target="#createPoskoModal">
+                <i class="bi bi-plus-lg fs-7 me-1"></i> Tambah Posko Baru
+            </button>
+        </div>
     </div>
 
+    <!-- Inner Posko Cards Grid -->
     <div class="row g-3">
         <?php if (empty($poskoList)): ?>
             <div class="col-12">
-                <div class="card frost-card p-5 text-center text-muted">
+                <div class="p-4 text-center text-muted">
                     <i class="bi bi-inbox fs-2 d-block mb-2 text-secondary"></i>
                     <h6 class="fw-bold text-dark mb-1">Tidak Ada Data Posko</h6>
-                    <p class="small text-muted mb-0">Belum ada posko yang dibuat atau sesuai dengan filter yang Anda tentukan.</p>
+                    <p class="small text-muted mb-0">Belum ada posko yang dibuat atau sesuai dengan filter yang Anda
+                        tentukan.</p>
                 </div>
             </div>
         <?php else: ?>
             <?php foreach ($poskoList as $posko): ?>
                 <div class="col-12 col-md-6 col-xl-4">
-                    <div class="card frost-card h-100 border-0 shadow-sm overflow-hidden">
+                    <div class="card posko-item-card h-100 overflow-hidden">
+                        <!-- Soft Mint Header Bar -->
+                        <div class="posko-card-header-bar d-flex align-items-center justify-content-between gap-2">
+                            <h6 class="fw-bold mb-0 text-truncate" title="<?= esc($posko['name']) ?>"
+                                style="font-size: 0.98rem; color: #064e3b !important;">
+                                <?= esc($posko['name']) ?>
+                            </h6>
+                            <?php if ($posko['status'] === 'aktif'): ?>
+                                <span class="badge badge-status-aktif rounded-2 flex-shrink-0">Aktif</span>
+                            <?php elseif ($posko['status'] === 'recovery'): ?>
+                                <span class="badge badge-status-recovery rounded-2 flex-shrink-0">Recovery</span>
+                            <?php else: ?>
+                                <span class="badge badge-status-closed rounded-2 flex-shrink-0">Closed</span>
+                            <?php endif; ?>
+                        </div>
+
+                        <!-- Posko Card Body -->
                         <div class="posko-card-body">
                             <div>
-                                <!-- Header Info: Posko Title & Status Badge -->
-                                <div class="d-flex align-items-start justify-content-between mb-2 gap-2">
-                                    <h6 class="fw-bold text-dark mb-0 pe-2 text-truncate" title="<?= esc($posko['name']) ?>" style="font-size: 1.05rem;">
-                                        <?= esc($posko['name']) ?>
-                                    </h6>
-                                    <?php if ($posko['status'] === 'aktif'): ?>
-                                        <span class="badge badge-status-aktif rounded-2 flex-shrink-0">Aktif</span>
-                                    <?php elseif ($posko['status'] === 'recovery'): ?>
-                                        <span class="badge badge-status-recovery rounded-2 flex-shrink-0">Recovery</span>
-                                    <?php else: ?>
-                                        <span class="badge badge-status-closed rounded-2 flex-shrink-0">Closed</span>
-                                    <?php endif; ?>
-                                </div>
-
                                 <!-- Location Info -->
                                 <div class="small mb-3 d-flex align-items-center gap-1 text-secondary">
                                     <i class="bi bi-geo-alt-fill text-danger me-1"></i>
@@ -803,9 +991,12 @@
                                 <!-- Volunteer Quota Progress Box -->
                                 <div class="posko-info-box mb-3">
                                     <div class="d-flex justify-content-between text-muted fs-8 fw-bold mb-1.5">
-                                        <span class="text-secondary"><i class="bi bi-people-fill me-1 text-success"></i> Slot Relawan Terisi</span>
+                                        <span class="text-secondary"><i class="bi bi-people-fill me-1 text-success"></i> Slot
+                                            Relawan Terisi</span>
                                         <span class="text-dark tabular-nums fw-bold">
-                                            <span class="text-success fs-7 fw-extrabold"><?= $posko['approved_volunteers'] ?></span> / <?= $posko['quota'] ?> Personel
+                                            <span
+                                                class="text-success fs-7 fw-extrabold"><?= $posko['approved_volunteers'] ?></span>
+                                            / <?= $posko['quota'] ?> Personel
                                         </span>
                                     </div>
                                     <div class="progress mb-1" style="height: 8px; background-color: #e2e8f0;">
@@ -826,21 +1017,24 @@
                                     <div class="posko-details-box mb-3">
                                         <?php if (!empty($posko['positions'])): ?>
                                             <div class="mb-1.5">
-                                                <strong class="text-dark"><i class="bi bi-briefcase-fill me-1 text-primary"></i> Posisi:</strong>
+                                                <strong class="text-dark"><i class="bi bi-briefcase-fill me-1 text-primary"></i>
+                                                    Posisi:</strong>
                                                 <span class="text-slate-800"><?= esc($posko['positions']) ?></span>
                                             </div>
                                         <?php endif; ?>
 
                                         <?php if (!empty($posko['requirements'])): ?>
                                             <div class="mb-1.5">
-                                                <strong class="text-dark"><i class="bi bi-card-checklist me-1 text-warning"></i> Syarat:</strong>
+                                                <strong class="text-dark"><i class="bi bi-card-checklist me-1 text-warning"></i>
+                                                    Syarat:</strong>
                                                 <span class="text-slate-800"><?= esc($posko['requirements']) ?></span>
                                             </div>
                                         <?php endif; ?>
 
                                         <?php if (!empty($posko['contact_person'])): ?>
                                             <div>
-                                                <strong class="text-dark"><i class="bi bi-telephone-fill me-1 text-success"></i> Kontak:</strong>
+                                                <strong class="text-dark"><i class="bi bi-telephone-fill me-1 text-success"></i>
+                                                    Kontak:</strong>
                                                 <span class="fw-bold text-success"><?= esc($posko['contact_person']) ?></span>
                                             </div>
                                         <?php endif; ?>
@@ -871,7 +1065,8 @@
 <div class="modal fade" id="createPoskoModal" tabindex="-1" aria-labelledby="createPoskoModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow-lg" style="border-radius: 8px !important;">
-            <div class="modal-header border-bottom p-4" style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);">
+            <div class="modal-header border-bottom p-4"
+                style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);">
                 <h5 class="modal-title fw-bold text-dark" id="createPoskoModalLabel">
                     <i class="bi bi-house-add-fill text-success me-2"></i> Tambah Posko Kebencanaan Baru
                 </h5>
@@ -883,12 +1078,15 @@
 
                 <div class="row g-3">
                     <div class="col-12 col-md-8">
-                        <label class="form-label small fw-bold text-dark">Nama Posko Kebencanaan <span class="text-danger">*</span></label>
-                        <input type="text" name="name" class="form-control fs-8" placeholder="Contoh: Posko Tanggap Cianjur 01" required>
+                        <label class="form-label small fw-bold text-dark">Nama Posko Kebencanaan <span
+                                class="text-danger">*</span></label>
+                        <input type="text" name="name" class="form-control fs-8"
+                            placeholder="Contoh: Posko Tanggap Cianjur 01" required>
                     </div>
 
                     <div class="col-12 col-md-4">
-                        <label class="form-label small fw-bold text-dark">Jenis Bencana <span class="text-danger">*</span></label>
+                        <label class="form-label small fw-bold text-dark">Jenis Bencana <span
+                                class="text-danger">*</span></label>
                         <select name="jenis_bencana" class="form-select fs-8" required>
                             <option value="">-- Pilih Jenis Bencana --</option>
                             <option value="Gempa Bumi">Gempa Bumi</option>
@@ -902,7 +1100,8 @@
                     </div>
 
                     <div class="col-12 col-md-6">
-                        <label class="form-label small fw-bold text-dark">Provinsi <span class="text-danger">*</span></label>
+                        <label class="form-label small fw-bold text-dark">Provinsi <span
+                                class="text-danger">*</span></label>
                         <select name="province_id" id="create-province_id" class="form-select fs-8" required>
                             <option value="">-- Pilih Provinsi --</option>
                             <?php foreach ($provinces as $prov): ?>
@@ -912,19 +1111,23 @@
                     </div>
 
                     <div class="col-12 col-md-6">
-                        <label class="form-label small fw-bold text-dark">Kabupaten / Kota <span class="text-danger">*</span></label>
+                        <label class="form-label small fw-bold text-dark">Kabupaten / Kota <span
+                                class="text-danger">*</span></label>
                         <select name="regency_id" id="create-regency_id" class="form-select fs-8" disabled required>
                             <option value="">Pilih Provinsi Dahulu</option>
                         </select>
                     </div>
 
                     <div class="col-12 col-md-4">
-                        <label class="form-label small fw-bold text-dark">Kuota Relawan Dibutuhkan <span class="text-danger">*</span></label>
-                        <input type="number" name="quota" class="form-control fs-8" value="10" min="1" max="500" required>
+                        <label class="form-label small fw-bold text-dark">Kuota Relawan Dibutuhkan <span
+                                class="text-danger">*</span></label>
+                        <input type="number" name="quota" class="form-control fs-8" value="10" min="1" max="500"
+                            required>
                     </div>
 
                     <div class="col-12 col-md-4">
-                        <label class="form-label small fw-bold text-dark">Tingkat Urgensi <span class="text-danger">*</span></label>
+                        <label class="form-label small fw-bold text-dark">Tingkat Urgensi <span
+                                class="text-danger">*</span></label>
                         <select name="urgency" class="form-select fs-8" required>
                             <option value="Urgent" selected>Urgent (Dibutuhkan Segera)</option>
                             <option value="Terbuka">Terbuka (Standby Normal)</option>
@@ -932,7 +1135,8 @@
                     </div>
 
                     <div class="col-12 col-md-4">
-                        <label class="form-label small fw-bold text-dark">Status Operasional <span class="text-danger">*</span></label>
+                        <label class="form-label small fw-bold text-dark">Status Operasional <span
+                                class="text-danger">*</span></label>
                         <select name="status" class="form-select fs-8" required>
                             <option value="aktif" selected>Aktif (Tayang di Rekrutmen)</option>
                             <option value="recovery">Recovery</option>
@@ -942,22 +1146,26 @@
 
                     <div class="col-12">
                         <label class="form-label small fw-bold text-dark">Posisi Relawan Dibutuhkan</label>
-                        <input type="text" name="positions" class="form-control fs-8" placeholder="Contoh: Logistik, Medis, Konseling Psikologi Pertama (PFA), Dapur Umum">
+                        <input type="text" name="positions" class="form-control fs-8"
+                            placeholder="Contoh: Logistik, Medis, Konseling Psikologi Pertama (PFA), Dapur Umum">
                     </div>
 
                     <div class="col-12">
                         <label class="form-label small fw-bold text-dark">Persyaratan Khusus Relawan</label>
-                        <textarea name="requirements" class="form-control fs-8" rows="2" placeholder="Contoh: Sehat jasmani rohani, bersedia ditempatkan minimal 3 hari"></textarea>
+                        <textarea name="requirements" class="form-control fs-8" rows="2"
+                            placeholder="Contoh: Sehat jasmani rohani, bersedia ditempatkan minimal 3 hari"></textarea>
                     </div>
 
                     <div class="col-12">
                         <label class="form-label small fw-bold text-dark">Kontak Person / Call Center BPBD Posko</label>
-                        <input type="text" name="contact_person" class="form-control fs-8" placeholder="Contoh: BPBD Cianjur (+62 812-3456-7890)">
+                        <input type="text" name="contact_person" class="form-control fs-8"
+                            placeholder="Contoh: BPBD Cianjur (+62 812-3456-7890)">
                     </div>
                 </div>
 
                 <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-4">
-                    <button type="button" class="btn btn-light border fw-semibold fs-8" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-light border fw-semibold fs-8"
+                        data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="frost-btn-primary fs-8">Simpan Posko Baru</button>
                 </div>
             </form>
@@ -969,7 +1177,8 @@
 <div class="modal fade" id="editPoskoModal" tabindex="-1" aria-labelledby="editPoskoModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content border-0 shadow-lg" style="border-radius: 8px !important;">
-            <div class="modal-header border-bottom p-4" style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);">
+            <div class="modal-header border-bottom p-4"
+                style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);">
                 <h5 class="modal-title fw-bold text-dark" id="editPoskoModalLabel">
                     <i class="bi bi-pencil-square text-primary me-2"></i> Edit Posko Kebencanaan
                 </h5>
@@ -981,12 +1190,14 @@
 
                 <div class="row g-3">
                     <div class="col-12 col-md-8">
-                        <label class="form-label small fw-bold text-dark">Nama Posko Kebencanaan <span class="text-danger">*</span></label>
+                        <label class="form-label small fw-bold text-dark">Nama Posko Kebencanaan <span
+                                class="text-danger">*</span></label>
                         <input type="text" name="name" id="edit-name" class="form-control fs-8" required>
                     </div>
 
                     <div class="col-12 col-md-4">
-                        <label class="form-label small fw-bold text-dark">Jenis Bencana <span class="text-danger">*</span></label>
+                        <label class="form-label small fw-bold text-dark">Jenis Bencana <span
+                                class="text-danger">*</span></label>
                         <select name="jenis_bencana" id="edit-jenis_bencana" class="form-select fs-8" required>
                             <option value="Gempa Bumi">Gempa Bumi</option>
                             <option value="Banjir">Banjir</option>
@@ -999,7 +1210,8 @@
                     </div>
 
                     <div class="col-12 col-md-6">
-                        <label class="form-label small fw-bold text-dark">Provinsi <span class="text-danger">*</span></label>
+                        <label class="form-label small fw-bold text-dark">Provinsi <span
+                                class="text-danger">*</span></label>
                         <select name="province_id" id="edit-province_id" class="form-select fs-8" required>
                             <?php foreach ($provinces as $prov): ?>
                                 <option value="<?= esc($prov['id']) ?>"><?= esc($prov['name']) ?></option>
@@ -1008,19 +1220,23 @@
                     </div>
 
                     <div class="col-12 col-md-6">
-                        <label class="form-label small fw-bold text-dark">Kabupaten / Kota <span class="text-danger">*</span></label>
+                        <label class="form-label small fw-bold text-dark">Kabupaten / Kota <span
+                                class="text-danger">*</span></label>
                         <select name="regency_id" id="edit-regency_id" class="form-select fs-8" required>
                             <option value="">Pilih Provinsi Dahulu</option>
                         </select>
                     </div>
 
                     <div class="col-12 col-md-4">
-                        <label class="form-label small fw-bold text-dark">Kuota Relawan Dibutuhkan <span class="text-danger">*</span></label>
-                        <input type="number" name="quota" id="edit-quota" class="form-control fs-8" min="1" max="500" required>
+                        <label class="form-label small fw-bold text-dark">Kuota Relawan Dibutuhkan <span
+                                class="text-danger">*</span></label>
+                        <input type="number" name="quota" id="edit-quota" class="form-control fs-8" min="1" max="500"
+                            required>
                     </div>
 
                     <div class="col-12 col-md-4">
-                        <label class="form-label small fw-bold text-dark">Tingkat Urgensi <span class="text-danger">*</span></label>
+                        <label class="form-label small fw-bold text-dark">Tingkat Urgensi <span
+                                class="text-danger">*</span></label>
                         <select name="urgency" id="edit-urgency" class="form-select fs-8" required>
                             <option value="Urgent">Urgent (Dibutuhkan Segera)</option>
                             <option value="Terbuka">Terbuka (Standby Normal)</option>
@@ -1028,7 +1244,8 @@
                     </div>
 
                     <div class="col-12 col-md-4">
-                        <label class="form-label small fw-bold text-dark">Status Operasional <span class="text-danger">*</span></label>
+                        <label class="form-label small fw-bold text-dark">Status Operasional <span
+                                class="text-danger">*</span></label>
                         <select name="status" id="edit-status" class="form-select fs-8" required>
                             <option value="aktif">Aktif (Tayang di Rekrutmen)</option>
                             <option value="recovery">Recovery</option>
@@ -1043,7 +1260,8 @@
 
                     <div class="col-12">
                         <label class="form-label small fw-bold text-dark">Persyaratan Khusus Relawan</label>
-                        <textarea name="requirements" id="edit-requirements" class="form-control fs-8" rows="2"></textarea>
+                        <textarea name="requirements" id="edit-requirements" class="form-control fs-8"
+                            rows="2"></textarea>
                     </div>
 
                     <div class="col-12">
@@ -1053,7 +1271,8 @@
                 </div>
 
                 <div class="d-flex justify-content-end gap-2 border-top pt-3 mt-4">
-                    <button type="button" class="btn btn-light border fw-semibold fs-8" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-light border fw-semibold fs-8"
+                        data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary fw-bold fs-8 px-4">Simpan Perubahan</button>
                 </div>
             </form>
@@ -1071,12 +1290,14 @@
                     <i class="bi bi-trash-fill fs-3"></i>
                 </div>
                 <h6 class="fw-bold text-dark mb-1">Hapus Posko Kebencanaan?</h6>
-                <p class="small text-muted mb-4" id="delete-posko-name-text">Apakah Anda yakin ingin menghapus posko ini?</p>
+                <p class="small text-muted mb-4" id="delete-posko-name-text">Apakah Anda yakin ingin menghapus posko
+                    ini?</p>
 
                 <form id="deletePoskoForm" method="POST">
                     <?= csrf_field() ?>
                     <div class="d-flex gap-2">
-                        <button type="button" class="btn btn-light border w-100 fw-semibold fs-8" data-bs-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-light border w-100 fw-semibold fs-8"
+                            data-bs-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-danger w-100 fw-bold fs-8">Hapus Posko</button>
                     </div>
                 </form>
@@ -1088,14 +1309,14 @@
 <!-- JavaScript for Custom Floating Dropdowns, Search Button Submission & Cascading Select -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const filterForm  = document.getElementById('filter-manage-form');
-        const provSelect  = document.getElementById('filter-provinsi');
-        const kabSelect   = document.getElementById('filter-kabupaten');
-        const bencSelect  = document.getElementById('filter-bencana');
-        const statSelect  = document.getElementById('filter-status');
+        const filterForm = document.getElementById('filter-manage-form');
+        const provSelect = document.getElementById('filter-provinsi');
+        const kabSelect = document.getElementById('filter-kabupaten');
+        const bencSelect = document.getElementById('filter-bencana');
+        const statSelect = document.getElementById('filter-status');
 
         const searchInput = document.getElementById('search-input-query');
-        const clearBtn    = document.getElementById('btn-clear-search');
+        const clearBtn = document.getElementById('btn-clear-search');
 
         // Toggle Clear (X) icon when typing inside search input
         if (searchInput) {
@@ -1125,8 +1346,8 @@
         function setupCustomDropdown(key) {
             const wrapper = document.getElementById('custom-wrapper-' + key);
             const trigger = document.getElementById('trigger-' + key);
-            const menu    = document.getElementById('menu-' + key);
-            const native  = document.getElementById('filter-' + key);
+            const menu = document.getElementById('menu-' + key);
+            const native = document.getElementById('filter-' + key);
 
             if (!wrapper || !trigger || !menu || !native) return;
 
@@ -1189,7 +1410,7 @@
         // Province Change Event with Cascading Regency Fetching
         function onProvinceChange(provinceId) {
             const triggerKab = document.getElementById('trigger-kabupaten');
-            const menuKab    = document.getElementById('menu-kabupaten');
+            const menuKab = document.getElementById('menu-kabupaten');
 
             kabSelect.innerHTML = '<option value="">Semua Kabupaten</option>';
             kabSelect.value = '';
@@ -1265,9 +1486,9 @@
         }
 
         const createProv = document.getElementById('create-province_id');
-        const createKab  = document.getElementById('create-regency_id');
-        const editProv   = document.getElementById('edit-province_id');
-        const editKab    = document.getElementById('edit-regency_id');
+        const createKab = document.getElementById('create-regency_id');
+        const editProv = document.getElementById('edit-province_id');
+        const editKab = document.getElementById('edit-regency_id');
 
         if (createProv && createKab) {
             createProv.addEventListener('change', function () {

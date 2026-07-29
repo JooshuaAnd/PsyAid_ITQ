@@ -18,6 +18,7 @@ $routes->get('/logout', 'Auth\AuthController::logout');
 $routes->get('/forbidden', 'Auth\AuthController::forbidden');
 
 // Role-based protected routes: BPBD Admin Command Center (Bpbd namespace)
+$routes->get('/bpbd/dashboard', 'Bpbd\DashboardBPBDController::index', ['filter' => ['auth', 'role:bpbd_admin']]);
 $routes->get('/command-center', 'Bpbd\CommandCenterController::index', ['filter' => ['auth', 'role:bpbd_admin']]);
 $routes->get('/command-center/get-regencies/(:num)', 'Bpbd\CommandCenterController::getRegencies/$1', ['filter' => ['auth', 'role:bpbd_admin']]);
 $routes->get('/command-center/get-stats', 'Bpbd\CommandCenterController::getStats', ['filter' => ['auth', 'role:bpbd_admin']]);
