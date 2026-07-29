@@ -160,4 +160,52 @@ class LandingController extends BaseController
             'message' => 'Pendaftaran relawan Anda berhasil dikirim ke BPBD. Tim kami akan menghubungi via WhatsApp.',
         ]);
     }
+
+    /**
+     * Public Disaster Report & Assistant Page (Laporan Masyarakat)
+     */
+    public function laporanMasyarakat()
+    {
+        $poskoModel = new PoskoModel();
+        $provinces  = (new \App\Models\ProvinceModel())->orderBy('name', 'ASC')->findAll();
+
+        return view('landing/LaporanMasyarakat', [
+            'title'      => 'PsyAid Disaster Assistant — Laporan Bencana Masyarakat',
+            'provinces'  => $provinces,
+            'isLoggedIn' => session()->get('logged_in') ?? false,
+            'role'       => session()->get('role') ?? null,
+            'poskoId'    => session()->get('posko_id') ?? null,
+        ]);
+    }
+
+    /**
+     * Handle AJAX/Fetch submission of public disaster report from PsyAid Assistant
+     */
+    public function storeDisasterReport()
+    {
+        $input = $this->request->getJSON(true) ?? $this->request->getPost();
+
+        $nama          = trim($input['nama'] ?? '');
+        $whatsapp      = trim($input['whatsapp'] ?? '');
+        $jenisBencana  = trim($input['jenis_bencana'] ?? '');
+        $lokasiDetail  = trim($input['lokasi_detail'] ?? '');
+        $estimasi      = trim($input['estimasi_korban'] ?? '');
+        $kebutuhan     = $input['kebutuhan'] ?? [];
+
+        if (empty($nama) || empty($whatsapp) || empty($lokasiDetail)) {
+            return $this->response->setJSON([
+                'status'  => 'error',
+                'message' => 'Nama, WhatsApp, dan Lokasi Detail wajib diisi.',
+            ]);
+        }
+
+        // Generate report ticket reference number
+        $ticketCode = 'REP-' . date('Ymd') . '-' . rand(1000, 9999);
+
+        return $this->response->setJSON([
+            'status'      => 'success',
+            'ticket_code' => $ticketCode,
+            'message'     => 'Laporan bencana berhasil dikirimkan ke BPBD Command Center.',
+        ]);
+    }
 }

@@ -174,6 +174,9 @@
                 ICD-11 ITQ</a>
             <a href="#creators"
                 class="text-xs font-semibold px-4 py-2 text-slate-700 hover:text-emerald-700 transition-colors">Creators</a>
+            <a href="<?= site_url('/laporan-masyarakat') ?>"
+                class="text-xs font-semibold px-4 py-2 text-slate-700 hover:text-emerald-700 transition-colors">Laporkan
+                Bencana</a>
         </div>
 
         <!-- Far Right: Action Buttons -->
@@ -208,11 +211,16 @@
         <a href="#hero"
             class="mobile-link text-sm font-semibold text-emerald-950 py-2.5 px-3.5 rounded-xl hover:bg-emerald-100/60 hover:text-emerald-700 transition-colors block">Beranda</a>
         <a href="#features"
-            class="mobile-link text-sm font-semibold text-emerald-950 py-2.5 px-3.5 rounded-xl hover:bg-emerald-100/60 hover:text-emerald-700 transition-colors block">Stakeholder &amp; Fitur</a>
+            class="mobile-link text-sm font-semibold text-emerald-950 py-2.5 px-3.5 rounded-xl hover:bg-emerald-100/60 hover:text-emerald-700 transition-colors block">Stakeholder
+            &amp; Fitur</a>
         <a href="#tech"
-            class="mobile-link text-sm font-semibold text-emerald-950 py-2.5 px-3.5 rounded-xl hover:bg-emerald-100/60 hover:text-emerald-700 transition-colors block">AI &amp; ICD-11 ITQ</a>
+            class="mobile-link text-sm font-semibold text-emerald-950 py-2.5 px-3.5 rounded-xl hover:bg-emerald-100/60 hover:text-emerald-700 transition-colors block">AI
+            &amp; ICD-11 ITQ</a>
         <a href="#creators"
             class="mobile-link text-sm font-semibold text-emerald-950 py-2.5 px-3.5 rounded-xl hover:bg-emerald-100/60 hover:text-emerald-700 transition-colors block">Creators</a>
+        <a href="<?= site_url('/laporan-masyarakat') ?>"
+            class="mobile-link text-sm font-semibold text-emerald-950 py-2.5 px-3.5 rounded-xl hover:bg-emerald-100/60 hover:text-emerald-700 transition-colors block">Laporkan
+            Bencana</a>
 
         <div class="pt-2 border-t border-emerald-200/60 mt-1">
             <?php if (!empty($isLoggedIn)): ?>
@@ -260,15 +268,15 @@
 
             <!-- CTA Buttons -->
             <div class="mt-6 flex items-center justify-center gap-4 flex-wrap">
+                <a href="<?= site_url('/laporan-masyarakat') ?>"
+                    class="liquid-glass-btn text-emerald-950 font-bold px-6 py-3 rounded-xl flex items-center gap-2.5 text-xs sm:text-sm shadow-sm">
+                    <i data-lucide="siren" class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600"></i>
+                    Laporkan Bencana
+                </a>
                 <a href="<?= site_url('/login') ?>"
                     class="liquid-glass-btn text-emerald-950 font-bold px-6 py-3 rounded-xl flex items-center gap-2.5 text-xs sm:text-sm shadow-sm">
                     <i data-lucide="sparkles" class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600"></i>
                     Masuk System
-                </a>
-                <a href="#creators"
-                    class="liquid-glass-btn text-slate-800 font-semibold px-6 py-3 rounded-xl flex items-center gap-2 text-xs sm:text-sm shadow-sm">
-                    <i data-lucide="users" class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600"></i>
-                    Lihat Tim Creators
                 </a>
             </div>
 
@@ -309,7 +317,7 @@
 
                 <!-- Curved Connecting Arrow: Card 1 (BPBD) -> Card 2 (Relawan) -->
                 <div
-                    class="hidden md:flex absolute top-10 left-[30.5%] -translate-x-1/2 z-20 items-center justify-center pointer-events-none">
+                    class="hidden md:flex absolute top-10 left-[31.5%] -translate-x-1/2 z-20 items-center justify-center pointer-events-none">
                     <svg class="w-24 h-12 text-emerald-600 drop-shadow-sm" viewBox="0 0 100 40" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <path d="M 10 32 C 35 8, 65 8, 90 26" stroke="currentColor" stroke-width="2.5"
@@ -320,7 +328,7 @@
 
                 <!-- Curved Connecting Arrow: Card 2 (Relawan) -> Card 3 (Psikolog) -->
                 <div
-                    class="hidden md:flex absolute top-10 left-[64%] -translate-x-1/2 z-20 items-center justify-center pointer-events-none">
+                    class="hidden md:flex absolute top-10 left-[64.5%] -translate-x-1/2 z-20 items-center justify-center pointer-events-none">
                     <svg class="w-24 h-12 text-teal-600 drop-shadow-sm" viewBox="0 0 100 40" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <path d="M 10 32 C 35 8, 65 8, 90 26" stroke="currentColor" stroke-width="2.5"
@@ -329,10 +337,9 @@
                     </svg>
                 </div>
 
-                <!-- Card 1: BPBD Admin -->
+                <!-- Card 1: BPBD Command Center -->
                 <div
                     class="glass-card rounded-xl p-8 hover:border-emerald-500/50 transition-all duration-300 hover:-translate-y-2 group">
-
                     <span class="text-xs font-bold text-red-600 uppercase tracking-wider block mb-2">BPBD Admin</span>
                     <h4 class="text-xl font-bold text-slate-900 mb-3">Command Center</h4>
                     <p class="text-slate-600 text-sm leading-relaxed mb-6">
@@ -349,10 +356,9 @@
                     </ul>
                 </div>
 
-                <!-- Card 2: Relawan Posko -->
+                <!-- Card 2: Relawan Lapangan -->
                 <div
                     class="glass-card rounded-xl p-8 hover:border-emerald-500/50 transition-all duration-300 hover:-translate-y-2 group">
-
                     <span class="text-xs font-bold text-emerald-700 uppercase tracking-wider block mb-2">Relawan
                         Lapangan</span>
                     <h4 class="text-xl font-bold text-slate-900 mb-3">Posko Pengungsian</h4>
@@ -373,7 +379,6 @@
                 <!-- Card 3: Psikolog Klinis -->
                 <div
                     class="glass-card rounded-xl p-8 hover:border-emerald-500/50 transition-all duration-300 hover:-translate-y-2 group">
-
                     <span class="text-xs font-bold text-teal-700 uppercase tracking-wider block mb-2">Psikolog
                         Klinis</span>
                     <h4 class="text-xl font-bold text-slate-900 mb-3">Clinical Workspace</h4>
@@ -592,6 +597,11 @@
                 <span>- Disaster Mental Health Command Center</span>
             </div>
             <div class="flex items-center gap-4 flex-wrap justify-center">
+                <a href="<?= site_url('/laporan-masyarakat') ?>"
+                    class="text-slate-600 hover:text-emerald-700 font-semibold transition-colors">
+                    Laporkan Bencana
+                </a>
+                <span class="text-slate-400">•</span>
                 <a href="<?= site_url('/rekrutmen-relawan') ?>"
                     class="text-slate-600 hover:text-emerald-700 font-semibold transition-colors">
                     Rekrutmen Relawan

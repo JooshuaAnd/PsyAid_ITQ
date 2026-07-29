@@ -8,6 +8,11 @@ use CodeIgniter\Router\RouteCollection;
 $routes->get('/', 'LandingController::index');
 $routes->get('/landing', 'LandingController::index');
 $routes->get('/rekrutmen-relawan', 'LandingController::rekrutmen');
+$routes->get('/laporan-masyarakat', 'LandingController::laporanMasyarakat');
+
+// Public API routes
+$routes->post('/api/register-volunteer-request', 'LandingController::storeVolunteerRequest');
+$routes->post('/api/store-disaster-report', 'LandingController::storeDisasterReport');
 
 // Authentication routes (Auth namespace)
 $routes->get('/login', 'Auth\AuthController::login');

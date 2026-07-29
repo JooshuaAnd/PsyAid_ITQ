@@ -300,7 +300,7 @@
     <canvas id="health-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-80"></canvas>
 
     <!-- Standalone Back Button (Top-Left, No Top Header Bar, No Login Button) -->
-    <div class="relative z-20 pt-4 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+    <div class="relative z-20 pt-4 pb-2 mb-2 sm:mb-4 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
         <a href="<?= site_url('/') ?>"
             class="liquid-glass-btn text-emerald-950 font-bold px-4 py-2 rounded-lg inline-flex items-center gap-2 text-xs shadow-sm hover:scale-105 transition-all">
             <i data-lucide="arrow-left" class="w-4 h-4 text-emerald-600"></i>
@@ -647,6 +647,11 @@
                 <span>- Disaster Mental Health Command Center</span>
             </div>
             <div class="flex items-center gap-4 flex-wrap justify-center">
+                <a href="<?= site_url('/laporan-masyarakat') ?>"
+                    class="text-slate-600 hover:text-emerald-700 font-semibold transition-colors">
+                    Laporkan Bencana
+                </a>
+                <span class="text-slate-400">•</span>
                 <a href="<?= site_url('/rekrutmen-relawan') ?>"
                     class="text-slate-600 hover:text-emerald-700 font-semibold transition-colors">
                     Rekrutmen Relawan
