@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= esc($title ?? 'Rekrutmen Relawan Posko Bencana - PsyAid') ?></title>
+    <link rel="shortcut icon" type="image/png" href="<?= base_url('images/Logo_PsyAid.png') ?>">
+    <link rel="icon" type="image/png" href="<?= base_url('images/Logo_PsyAid.png') ?>">
 
     <!-- Fonts: Plus Jakarta Sans & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
