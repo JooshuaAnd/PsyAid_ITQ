@@ -199,21 +199,34 @@
         </div>
     </nav>
 
-    <!-- Mobile Drawer -->
+    <!-- Mobile Drawer (Clean Floating PsyAid Light Green Frosted Card) -->
     <div id="mobile-drawer"
-        class="fixed inset-x-0 top-[73px] z-40 bg-white/95 backdrop-blur-2xl border-b border-emerald-900/10 hidden transition-all flex-col p-6 gap-4 lg:hidden shadow-xl">
+        class="fixed inset-x-4 top-[72px] sm:left-auto sm:right-6 sm:w-80 z-50 rounded-2xl hidden transition-all flex-col p-5 gap-1.5 lg:hidden shadow-2xl overflow-hidden animate-fadeInDown"
+        style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(236, 253, 245, 0.98) 100%); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border: 1.5px solid #a7f3d0; box-shadow: 0 16px 40px -4px rgba(16, 185, 129, 0.18);">
         <a href="#hero"
-            class="mobile-link text-sm font-semibold text-slate-800 py-2 border-b border-slate-200">Beranda</a>
+            class="mobile-link text-sm font-semibold text-emerald-950 py-2.5 px-3.5 rounded-xl hover:bg-emerald-100/60 hover:text-emerald-700 transition-colors block">Beranda</a>
         <a href="#features"
-            class="mobile-link text-sm font-semibold text-slate-800 py-2 border-b border-slate-200">Stakeholder &amp;
-            Fitur</a>
-        <a href="#tech" class="mobile-link text-sm font-semibold text-slate-800 py-2 border-b border-slate-200">AI &amp;
-            ICD-11 ITQ</a>
+            class="mobile-link text-sm font-semibold text-emerald-950 py-2.5 px-3.5 rounded-xl hover:bg-emerald-100/60 hover:text-emerald-700 transition-colors block">Stakeholder &amp; Fitur</a>
+        <a href="#tech"
+            class="mobile-link text-sm font-semibold text-emerald-950 py-2.5 px-3.5 rounded-xl hover:bg-emerald-100/60 hover:text-emerald-700 transition-colors block">AI &amp; ICD-11 ITQ</a>
         <a href="#creators"
-            class="mobile-link text-sm font-semibold text-slate-800 py-2 border-b border-slate-200">Creators</a>
-        <a href="<?= site_url('/login') ?>"
-            class="text-center font-bold liquid-glass-btn text-emerald-950 py-3 rounded-xl mt-2 shadow-sm block">Masuk
-            Ke System</a>
+            class="mobile-link text-sm font-semibold text-emerald-950 py-2.5 px-3.5 rounded-xl hover:bg-emerald-100/60 hover:text-emerald-700 transition-colors block">Creators</a>
+
+        <div class="pt-2 border-t border-emerald-200/60 mt-1">
+            <?php if (!empty($isLoggedIn)): ?>
+                <a href="<?= site_url($role === 'bpbd_admin' ? '/bpbd/dashboard' : ($role === 'psikolog' ? '/psikolog/dashboard' : '/relawan/posko/' . ($poskoId ?? 1))) ?>"
+                    class="w-full text-center font-bold text-xs sm:text-sm py-2.5 px-4 rounded-xl shadow-sm block transition-all hover:scale-[1.01]"
+                    style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); color: #065f46; border: 1.5px solid #34d399;">
+                    Buka Dashboard
+                </a>
+            <?php else: ?>
+                <a href="<?= site_url('/login') ?>"
+                    class="w-full text-center font-bold text-xs sm:text-sm py-2.5 px-4 rounded-xl shadow-sm block transition-all hover:scale-[1.01]"
+                    style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); color: #065f46; border: 1.5px solid #34d399;">
+                    Masuk Ke System
+                </a>
+            <?php endif; ?>
+        </div>
     </div>
 
     <!-- Main Content -->

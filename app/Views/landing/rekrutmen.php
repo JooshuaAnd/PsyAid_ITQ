@@ -125,6 +125,170 @@
             color: #ffffff;
             border-radius: 1rem 1rem 0.2rem 1rem;
         }
+
+        /* CUSTOM FROSTED DROPDOWN & SEARCH FIELD SYSTEM (MATCHING BPBD POSKO MANAGEMENT) */
+        .frost-custom-select-wrapper {
+            position: relative;
+            z-index: 10;
+        }
+
+        .frost-custom-select-wrapper.active-dropdown {
+            z-index: 1060 !important;
+        }
+
+        .frost-custom-trigger {
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px !important;
+            padding: 0.55rem 0.85rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #0f172a;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+            user-select: none;
+        }
+
+        .frost-custom-trigger:hover:not(.disabled) {
+            border-color: #059669;
+            background-color: #f4fbf7;
+        }
+
+        .frost-custom-trigger.active {
+            border-color: #059669;
+            box-shadow: 0 0 0 3.5px rgba(5, 150, 105, 0.18);
+            background-color: #ffffff;
+        }
+
+        .frost-custom-trigger .chevron-icon {
+            color: #059669;
+            font-size: 0.9rem;
+            transition: transform 0.2s ease;
+        }
+
+        .frost-custom-trigger.active .chevron-icon {
+            transform: rotate(180deg);
+        }
+
+        .frost-custom-menu {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            right: 0;
+            z-index: 1070 !important;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(5, 150, 105, 0.3);
+            box-shadow: 0 16px 40px -4px rgba(15, 23, 42, 0.18), 0 4px 16px rgba(0, 0, 0, 0.06);
+            border-radius: 8px !important;
+            max-height: 260px;
+            overflow-y: auto;
+            padding: 0.35rem;
+            display: none;
+            animation: fadeInDown 0.15s ease-out;
+        }
+
+        .frost-custom-menu.show {
+            display: block;
+        }
+
+        .frost-custom-option {
+            padding: 0.55rem 0.75rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #1e293b;
+            border-radius: 6px !important;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.15s ease;
+        }
+
+        .frost-custom-option:hover {
+            background-color: #ecfdf5;
+            color: #047857;
+            font-weight: 600;
+        }
+
+        .frost-custom-option.selected {
+            background-color: #059669;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .frost-search-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .frost-search-icon-inside {
+            position: absolute;
+            left: 1rem;
+            color: #059669;
+            font-size: 1rem;
+            pointer-events: none;
+        }
+
+        .frost-search-input {
+            width: 100%;
+            background: #ffffff;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px !important;
+            padding: 0.55rem 2.25rem 0.55rem 2.65rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #0f172a;
+            text-align: left;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+        }
+
+        .frost-search-input:focus {
+            background: #ffffff;
+            border-color: #059669;
+            box-shadow: 0 0 0 3.5px rgba(5, 150, 105, 0.18);
+            outline: none;
+        }
+
+        .frost-search-clear-inside {
+            position: absolute;
+            right: 0.75rem;
+            color: #94a3b8;
+            font-size: 1rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s ease;
+        }
+
+        .frost-search-clear-inside:hover {
+            color: #dc2626;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-6px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 
@@ -171,29 +335,57 @@
             </div>
 
             <!-- Filter & Search Box -->
-            <div class="liquid-glass-card border-0 shadow-sm rounded-lg mb-4 overflow-hidden p-3.5 p-md-4">
-                <form action="<?= site_url('/rekrutmen-relawan') ?>" method="GET" class="row g-3 align-items-center">
+            <div class="liquid-glass-card border-0 shadow-sm rounded-lg mb-4 p-3.5 p-md-4" style="position: relative; z-index: 100; overflow: visible !important;">
+                <form id="landing-filter-form" action="<?= site_url('/rekrutmen-relawan') ?>" method="GET" class="row g-3 align-items-center">
                     <div class="col-12 col-md-5 col-lg-6">
-                        <label for="q" class="form-label small fw-bold text-slate-700 mb-1">Cari Posko / Lokasi /
-                            Bencana</label>
-                        <div class="input-group">
-                            <span class="input-group-text bg-white/70 border-end-0 text-muted"><i
-                                    class="bi bi-search"></i></span>
-                            <input type="text" name="q" id="q" class="form-control border-start-0 rounded-end-lg"
-                                value="<?= esc($searchQuery) ?>" placeholder="Contoh: Cianjur, Gempa, Merapi...">
+                        <label for="q" class="form-label small fw-bold text-slate-700 mb-1">Cari Posko / Lokasi / Bencana</label>
+                        <div class="frost-search-input-wrapper">
+                            <i class="bi bi-search frost-search-icon-inside"></i>
+                            <input type="text" name="q" id="q" class="frost-search-input"
+                                value="<?= esc($searchQuery) ?>" placeholder="Contoh: Cianjur, Gempa, Merapi..." autocomplete="off">
+                            <?php if (!empty($searchQuery)): ?>
+                                <button type="button" id="btn-clear-search-landing" class="frost-search-clear-inside"
+                                    title="Bersihkan Pencarian">
+                                    <i class="bi bi-x-circle-fill"></i>
+                                </button>
+                            <?php else: ?>
+                                <button type="button" id="btn-clear-search-landing" class="frost-search-clear-inside d-none"
+                                    title="Bersihkan Pencarian">
+                                    <i class="bi bi-x-circle-fill"></i>
+                                </button>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="col-12 col-md-4 col-lg-4">
-                        <label for="bencana" class="form-label small fw-bold text-slate-700 mb-1">Kategori
-                            Bencana</label>
-                        <select name="bencana" id="bencana" class="form-select rounded-lg">
-                            <option value="">-- Semua Jenis Bencana --</option>
+                        <label for="bencana" class="form-label small fw-bold text-slate-700 mb-1">Kategori Bencana</label>
+                        <select name="bencana" id="bencana" class="d-none">
+                            <option value="">Semua Jenis Bencana</option>
                             <?php foreach ($distinctBencana as $jenis): ?>
                                 <option value="<?= esc($jenis) ?>" <?= $selectedBencana === $jenis ? 'selected' : '' ?>>
                                     <?= esc($jenis) ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
+                        <?php
+                            $selectedBencanaText = !empty($selectedBencana) ? $selectedBencana : 'Semua Jenis Bencana';
+                        ?>
+                        <div class="frost-custom-select-wrapper" id="custom-wrapper-landing-bencana">
+                            <div class="frost-custom-trigger" id="trigger-landing-bencana">
+                                <span class="trigger-label text-truncate"><?= esc($selectedBencanaText) ?></span>
+                                <i class="bi bi-chevron-down chevron-icon"></i>
+                            </div>
+                            <div class="frost-custom-menu" id="menu-landing-bencana">
+                                <div class="frost-custom-option <?= empty($selectedBencana) ? 'selected' : '' ?>" data-value="">
+                                    Semua Jenis Bencana
+                                </div>
+                                <?php foreach ($distinctBencana as $jenis): ?>
+                                    <div class="frost-custom-option <?= $selectedBencana === $jenis ? 'selected' : '' ?>"
+                                        data-value="<?= esc($jenis) ?>">
+                                        <?= esc($jenis) ?>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-12 col-md-3 col-lg-2 d-flex gap-2 align-self-end">
                         <button type="submit"
@@ -276,17 +468,28 @@
                                         <!-- Requirements Summary -->
                                         <div class="mb-3">
                                             <div class="text-slate-700 fs-8 fw-bold text-uppercase mb-1">Persyaratan Khusus:</div>
-                                            <?php if (count($listing['requirements']) > 1): ?>
-                                                <ol class="text-muted fs-8 mb-0 ps-3">
-                                                    <?php foreach ($listing['requirements'] as $req): ?>
+                                            <?php 
+                                                $reqItems = [];
+                                                if (is_array($listing['requirements'])) {
+                                                    $reqItems = array_values(array_filter(array_map('trim', $listing['requirements'])));
+                                                } else if (!empty($listing['requirements'])) {
+                                                    if (strpos($listing['requirements'], "\n") !== false) {
+                                                        $reqItems = array_values(array_filter(array_map('trim', explode("\n", $listing['requirements']))));
+                                                    } else if (strpos($listing['requirements'], ",") !== false) {
+                                                        $reqItems = array_values(array_filter(array_map('trim', explode(",", $listing['requirements']))));
+                                                    } else {
+                                                        $reqItems = [trim($listing['requirements'])];
+                                                    }
+                                                }
+                                            ?>
+                                            <?php if (count($reqItems) > 1): ?>
+                                                <ol class="text-muted fs-8 mb-0 ps-3 list-decimal" style="list-style-type: decimal !important;">
+                                                    <?php foreach ($reqItems as $req): ?>
                                                         <li class="mb-1"><?= esc($req) ?></li>
                                                     <?php endforeach; ?>
                                                 </ol>
-                                            <?php elseif (count($listing['requirements']) === 1): ?>
-                                                <div class="text-muted fs-8 d-flex align-items-start gap-1.5">
-                                                    <i class="bi bi-check2-circle text-emerald-600 fs-6 leading-none"></i>
-                                                    <span><?= esc($listing['requirements'][0]) ?></span>
-                                                </div>
+                                            <?php elseif (count($reqItems) === 1): ?>
+                                                <span class="text-muted fs-8"><?= esc($reqItems[0] ?? '') ?></span>
                                             <?php else: ?>
                                                 <div class="text-muted fs-8 fst-italic">Tidak ada persyaratan khusus.</div>
                                             <?php endif; ?>
@@ -344,7 +547,7 @@
 
                             <div class="small text-slate-700 mb-3">
                                 <strong class="d-block mb-1 text-slate-900">Prosedur Registrasi:</strong>
-                                <ol class="ps-3 mb-0 text-slate-600">
+                                <ol class="ps-3 mb-0 text-slate-600 list-decimal" style="list-style-type: decimal !important;">
                                     <li class="mb-1">Akun relawan dapat didaftarkan langsung oleh Admin BPBD setempat.</li>
                                     <li class="mb-1">Silakan hubungi nomor kontak BPBD Command Center di atas untuk konfirmasi
                                         kehadiran &amp; penugasan posko.</li>
@@ -774,6 +977,92 @@
 
                     appendBotBubble(`🎉 **Pendaftaran Relawan Berhasil Terkirim!**\n\nData pendaftaran Anda untuk **${activePoskoName}** telah berhasil dikirimkan ke BPBD Command Center untuk peninjauan (approval).\n\n**Ringkasan Biodata Relawan:**\n• **NIK**: ${formData.nik}\n• **Nama**: ${formData.nama}\n• **Domisili**: ${formData.provinsi}\n• **Tgl Lahir**: ${formData.tgl_lahir}\n• **No WhatsApp**: ${formData.whatsapp}\n\nPetugas BPBD akan melakukan verifikasi & menghubungi nomor WhatsApp Anda setelah akun disetujui.`);
                 }
+            }
+
+            // -------------------------------------------------------------
+            // CUSTOM FROSTED SELECT & SEARCH CLEAR HANDLERS (MATCHING BPBD)
+            // -------------------------------------------------------------
+            function setupCustomSelectGeneric(wrapperId, triggerId, menuId, nativeId, onChange) {
+                const wrapper = document.getElementById(wrapperId);
+                const trigger = document.getElementById(triggerId);
+                const menu = document.getElementById(menuId);
+                const native = document.getElementById(nativeId);
+
+                if (!wrapper || !trigger || !menu || !native) return;
+
+                trigger.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    if (trigger.classList.contains('disabled')) return;
+
+                    const isAlreadyShow = menu.classList.contains('show');
+
+                    document.querySelectorAll('.frost-custom-menu').forEach(m => m.classList.remove('show'));
+                    document.querySelectorAll('.frost-custom-trigger').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.frost-custom-select-wrapper').forEach(w => w.classList.remove('active-dropdown'));
+
+                    if (!isAlreadyShow) {
+                        menu.classList.add('show');
+                        trigger.classList.add('active');
+                        wrapper.classList.add('active-dropdown');
+                    }
+                });
+
+                menu.addEventListener('click', function (e) {
+                    const opt = e.target.closest('.frost-custom-option');
+                    if (!opt) return;
+
+                    const val = opt.getAttribute('data-value');
+                    const txt = opt.textContent.trim();
+
+                    menu.querySelectorAll('.frost-custom-option').forEach(o => o.classList.remove('selected'));
+                    opt.classList.add('selected');
+
+                    trigger.querySelector('.trigger-label').textContent = txt;
+
+                    menu.classList.remove('show');
+                    trigger.classList.remove('active');
+                    wrapper.classList.remove('active-dropdown');
+
+                    if (native.value !== val) {
+                        native.value = val;
+                        if (typeof onChange === 'function') {
+                            onChange(val, txt);
+                        }
+                    }
+                });
+            }
+
+            // Setup Custom Select for Kategori Bencana
+            setupCustomSelectGeneric('custom-wrapper-landing-bencana', 'trigger-landing-bencana', 'menu-landing-bencana', 'bencana', function () {
+                if (landingFilterForm) landingFilterForm.submit();
+            });
+
+            // Close custom dropdowns on click outside
+            document.addEventListener('click', function () {
+                document.querySelectorAll('.frost-custom-menu').forEach(m => m.classList.remove('show'));
+                document.querySelectorAll('.frost-custom-trigger').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.frost-custom-select-wrapper').forEach(w => w.classList.remove('active-dropdown'));
+            });
+
+            // Search Clear Input Button Handler
+            const searchInputLanding = document.getElementById('q');
+            const clearBtnLanding = document.getElementById('btn-clear-search-landing');
+            const landingFilterForm = document.getElementById('landing-filter-form');
+
+            if (searchInputLanding && clearBtnLanding) {
+                searchInputLanding.addEventListener('input', function () {
+                    if (this.value.trim().length > 0) {
+                        clearBtnLanding.classList.remove('d-none');
+                    } else {
+                        clearBtnLanding.classList.add('d-none');
+                    }
+                });
+
+                clearBtnLanding.addEventListener('click', function () {
+                    searchInputLanding.value = '';
+                    clearBtnLanding.classList.add('d-none');
+                    if (landingFilterForm) landingFilterForm.submit();
+                });
             }
         });
     </script>
