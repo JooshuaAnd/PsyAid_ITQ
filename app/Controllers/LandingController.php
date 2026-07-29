@@ -66,23 +66,19 @@ class LandingController extends BaseController
                 continue;
             }
 
-            // Parse positions needed
-            if (! empty($posko['positions'])) {
-                if (is_array($posko['positions'])) {
-                    $positions = $posko['positions'];
-                } else {
-                    $positions = array_map('trim', explode(',', $posko['positions']));
-                }
-            } else {
-                $positions = ['Relawan Pendampingan Psikososial', 'Relawan Asesmen ITQ', 'Relawan Logistik Posko'];
-            }
-
-            // Parse requirements
+            // Parse requirements options (support array, JSON, newline-delimited, or comma-delimited)
             if (! empty($posko['requirements'])) {
                 if (is_array($posko['requirements'])) {
-                    $requirements = $posko['requirements'];
+                    $requirements = array_values(array_filter(array_map('trim', $posko['requirements'])));
                 } else {
-                    $requirements = array_map('trim', explode(',', $posko['requirements']));
+                    $jsonDecoded = json_decode($posko['requirements'], true);
+                    if (is_array($jsonDecoded)) {
+                        $requirements = array_values(array_filter(array_map('trim', $jsonDecoded)));
+                    } else if (strpos($posko['requirements'], "\n") !== false) {
+                        $requirements = array_values(array_filter(array_map('trim', explode("\n", $posko['requirements']))));
+                    } else {
+                        $requirements = array_values(array_filter(array_map('trim', explode(',', $posko['requirements']))));
+                    }
                 }
             } else {
                 $requirements = ['Pria/Wanita min. 18 tahun', 'Komunikatif & memiliki kepedulian sosial tinggi', 'Bersedia bertugas di lokasi posko'];
@@ -94,7 +90,6 @@ class LandingController extends BaseController
             $posko['quota']          = $quota;
             $posko['filled']         = $filled;
             $posko['urgency']        = $urgency;
-            $posko['positions']      = $positions;
             $posko['requirements']   = $requirements;
             $posko['contact_person'] = $contact;
 

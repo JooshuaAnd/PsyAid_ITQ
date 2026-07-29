@@ -775,15 +775,20 @@ if (session()->get('logged_in')) {
                     </a>
 
                     <!-- Desktop Dynamic Liquid Glass Breadcrumb -->
+                    <?php
+                    $currentUri = trim(uri_string(), '/');
+                    $targetHome = trim($homeUrl, '/');
+                    $isDashboardPage = ($currentUri === $targetHome) || url_is('bpbd/dashboard*') || url_is('psikolog/dashboard*');
+                    ?>
                     <nav aria-label="breadcrumb" class="d-none d-md-block">
                         <ol class="breadcrumb mb-0 glass-breadcrumb align-items-center">
-                            <li class="breadcrumb-item small fw-semibold">
+                            <li class="breadcrumb-item small fw-semibold <?= $isDashboardPage ? 'active fw-bold' : '' ?>" <?= $isDashboardPage ? 'aria-current="page"' : '' ?>>
                                 <a href="<?= site_url($homeUrl) ?>"
                                     class="text-decoration-none text-success hover-emerald d-inline-flex align-items-center gap-1">
                                     <i class="bi bi-house-door-fill text-success"></i> Beranda
                                 </a>
                             </li>
-                            <?php if (!empty($title)): ?>
+                            <?php if (!empty($title) && !$isDashboardPage): ?>
                                 <li class="breadcrumb-item active small fw-bold text-dark" aria-current="page">
                                     <?= esc(explode(' — ', explode(' - ', $title)[0])[0]) ?>
                                 </li>

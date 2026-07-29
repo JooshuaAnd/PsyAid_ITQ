@@ -273,33 +273,23 @@
                                             </div>
                                         </div>
 
-                                        <!-- Positions Needed -->
-                                        <div class="mb-3">
-                                            <div class="text-slate-700 fs-8 fw-bold text-uppercase mb-1.5">Posisi Relawan
-                                                Dibutuhkan:</div>
-                                            <div class="d-flex flex-wrap gap-1.5">
-                                                <?php foreach ($listing['positions'] as $pos): ?>
-                                                    <span
-                                                        class="badge bg-emerald-50 text-slate-800 border border-emerald-200 fw-medium px-2 py-1 fs-8 rounded-md">
-                                                        <i class="bi bi-check-circle-fill text-emerald-600 me-1"></i>
-                                                        <?= esc($pos) ?>
-                                                    </span>
-                                                <?php endforeach; ?>
-                                            </div>
-                                        </div>
-
                                         <!-- Requirements Summary -->
                                         <div class="mb-3">
-                                            <div class="text-slate-700 fs-8 fw-bold text-uppercase mb-1">Persyaratan Singkat:
-                                            </div>
-                                            <ul class="list-unstyled text-muted fs-8 mb-0 ps-0">
-                                                <?php foreach ($listing['requirements'] as $req): ?>
-                                                    <li class="d-flex align-items-start gap-1.5 mb-1">
-                                                        <i class="bi bi-dot text-emerald-600 fs-6 leading-none"></i>
-                                                        <span><?= esc($req) ?></span>
-                                                    </li>
-                                                <?php endforeach; ?>
-                                            </ul>
+                                            <div class="text-slate-700 fs-8 fw-bold text-uppercase mb-1">Persyaratan Khusus:</div>
+                                            <?php if (count($listing['requirements']) > 1): ?>
+                                                <ol class="text-muted fs-8 mb-0 ps-3">
+                                                    <?php foreach ($listing['requirements'] as $req): ?>
+                                                        <li class="mb-1"><?= esc($req) ?></li>
+                                                    <?php endforeach; ?>
+                                                </ol>
+                                            <?php elseif (count($listing['requirements']) === 1): ?>
+                                                <div class="text-muted fs-8 d-flex align-items-start gap-1.5">
+                                                    <i class="bi bi-check2-circle text-emerald-600 fs-6 leading-none"></i>
+                                                    <span><?= esc($listing['requirements'][0]) ?></span>
+                                                </div>
+                                            <?php else: ?>
+                                                <div class="text-muted fs-8 fst-italic">Tidak ada persyaratan khusus.</div>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
 

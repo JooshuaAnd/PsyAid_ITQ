@@ -237,6 +237,35 @@
         letter-spacing: 0.05em;
     }
 
+    /* SEARCHABLE CUSTOM FROSTED DROPDOWN SYSTEM */
+    .frost-menu-search-wrapper {
+        position: sticky;
+        top: -0.35rem;
+        z-index: 1080;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(12px);
+        margin: -0.35rem -0.35rem 0.35rem -0.35rem;
+        padding: 0.5rem;
+        border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+    }
+
+    .frost-dropdown-search-input {
+        background: #f8fafc;
+        border: 1.5px solid #cbd5e1;
+        border-radius: 6px !important;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: #0f172a;
+        transition: all 0.2s ease;
+    }
+
+    .frost-dropdown-search-input:focus {
+        background: #ffffff;
+        border-color: #059669;
+        box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.18);
+        outline: none;
+    }
+
     /* LIGHT GREEN BUTTON: PRIMARY ACTION */
     .frost-btn-primary,
     .frost-btn-posko {
@@ -382,8 +411,55 @@
         transition: transform 0.2s ease;
     }
 
-    .frost-custom-trigger.active .chevron-icon {
-        transform: rotate(180deg);
+    /* SEARCHABLE CUSTOM DROPDOWN SEARCH WRAPPER */
+    .frost-menu-search-wrapper {
+        position: sticky;
+        top: 0;
+        z-index: 1080;
+        background: #ffffff;
+        padding: 0.5rem 0.6rem;
+        margin: -0.35rem -0.35rem 0.4rem -0.35rem;
+        border-bottom: 1.5px solid #e2e8f0;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+    }
+
+    .frost-menu-search-box {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    .frost-menu-search-icon {
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #059669;
+        font-size: 0.85rem;
+        pointer-events: none;
+        z-index: 2;
+    }
+
+    .frost-dropdown-search-input {
+        width: 100%;
+        background: #f8fafc;
+        border: 1.5px solid #cbd5e1;
+        border-radius: 6px !important;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: #0f172a;
+        padding: 0.45rem 0.75rem 0.45rem 2.25rem !important;
+        transition: all 0.2s ease;
+    }
+
+    .frost-dropdown-search-input:focus {
+        background: #ffffff;
+        border-color: #059669;
+        box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.18);
+        outline: none;
     }
 
     .frost-custom-menu {
@@ -1025,7 +1101,40 @@ $bencanaOptions = $jenisBencana ?? $distinctJenisBencana ?? [];
                 },
             });
         }
+    });
+</script>
 
+<!-- JavaScript for Real-Time AJAX Filters & Interactive Statistics -->
+<script>
+    const ALL_REGENCIES_MAP_CC = <?= $allRegenciesJson ?? '{}' ?>;
+    const regencyCacheCC = {};
+
+    function getRegenciesDataCC(provinceId) {
+        if (!provinceId) return Promise.resolve([]);
+        const keyStr = String(provinceId);
+        const keyNum = Number(provinceId);
+
+        if (ALL_REGENCIES_MAP_CC[keyStr]) {
+            return Promise.resolve(ALL_REGENCIES_MAP_CC[keyStr]);
+        }
+        if (ALL_REGENCIES_MAP_CC[keyNum]) {
+            return Promise.resolve(ALL_REGENCIES_MAP_CC[keyNum]);
+        }
+        if (regencyCacheCC[keyStr]) {
+            return Promise.resolve(regencyCacheCC[keyStr]);
+        }
+        const regencyApiUrl = window.location.origin + '/command-center/get-regencies/' + provinceId;
+        return fetch(regencyApiUrl)
+            .then(res => res.json())
+            .then(res => {
+                const list = (res.status === 'success' && res.data) ? res.data : [];
+                regencyCacheCC[keyStr] = list;
+                return list;
+            })
+            .catch(() => []);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
         const provSelect = document.getElementById('filter-provinsi');
         const kabSelect = document.getElementById('filter-kabupaten');
         const bencSelect = document.getElementById('filter-bencana');
@@ -1034,14 +1143,106 @@ $bencanaOptions = $jenisBencana ?? $distinctJenisBencana ?? [];
         const resetBtn = document.getElementById('btn-reset-filter');
         const resetBtnMob = document.getElementById('btn-reset-filter-mobile');
 
-        // Setup Custom Floating Dropdown Interactivity
-        function setupCustomDropdown(key, defaultText) {
+        function updateCustomMenuOptionsCC(menuId, menuHtml) {
+            const menu = document.getElementById(menuId);
+            if (!menu) return;
+            let optionsList = menu.querySelector('.frost-options-list');
+            if (!optionsList) {
+                optionsList = document.createElement('div');
+                optionsList.className = 'frost-options-list';
+                menu.appendChild(optionsList);
+            }
+            optionsList.innerHTML = menuHtml;
+
+            const searchInput = menu.querySelector('.frost-dropdown-search-input');
+            if (searchInput) {
+                searchInput.value = '';
+                optionsList.querySelectorAll('.frost-custom-option').forEach(opt => opt.style.display = 'flex');
+                const noResults = menu.querySelector('.frost-no-results');
+                if (noResults) noResults.classList.add('d-none');
+            }
+        }
+
+        // Setup Custom Floating Dropdown Interactivity with Auto-Recommendation Search
+        function setupCustomDropdown(key, defaultText, isSearchable = false, searchPlaceholder = 'Cari...') {
             const wrapper = document.getElementById('custom-wrapper-' + key);
             const trigger = document.getElementById('trigger-' + key);
             const menu = document.getElementById('menu-' + key);
             const native = document.getElementById('filter-' + key);
 
             if (!wrapper || !trigger || !menu || !native) return;
+
+            let optionsList = menu.querySelector('.frost-options-list');
+            if (!optionsList) {
+                optionsList = document.createElement('div');
+                optionsList.className = 'frost-options-list';
+                const children = Array.from(menu.childNodes);
+                children.forEach(child => optionsList.appendChild(child));
+                menu.appendChild(optionsList);
+            }
+
+            let searchInput = null;
+            let noResults = null;
+
+            if (isSearchable) {
+                if (!menu.querySelector('.frost-menu-search-wrapper')) {
+                    const searchBoxWrapper = document.createElement('div');
+                    searchBoxWrapper.className = 'frost-menu-search-wrapper';
+                    searchBoxWrapper.innerHTML = `
+                        <div class="frost-menu-search-box">
+                            <i class="bi bi-search frost-menu-search-icon"></i>
+                            <input type="text" class="frost-dropdown-search-input form-control form-control-sm" placeholder="${escapeHtml(searchPlaceholder)}" autocomplete="off">
+                        </div>
+                        <div class="frost-no-results p-2 text-muted fs-8 text-center d-none">Tidak ditemukan rekomendasi nama</div>
+                    `;
+                    menu.insertBefore(searchBoxWrapper, optionsList);
+                }
+
+                searchInput = menu.querySelector('.frost-dropdown-search-input');
+                noResults = menu.querySelector('.frost-no-results');
+
+                if (searchInput) {
+                    searchInput.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                    });
+
+                    searchInput.addEventListener('input', function () {
+                        const query = this.value.toLowerCase().trim();
+                        const currentList = menu.querySelector('.frost-options-list') || optionsList;
+                        const options = currentList.querySelectorAll('.frost-custom-option');
+                        let matchCount = 0;
+
+                        options.forEach(opt => {
+                            const txt = opt.textContent.toLowerCase();
+                            if (!query || txt.includes(query)) {
+                                opt.style.display = 'flex';
+                                matchCount++;
+                            } else {
+                                opt.style.display = 'none';
+                            }
+                        });
+
+                        if (noResults) {
+                            if (matchCount === 0) {
+                                noResults.classList.remove('d-none');
+                            } else {
+                                noResults.classList.add('d-none');
+                            }
+                        }
+                    });
+
+                    searchInput.addEventListener('keydown', function (e) {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            const currentList = menu.querySelector('.frost-options-list') || optionsList;
+                            const firstVisible = Array.from(currentList.querySelectorAll('.frost-custom-option')).find(opt => opt.style.display !== 'none');
+                            if (firstVisible) {
+                                firstVisible.click();
+                            }
+                        }
+                    });
+                }
+            }
 
             trigger.addEventListener('click', function (e) {
                 e.stopPropagation();
@@ -1058,6 +1259,14 @@ $bencanaOptions = $jenisBencana ?? $distinctJenisBencana ?? [];
                     menu.classList.add('show');
                     trigger.classList.add('active');
                     wrapper.classList.add('active-dropdown');
+
+                    if (searchInput) {
+                        searchInput.value = '';
+                        const currentList = menu.querySelector('.frost-options-list') || optionsList;
+                        currentList.querySelectorAll('.frost-custom-option').forEach(opt => opt.style.display = 'flex');
+                        if (noResults) noResults.classList.add('d-none');
+                        setTimeout(() => searchInput.focus(), 60);
+                    }
                 }
             });
 
@@ -1084,8 +1293,8 @@ $bencanaOptions = $jenisBencana ?? $distinctJenisBencana ?? [];
             });
         }
 
-        setupCustomDropdown('provinsi', 'Semua Provinsi');
-        setupCustomDropdown('kabupaten', 'Pilih Provinsi Dahulu');
+        setupCustomDropdown('provinsi', 'Semua Provinsi', true, 'Cari provinsi...');
+        setupCustomDropdown('kabupaten', 'Pilih Provinsi Dahulu', true, 'Cari kabupaten / kota...');
         setupCustomDropdown('bencana', 'Semua Bencana');
         setupCustomDropdown('status', 'Semua Status');
 
@@ -1100,15 +1309,16 @@ $bencanaOptions = $jenisBencana ?? $distinctJenisBencana ?? [];
         provSelect.addEventListener('change', function () {
             const provinceId = this.value;
             const triggerKab = document.getElementById('trigger-kabupaten');
-            const menuKab = document.getElementById('menu-kabupaten');
 
             kabSelect.innerHTML = '<option value="">Semua Kabupaten</option>';
             kabSelect.value = '';
             kabSelect.disabled = true;
 
-            triggerKab.classList.add('disabled');
-            triggerKab.querySelector('.trigger-label').textContent = provinceId ? 'Memuat Kabupaten...' : 'Pilih Provinsi Dahulu';
-            menuKab.innerHTML = `<div class="frost-custom-option selected" data-value="">${provinceId ? 'Memuat Kabupaten...' : 'Pilih Provinsi Dahulu'}</div>`;
+            if (triggerKab) {
+                triggerKab.classList.add('disabled');
+                triggerKab.querySelector('.trigger-label').textContent = provinceId ? 'Memuat Kabupaten...' : 'Pilih Provinsi Dahulu';
+            }
+            updateCustomMenuOptionsCC('menu-kabupaten', `<div class="frost-custom-option selected" data-value="">${provinceId ? 'Memuat Kabupaten...' : 'Pilih Provinsi Dahulu'}</div>`);
 
             if (!provinceId) {
                 updateActiveChips();
@@ -1116,36 +1326,26 @@ $bencanaOptions = $jenisBencana ?? $distinctJenisBencana ?? [];
                 return;
             }
 
-            const regencyApiUrl = window.location.origin + '/command-center/get-regencies/' + provinceId;
+            getRegenciesDataCC(provinceId).then(data => {
+                if (triggerKab) {
+                    triggerKab.querySelector('.trigger-label').textContent = 'Semua Kabupaten';
+                    triggerKab.classList.remove('disabled');
+                }
 
-            fetch(regencyApiUrl)
-                .then(res => res.json())
-                .then(res => {
-                    if (res.status === 'success') {
-                        triggerKab.querySelector('.trigger-label').textContent = 'Semua Kabupaten';
-                        triggerKab.classList.remove('disabled');
+                let menuHtml = '<div class="frost-custom-option selected" data-value="">Semua Kabupaten</div>';
+                data.forEach(reg => {
+                    const opt = document.createElement('option');
+                    opt.value = reg.id;
+                    opt.textContent = reg.name;
+                    kabSelect.appendChild(opt);
 
-                        let menuHtml = '<div class="frost-custom-option selected" data-value="">Semua Kabupaten</div>';
-                        res.data.forEach(reg => {
-                            const opt = document.createElement('option');
-                            opt.value = reg.id;
-                            opt.textContent = reg.name;
-                            kabSelect.appendChild(opt);
-
-                            menuHtml += `<div class="frost-custom-option" data-value="${reg.id}">${escapeHtml(reg.name)}</div>`;
-                        });
-                        kabSelect.disabled = false;
-                        menuKab.innerHTML = menuHtml;
-                    } else {
-                        triggerKab.querySelector('.trigger-label').textContent = 'Gagal Memuat';
-                    }
-                    updateActiveChips();
-                    fetchStats();
-                })
-                .catch(err => {
-                    console.error('Error fetching regencies:', err);
-                    triggerKab.querySelector('.trigger-label').textContent = 'Error Memuat';
+                    menuHtml += `<div class="frost-custom-option" data-value="${reg.id}">${escapeHtml(reg.name)}</div>`;
                 });
+                kabSelect.disabled = false;
+                updateCustomMenuOptionsCC('menu-kabupaten', menuHtml);
+                updateActiveChips();
+                fetchStats();
+            });
         });
 
         // Instant Real-Time Fetching on Option Selection

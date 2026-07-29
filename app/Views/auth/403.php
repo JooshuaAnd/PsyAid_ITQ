@@ -15,7 +15,7 @@
             <div class="d-flex justify-content-center gap-3">
                 <?php if (session()->get('logged_in')): ?>
                     <?php if (session()->get('role') === 'bpbd_admin'): ?>
-                        <a href="<?= site_url('/command-center') ?>" class="btn btn-danger px-4 py-2"><i class="bi bi-arrow-left me-1"></i> Kembali ke Command Center</a>
+                        <a href="<?= site_url('/bpbd/dashboard') ?>" class="btn btn-danger px-4 py-2"><i class="bi bi-arrow-left me-1"></i> Kembali ke Dashboard BPBD</a>
                     <?php elseif (session()->get('role') === 'relawan'): ?>
                         <a href="<?= site_url('/relawan/posko/' . (session()->get('posko_id') ?? 1)) ?>" class="btn btn-success px-4 py-2"><i class="bi bi-arrow-left me-1"></i> Kembali ke Posko Relawan</a>
                     <?php elseif (session()->get('role') === 'psikolog'): ?>

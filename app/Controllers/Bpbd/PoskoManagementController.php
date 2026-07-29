@@ -13,8 +13,10 @@ class PoskoManagementController extends BaseController
         $db = \Config\Database::connect();
         $poskoModel = new PoskoModel();
 
-        // 1. Load All Provinces
-        $provinces = $db->table('provinces')->orderBy('name', 'ASC')->get()->getResultArray();
+        // 1. Load All Provinces & All Regencies grouped for 0ms client-side lookup
+        $regencyModel    = new \App\Models\RegencyModel();
+        $provinces       = $db->table('provinces')->orderBy('name', 'ASC')->get()->getResultArray();
+        $allRegenciesMap = $regencyModel->getAllGroupedByProvince();
 
         // 2. Read GET Filters
         $provinceId   = trim($this->request->getGet('province_id') ?? '');
@@ -23,14 +25,10 @@ class PoskoManagementController extends BaseController
         $status       = trim($this->request->getGet('status') ?? '');
         $search       = trim($this->request->getGet('q') ?? '');
 
-        // 3. Load Regencies if Province is selected
+        // 3. Load Regencies if Province is selected for initial view state
         $regencies = [];
         if (! empty($provinceId)) {
-            $regencies = $db->table('regencies')
-                ->where('province_id', $provinceId)
-                ->orderBy('name', 'ASC')
-                ->get()
-                ->getResultArray();
+            $regencies = $allRegenciesMap[$provinceId] ?? [];
         }
 
         // 4. Build Posko Query
@@ -66,15 +64,18 @@ class PoskoManagementController extends BaseController
 
         $poskoList = $builder->orderBy('posko.id', 'DESC')->get()->getResultArray();
 
-        // Count approved volunteers per posko
-        foreach ($poskoList as &$p) {
-            $approvedCount = $db->table('volunteer_registrations')
-                ->where('posko_name', $p['name'])
-                ->where('status', 'approved')
-                ->countAllResults();
+        // Count approved volunteers per posko in a single batch query (0 N+1 overhead)
+        $volunteerCounts = $db->table('volunteer_registrations')
+            ->select('posko_name, COUNT(*) as cnt')
+            ->where('status', 'approved')
+            ->groupBy('posko_name')
+            ->get()
+            ->getResultArray();
+        $vCountMap = array_column($volunteerCounts, 'cnt', 'posko_name');
 
-            $p['approved_volunteers'] = $approvedCount;
-            $p['quota'] = !empty($p['quota']) ? intval($p['quota']) : 10;
+        foreach ($poskoList as &$p) {
+            $p['approved_volunteers'] = $vCountMap[$p['name']] ?? 0;
+            $p['quota']               = ! empty($p['quota']) ? intval($p['quota']) : 10;
         }
         unset($p);
 
@@ -87,6 +88,7 @@ class PoskoManagementController extends BaseController
             'title'                => 'Kelola Posko Kebencanaan - BPBD',
             'provinces'            => $provinces,
             'regencies'            => $regencies,
+            'allRegenciesJson'     => json_encode($allRegenciesMap),
             'poskoList'            => $poskoList,
             'distinctJenisBencana' => $distinctJenisBencana,
             'filterProvinceId'     => $provinceId,
@@ -102,12 +104,16 @@ class PoskoManagementController extends BaseController
      */
     public function getRegencies($provinceId)
     {
-        $db = \Config\Database::connect();
-        $regencies = $db->table('regencies')
-            ->where('province_id', $provinceId)
-            ->orderBy('name', 'ASC')
-            ->get()
-            ->getResultArray();
+        $provinceId = (int) $provinceId;
+        if ($provinceId <= 0) {
+            return $this->response->setJSON([
+                'status' => 'success',
+                'data'   => [],
+            ]);
+        }
+
+        $regencyModel = new \App\Models\RegencyModel();
+        $regencies    = $regencyModel->getByProvinceId($provinceId);
 
         return $this->response->setJSON([
             'status' => 'success',
@@ -134,6 +140,17 @@ class PoskoManagementController extends BaseController
 
         $poskoModel = new PoskoModel();
 
+        $requirementsPost = $this->request->getPost('requirements_options');
+        $requirementsStr  = '';
+        if (is_array($requirementsPost)) {
+            $cleaned = array_values(array_filter(array_map('trim', $requirementsPost), function ($v) {
+                return $v !== '';
+            }));
+            $requirementsStr = implode("\n", $cleaned);
+        } else {
+            $requirementsStr = trim($this->request->getPost('requirements') ?? '');
+        }
+
         $data = [
             'name'           => trim($this->request->getPost('name')),
             'regency_id'     => intval($this->request->getPost('regency_id')),
@@ -142,8 +159,7 @@ class PoskoManagementController extends BaseController
             'quota'          => intval($this->request->getPost('quota')),
             'filled'         => 0,
             'urgency'        => trim($this->request->getPost('urgency') ?? 'Urgent'),
-            'positions'      => trim($this->request->getPost('positions') ?? ''),
-            'requirements'   => trim($this->request->getPost('requirements') ?? ''),
+            'requirements'   => $requirementsStr,
             'contact_person' => trim($this->request->getPost('contact_person') ?? ''),
         ];
 
@@ -176,6 +192,17 @@ class PoskoManagementController extends BaseController
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
+        $requirementsPost = $this->request->getPost('requirements_options');
+        $requirementsStr  = '';
+        if (is_array($requirementsPost)) {
+            $cleaned = array_values(array_filter(array_map('trim', $requirementsPost), function ($v) {
+                return $v !== '';
+            }));
+            $requirementsStr = implode("\n", $cleaned);
+        } else {
+            $requirementsStr = trim($this->request->getPost('requirements') ?? '');
+        }
+
         $data = [
             'name'           => trim($this->request->getPost('name')),
             'regency_id'     => intval($this->request->getPost('regency_id')),
@@ -183,8 +210,7 @@ class PoskoManagementController extends BaseController
             'status'         => trim($this->request->getPost('status')),
             'quota'          => intval($this->request->getPost('quota')),
             'urgency'        => trim($this->request->getPost('urgency') ?? 'Urgent'),
-            'positions'      => trim($this->request->getPost('positions') ?? ''),
-            'requirements'   => trim($this->request->getPost('requirements') ?? ''),
+            'requirements'   => $requirementsStr,
             'contact_person' => trim($this->request->getPost('contact_person') ?? ''),
         ];
 

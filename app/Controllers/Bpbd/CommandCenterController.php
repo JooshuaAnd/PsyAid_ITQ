@@ -34,12 +34,16 @@ class CommandCenterController extends Controller
             $highestPriorityPosko = $poskoList[0];
         }
 
+        $regencyModel  = new RegencyModel();
+        $allRegenciesMap = $regencyModel->getAllGroupedByProvince();
+
         $data = [
-            'title' => 'BPBD Command Center - PsyAid',
-            'provinces' => $provinces,
-            'jenisBencana' => $jenisBencana,
-            'stats' => $initialStats,
-            'poskoList' => $poskoList,
+            'title'                => 'BPBD Command Center - PsyAid',
+            'provinces'            => $provinces,
+            'allRegenciesJson'     => json_encode($allRegenciesMap),
+            'jenisBencana'         => $jenisBencana,
+            'stats'                => $initialStats,
+            'poskoList'            => $poskoList,
             'highestPriorityPosko' => $highestPriorityPosko,
         ];
 
@@ -51,12 +55,20 @@ class CommandCenterController extends Controller
      */
     public function getRegencies($provinceId)
     {
+        $provinceId = (int) $provinceId;
+        if ($provinceId <= 0) {
+            return $this->response->setJSON([
+                'status' => 'success',
+                'data'   => [],
+            ]);
+        }
+
         $regencyModel = new RegencyModel();
-        $regencies = $regencyModel->getByProvinceId((int) $provinceId);
+        $regencies    = $regencyModel->getByProvinceId($provinceId);
 
         return $this->response->setJSON([
             'status' => 'success',
-            'data' => $regencies,
+            'data'   => $regencies,
         ]);
     }
 

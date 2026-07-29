@@ -153,7 +153,7 @@ class AuthController extends BaseController
     {
         switch ($role) {
             case 'bpbd_admin':
-                return redirect()->to('/command-center');
+                return redirect()->to('/bpbd/dashboard');
             case 'relawan':
                 $targetPosko = $poskoId ?? 1;
                 return redirect()->to('/relawan/posko/' . $targetPosko);

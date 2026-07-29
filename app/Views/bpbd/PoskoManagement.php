@@ -150,6 +150,88 @@
         transform: rotate(180deg);
     }
 
+    /* CUSTOM FROSTED INPUT FIELD COMPONENT (MATCHING FROST-CUSTOM-TRIGGER) */
+    .frost-input-field {
+        background: #ffffff;
+        border: 1.5px solid #cbd5e1;
+        border-radius: 8px !important;
+        padding: 0.55rem 0.85rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #0f172a;
+        width: 100%;
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    }
+
+    .frost-input-field:hover:not(:disabled) {
+        border-color: #059669;
+        background-color: #f4fbf7;
+    }
+
+    .frost-input-field:focus {
+        border-color: #059669;
+        box-shadow: 0 0 0 3.5px rgba(5, 150, 105, 0.18);
+        background-color: #ffffff;
+        outline: none;
+    }
+
+    .frost-input-field::placeholder {
+        color: #94a3b8;
+        font-weight: 500;
+    }
+
+    /* SEARCHABLE CUSTOM FROSTED DROPDOWN SYSTEM */
+    .frost-menu-search-wrapper {
+        position: sticky;
+        top: 0;
+        z-index: 1080;
+        background: #ffffff;
+        padding: 0.5rem 0.6rem;
+        margin: -0.35rem -0.35rem 0.4rem -0.35rem;
+        border-bottom: 1.5px solid #e2e8f0;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+    }
+
+    .frost-menu-search-box {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+    }
+
+    .frost-menu-search-icon {
+        position: absolute;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #059669;
+        font-size: 0.85rem;
+        pointer-events: none;
+        z-index: 2;
+    }
+
+    .frost-dropdown-search-input {
+        width: 100%;
+        background: #f8fafc;
+        border: 1.5px solid #cbd5e1;
+        border-radius: 6px !important;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: #0f172a;
+        padding: 0.45rem 0.75rem 0.45rem 2.25rem !important;
+        transition: all 0.2s ease;
+    }
+
+    .frost-dropdown-search-input:focus {
+        background: #ffffff;
+        border-color: #059669;
+        box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.18);
+        outline: none;
+    }
+
     .frost-custom-menu {
         position: absolute;
         top: calc(100% + 6px);
@@ -366,6 +448,47 @@
         font-weight: 700 !important;
         font-size: 0.75rem !important;
         padding: 0.35rem 0.65rem !important;
+    }
+
+    /* CUSTOM CARD ACTION BUTTONS MATCHING BADGE BENCANA & BADGE URGENT */
+    .btn-posko-edit {
+        background-color: #eff6ff !important;
+        color: #1d4ed8 !important;
+        border: 1.5px solid #bfdbfe !important;
+        font-weight: 700 !important;
+        font-size: 0.75rem !important;
+        padding: 0.35rem 0.85rem !important;
+        border-radius: 6px !important;
+        transition: all 0.2s ease-in-out !important;
+        box-shadow: 0 1px 2px rgba(29, 78, 216, 0.05) !important;
+    }
+
+    .btn-posko-edit:hover {
+        background-color: #1d4ed8 !important;
+        color: #ffffff !important;
+        border-color: #1d4ed8 !important;
+        box-shadow: 0 4px 12px rgba(29, 78, 216, 0.25) !important;
+        transform: translateY(-1px) !important;
+    }
+
+    .btn-posko-delete {
+        background-color: #fef2f2 !important;
+        color: #dc2626 !important;
+        border: 1.5px solid #fecdd3 !important;
+        font-weight: 700 !important;
+        font-size: 0.75rem !important;
+        padding: 0.35rem 0.85rem !important;
+        border-radius: 6px !important;
+        transition: all 0.2s ease-in-out !important;
+        box-shadow: 0 1px 2px rgba(220, 38, 38, 0.05) !important;
+    }
+
+    .btn-posko-delete:hover {
+        background-color: #dc2626 !important;
+        color: #ffffff !important;
+        border-color: #dc2626 !important;
+        box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25) !important;
+        transform: translateY(-1px) !important;
     }
 
     .posko-info-box {
@@ -912,9 +1035,11 @@
 <!-- 3. Posko Grid Main Card Container (Mobile Responsive Clean Layout) -->
 <div class="card frost-card posko-main-card-container p-3.5 p-md-4 mb-5">
     <!-- Main Card Header: Clean 2-Row Mobile (<768px) / 1-Row Desktop (>=768px) Layout -->
-    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-3 border-bottom pb-3 gap-3 posko-main-card-header">
+    <div
+        class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-3 border-bottom pb-3 gap-3 posko-main-card-header">
         <!-- Title & Total Badge Group -->
-        <div class="d-flex align-items-center justify-content-between justify-content-md-start gap-3 min-w-0 posko-header-title-group">
+        <div
+            class="d-flex align-items-center justify-content-between justify-content-md-start gap-3 min-w-0 posko-header-title-group">
             <h6 class="fw-bold text-dark mb-0 d-flex align-items-center posko-header-title-text">
                 <i class="bi bi-grid-3x3-gap-fill text-success me-2 fs-5 flex-shrink-0"></i>
                 <span>Daftar Posko Kebencanaan</span>
@@ -926,7 +1051,8 @@
         </div>
         <!-- Primary Action Button Wrapper -->
         <div class="posko-header-btn-wrapper">
-            <button type="button" class="frost-btn-primary rounded-lg" data-bs-toggle="modal" data-bs-target="#createPoskoModal">
+            <button type="button" class="frost-btn-primary rounded-lg" data-bs-toggle="modal"
+                data-bs-target="#createPoskoModal">
                 <i class="bi bi-plus-lg fs-7 me-1"></i> Tambah Posko Baru
             </button>
         </div>
@@ -1012,22 +1138,32 @@
                                     </div>
                                 </div>
 
-                                <!-- Details Box (Positions, Requirements, Contact Info) -->
-                                <?php if (!empty($posko['positions']) || !empty($posko['requirements']) || !empty($posko['contact_person'])): ?>
+                                <!-- Details Box (Requirements, Contact Info) -->
+                                <?php if (!empty($posko['requirements']) || !empty($posko['contact_person'])): ?>
                                     <div class="posko-details-box mb-3">
-                                        <?php if (!empty($posko['positions'])): ?>
-                                            <div class="mb-1.5">
-                                                <strong class="text-dark"><i class="bi bi-briefcase-fill me-1 text-primary"></i>
-                                                    Posisi:</strong>
-                                                <span class="text-slate-800"><?= esc($posko['positions']) ?></span>
-                                            </div>
-                                        <?php endif; ?>
-
                                         <?php if (!empty($posko['requirements'])): ?>
+                                            <?php 
+                                                $reqItems = [];
+                                                if (strpos($posko['requirements'], "\n") !== false) {
+                                                    $reqItems = array_values(array_filter(array_map('trim', explode("\n", $posko['requirements']))));
+                                                } else if (strpos($posko['requirements'], ",") !== false) {
+                                                    $reqItems = array_values(array_filter(array_map('trim', explode(",", $posko['requirements']))));
+                                                } else {
+                                                    $reqItems = [trim($posko['requirements'])];
+                                                }
+                                            ?>
                                             <div class="mb-1.5">
-                                                <strong class="text-dark"><i class="bi bi-card-checklist me-1 text-warning"></i>
-                                                    Syarat:</strong>
-                                                <span class="text-slate-800"><?= esc($posko['requirements']) ?></span>
+                                                <strong class="text-dark d-block mb-1"><i class="bi bi-card-checklist me-1 text-warning"></i>
+                                                    Syarat Khusus:</strong>
+                                                <?php if (count($reqItems) > 1): ?>
+                                                    <ol class="ps-3 mb-0 text-slate-800 fs-8">
+                                                        <?php foreach ($reqItems as $rq): ?>
+                                                            <li class="mb-0.5"><?= esc($rq) ?></li>
+                                                        <?php endforeach; ?>
+                                                    </ol>
+                                                <?php else: ?>
+                                                    <span class="text-slate-800 fs-8"><?= esc($reqItems[0] ?? '') ?></span>
+                                                <?php endif; ?>
                                             </div>
                                         <?php endif; ?>
 
@@ -1044,11 +1180,11 @@
 
                             <!-- Card Footer Action Buttons -->
                             <div class="d-flex align-items-center justify-content-end gap-2 border-top pt-3 mt-2">
-                                <button type="button" class="btn btn-sm btn-outline-primary fw-bold fs-8 px-3"
+                                <button type="button" class="btn btn-sm btn-posko-edit"
                                     onclick="openEditModal(<?= htmlspecialchars(json_encode($posko), ENT_QUOTES, 'UTF-8') ?>)">
                                     <i class="bi bi-pencil-square me-1"></i> Edit
                                 </button>
-                                <button type="button" class="btn btn-sm btn-outline-danger fw-bold fs-8 px-3"
+                                <button type="button" class="btn btn-sm btn-posko-delete"
                                     onclick="openDeleteModal(<?= $posko['id'] ?>, '<?= esc($posko['name'], 'js') ?>')">
                                     <i class="bi bi-trash-fill me-1"></i> Hapus
                                 </button>
@@ -1080,15 +1216,15 @@
                     <div class="col-12 col-md-8">
                         <label class="form-label small fw-bold text-dark">Nama Posko Kebencanaan <span
                                 class="text-danger">*</span></label>
-                        <input type="text" name="name" class="form-control fs-8"
+                        <input type="text" name="name" class="frost-input-field"
                             placeholder="Contoh: Posko Tanggap Cianjur 01" required>
                     </div>
 
                     <div class="col-12 col-md-4">
                         <label class="form-label small fw-bold text-dark">Jenis Bencana <span
                                 class="text-danger">*</span></label>
-                        <select name="jenis_bencana" class="form-select fs-8" required>
-                            <option value="">-- Pilih Jenis Bencana --</option>
+                        <select name="jenis_bencana" id="create-jenis_bencana" class="d-none" required>
+                            <option value="">Pilih Jenis Bencana</option>
                             <option value="Gempa Bumi">Gempa Bumi</option>
                             <option value="Banjir">Banjir</option>
                             <option value="Tanah Longsor">Tanah Longsor</option>
@@ -1097,68 +1233,138 @@
                             <option value="Angin Puting Beliung">Angin Puting Beliung</option>
                             <option value="Kebakaran Hutan">Kebakaran Hutan</option>
                         </select>
+                        <div class="frost-custom-select-wrapper" id="custom-wrapper-create-bencana">
+                            <div class="frost-custom-trigger" id="trigger-create-bencana">
+                                <span class="trigger-label text-truncate">Pilih Jenis Bencana</span>
+                                <i class="bi bi-chevron-down chevron-icon"></i>
+                            </div>
+                            <div class="frost-custom-menu" id="menu-create-bencana">
+                                <div class="frost-custom-option selected" data-value="">Pilih Jenis Bencana</div>
+                                <div class="frost-custom-option" data-value="Gempa Bumi">Gempa Bumi</div>
+                                <div class="frost-custom-option" data-value="Banjir">Banjir</div>
+                                <div class="frost-custom-option" data-value="Tanah Longsor">Tanah Longsor</div>
+                                <div class="frost-custom-option" data-value="Erupsi Gunung">Erupsi Gunung</div>
+                                <div class="frost-custom-option" data-value="Tsunami">Tsunami</div>
+                                <div class="frost-custom-option" data-value="Angin Puting Beliung">Angin Puting Beliung
+                                </div>
+                                <div class="frost-custom-option" data-value="Kebakaran Hutan">Kebakaran Hutan</div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-12 col-md-6">
                         <label class="form-label small fw-bold text-dark">Provinsi <span
                                 class="text-danger">*</span></label>
-                        <select name="province_id" id="create-province_id" class="form-select fs-8" required>
-                            <option value="">-- Pilih Provinsi --</option>
+                        <select name="province_id" id="create-province_id" class="d-none" required>
+                            <option value="">Pilih Provinsi</option>
                             <?php foreach ($provinces as $prov): ?>
                                 <option value="<?= esc($prov['id']) ?>"><?= esc($prov['name']) ?></option>
                             <?php endforeach; ?>
                         </select>
+                        <div class="frost-custom-select-wrapper" id="custom-wrapper-create-provinsi">
+                            <div class="frost-custom-trigger" id="trigger-create-provinsi">
+                                <span class="trigger-label text-truncate">Pilih Provinsi</span>
+                                <i class="bi bi-chevron-down chevron-icon"></i>
+                            </div>
+                            <div class="frost-custom-menu" id="menu-create-provinsi">
+                                <div class="frost-custom-option selected" data-value="">Pilih Provinsi</div>
+                                <?php foreach ($provinces as $prov): ?>
+                                    <div class="frost-custom-option" data-value="<?= esc($prov['id']) ?>">
+                                        <?= esc($prov['name']) ?>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-12 col-md-6">
                         <label class="form-label small fw-bold text-dark">Kabupaten / Kota <span
                                 class="text-danger">*</span></label>
-                        <select name="regency_id" id="create-regency_id" class="form-select fs-8" disabled required>
+                        <select name="regency_id" id="create-regency_id" class="d-none" disabled required>
                             <option value="">Pilih Provinsi Dahulu</option>
                         </select>
+                        <div class="frost-custom-select-wrapper" id="custom-wrapper-create-kabupaten">
+                            <div class="frost-custom-trigger disabled" id="trigger-create-kabupaten">
+                                <span class="trigger-label text-truncate">Pilih Provinsi Dahulu</span>
+                                <i class="bi bi-chevron-down chevron-icon"></i>
+                            </div>
+                            <div class="frost-custom-menu" id="menu-create-kabupaten">
+                                <div class="frost-custom-option selected" data-value="">Pilih Provinsi Dahulu</div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-12 col-md-4">
                         <label class="form-label small fw-bold text-dark">Kuota Relawan Dibutuhkan <span
                                 class="text-danger">*</span></label>
-                        <input type="number" name="quota" class="form-control fs-8" value="10" min="1" max="500"
+                        <input type="number" name="quota" class="frost-input-field" value="10" min="1" max="500"
                             required>
                     </div>
 
                     <div class="col-12 col-md-4">
                         <label class="form-label small fw-bold text-dark">Tingkat Urgensi <span
                                 class="text-danger">*</span></label>
-                        <select name="urgency" class="form-select fs-8" required>
+                        <select name="urgency" id="create-urgency" class="d-none" required>
                             <option value="Urgent" selected>Urgent (Dibutuhkan Segera)</option>
                             <option value="Terbuka">Terbuka (Standby Normal)</option>
                         </select>
+                        <div class="frost-custom-select-wrapper" id="custom-wrapper-create-urgency">
+                            <div class="frost-custom-trigger" id="trigger-create-urgency">
+                                <span class="trigger-label text-truncate">Urgent (Dibutuhkan Segera)</span>
+                                <i class="bi bi-chevron-down chevron-icon"></i>
+                            </div>
+                            <div class="frost-custom-menu" id="menu-create-urgency">
+                                <div class="frost-custom-option selected" data-value="Urgent">Urgent (Dibutuhkan Segera)
+                                </div>
+                                <div class="frost-custom-option" data-value="Terbuka">Terbuka (Standby Normal)</div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-12 col-md-4">
                         <label class="form-label small fw-bold text-dark">Status Operasional <span
                                 class="text-danger">*</span></label>
-                        <select name="status" class="form-select fs-8" required>
+                        <select name="status" id="create-status" class="d-none" required>
                             <option value="aktif" selected>Aktif (Tayang di Rekrutmen)</option>
                             <option value="recovery">Recovery</option>
                             <option value="closed">Closed (Ditutup)</option>
                         </select>
+                        <div class="frost-custom-select-wrapper" id="custom-wrapper-create-status">
+                            <div class="frost-custom-trigger" id="trigger-create-status">
+                                <span class="trigger-label text-truncate">Aktif (Tayang di Rekrutmen)</span>
+                                <i class="bi bi-chevron-down chevron-icon"></i>
+                            </div>
+                            <div class="frost-custom-menu" id="menu-create-status">
+                                <div class="frost-custom-option selected" data-value="aktif">Aktif (Tayang di Rekrutmen)
+                                </div>
+                                <div class="frost-custom-option" data-value="recovery">Recovery</div>
+                                <div class="frost-custom-option" data-value="closed">Closed (Ditutup)</div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-12">
-                        <label class="form-label small fw-bold text-dark">Posisi Relawan Dibutuhkan</label>
-                        <input type="text" name="positions" class="form-control fs-8"
-                            placeholder="Contoh: Logistik, Medis, Konseling Psikologi Pertama (PFA), Dapur Umum">
-                    </div>
-
-                    <div class="col-12">
-                        <label class="form-label small fw-bold text-dark">Persyaratan Khusus Relawan</label>
-                        <textarea name="requirements" class="form-control fs-8" rows="2"
-                            placeholder="Contoh: Sehat jasmani rohani, bersedia ditempatkan minimal 3 hari"></textarea>
+                        <div class="d-flex justify-content-between align-items-center mb-1.5">
+                            <label class="form-label small fw-bold text-dark mb-0">Persyaratan Khusus Relawan</label>
+                            <button type="button" class="btn btn-sm btn-outline-success border-0 fw-bold fs-9 py-0 px-1.5" id="btn-add-create-requirement">
+                                <i class="bi bi-plus-circle-fill me-1"></i> Tambah Syarat
+                            </button>
+                        </div>
+                        <div id="create-requirements-wrapper" class="d-flex flex-column gap-2">
+                            <div class="d-flex align-items-center gap-2 requirement-item-row">
+                                <span class="badge bg-light text-secondary border fw-bold px-2 py-2 fs-9 req-num-label flex-shrink-0" style="min-width: 68px; text-align: center;">Syarat 1</span>
+                                <input type="text" name="requirements_options[]" class="frost-input-field form-control form-control-sm flex-grow-1"
+                                    placeholder="Contoh: Sehat jasmani &amp; rohani">
+                                <button type="button" class="btn btn-sm btn-outline-danger btn-remove-req flex-shrink-0 px-2.5 py-1.5" title="Hapus syarat" style="display:none; border-radius: 6px;">
+                                    <i class="bi bi-trash-fill"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-12">
                         <label class="form-label small fw-bold text-dark">Kontak Person / Call Center BPBD Posko</label>
-                        <input type="text" name="contact_person" class="form-control fs-8"
+                        <input type="text" name="contact_person" class="frost-input-field"
                             placeholder="Contoh: BPBD Cianjur (+62 812-3456-7890)">
                     </div>
                 </div>
@@ -1192,13 +1398,13 @@
                     <div class="col-12 col-md-8">
                         <label class="form-label small fw-bold text-dark">Nama Posko Kebencanaan <span
                                 class="text-danger">*</span></label>
-                        <input type="text" name="name" id="edit-name" class="form-control fs-8" required>
+                        <input type="text" name="name" id="edit-name" class="frost-input-field" required>
                     </div>
 
                     <div class="col-12 col-md-4">
                         <label class="form-label small fw-bold text-dark">Jenis Bencana <span
                                 class="text-danger">*</span></label>
-                        <select name="jenis_bencana" id="edit-jenis_bencana" class="form-select fs-8" required>
+                        <select name="jenis_bencana" id="edit-jenis_bencana" class="d-none" required>
                             <option value="Gempa Bumi">Gempa Bumi</option>
                             <option value="Banjir">Banjir</option>
                             <option value="Tanah Longsor">Tanah Longsor</option>
@@ -1207,66 +1413,126 @@
                             <option value="Angin Puting Beliung">Angin Puting Beliung</option>
                             <option value="Kebakaran Hutan">Kebakaran Hutan</option>
                         </select>
+                        <div class="frost-custom-select-wrapper" id="custom-wrapper-edit-bencana">
+                            <div class="frost-custom-trigger" id="trigger-edit-bencana">
+                                <span class="trigger-label text-truncate">Gempa Bumi</span>
+                                <i class="bi bi-chevron-down chevron-icon"></i>
+                            </div>
+                            <div class="frost-custom-menu" id="menu-edit-bencana">
+                                <div class="frost-custom-option" data-value="Gempa Bumi">Gempa Bumi</div>
+                                <div class="frost-custom-option" data-value="Banjir">Banjir</div>
+                                <div class="frost-custom-option" data-value="Tanah Longsor">Tanah Longsor</div>
+                                <div class="frost-custom-option" data-value="Erupsi Gunung">Erupsi Gunung</div>
+                                <div class="frost-custom-option" data-value="Tsunami">Tsunami</div>
+                                <div class="frost-custom-option" data-value="Angin Puting Beliung">Angin Puting Beliung
+                                </div>
+                                <div class="frost-custom-option" data-value="Kebakaran Hutan">Kebakaran Hutan</div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-12 col-md-6">
                         <label class="form-label small fw-bold text-dark">Provinsi <span
                                 class="text-danger">*</span></label>
-                        <select name="province_id" id="edit-province_id" class="form-select fs-8" required>
+                        <select name="province_id" id="edit-province_id" class="d-none" required>
                             <?php foreach ($provinces as $prov): ?>
                                 <option value="<?= esc($prov['id']) ?>"><?= esc($prov['name']) ?></option>
                             <?php endforeach; ?>
                         </select>
+                        <div class="frost-custom-select-wrapper" id="custom-wrapper-edit-provinsi">
+                            <div class="frost-custom-trigger" id="trigger-edit-provinsi">
+                                <span class="trigger-label text-truncate">Pilih Provinsi</span>
+                                <i class="bi bi-chevron-down chevron-icon"></i>
+                            </div>
+                            <div class="frost-custom-menu" id="menu-edit-provinsi">
+                                <?php foreach ($provinces as $prov): ?>
+                                    <div class="frost-custom-option" data-value="<?= esc($prov['id']) ?>">
+                                        <?= esc($prov['name']) ?>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-12 col-md-6">
                         <label class="form-label small fw-bold text-dark">Kabupaten / Kota <span
                                 class="text-danger">*</span></label>
-                        <select name="regency_id" id="edit-regency_id" class="form-select fs-8" required>
+                        <select name="regency_id" id="edit-regency_id" class="d-none" required>
                             <option value="">Pilih Provinsi Dahulu</option>
                         </select>
+                        <div class="frost-custom-select-wrapper" id="custom-wrapper-edit-kabupaten">
+                            <div class="frost-custom-trigger disabled" id="trigger-edit-kabupaten">
+                                <span class="trigger-label text-truncate">Pilih Provinsi Dahulu</span>
+                                <i class="bi bi-chevron-down chevron-icon"></i>
+                            </div>
+                            <div class="frost-custom-menu" id="menu-edit-kabupaten">
+                                <div class="frost-custom-option selected" data-value="">Pilih Provinsi Dahulu</div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-12 col-md-4">
                         <label class="form-label small fw-bold text-dark">Kuota Relawan Dibutuhkan <span
                                 class="text-danger">*</span></label>
-                        <input type="number" name="quota" id="edit-quota" class="form-control fs-8" min="1" max="500"
+                        <input type="number" name="quota" id="edit-quota" class="frost-input-field" min="1" max="500"
                             required>
                     </div>
 
                     <div class="col-12 col-md-4">
                         <label class="form-label small fw-bold text-dark">Tingkat Urgensi <span
                                 class="text-danger">*</span></label>
-                        <select name="urgency" id="edit-urgency" class="form-select fs-8" required>
+                        <select name="urgency" id="edit-urgency" class="d-none" required>
                             <option value="Urgent">Urgent (Dibutuhkan Segera)</option>
                             <option value="Terbuka">Terbuka (Standby Normal)</option>
                         </select>
+                        <div class="frost-custom-select-wrapper" id="custom-wrapper-edit-urgency">
+                            <div class="frost-custom-trigger" id="trigger-edit-urgency">
+                                <span class="trigger-label text-truncate">Urgent (Dibutuhkan Segera)</span>
+                                <i class="bi bi-chevron-down chevron-icon"></i>
+                            </div>
+                            <div class="frost-custom-menu" id="menu-edit-urgency">
+                                <div class="frost-custom-option" data-value="Urgent">Urgent (Dibutuhkan Segera)</div>
+                                <div class="frost-custom-option" data-value="Terbuka">Terbuka (Standby Normal)</div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-12 col-md-4">
                         <label class="form-label small fw-bold text-dark">Status Operasional <span
                                 class="text-danger">*</span></label>
-                        <select name="status" id="edit-status" class="form-select fs-8" required>
+                        <select name="status" id="edit-status" class="d-none" required>
                             <option value="aktif">Aktif (Tayang di Rekrutmen)</option>
                             <option value="recovery">Recovery</option>
                             <option value="closed">Closed (Ditutup)</option>
                         </select>
+                        <div class="frost-custom-select-wrapper" id="custom-wrapper-edit-status">
+                            <div class="frost-custom-trigger" id="trigger-edit-status">
+                                <span class="trigger-label text-truncate">Aktif (Tayang di Rekrutmen)</span>
+                                <i class="bi bi-chevron-down chevron-icon"></i>
+                            </div>
+                            <div class="frost-custom-menu" id="menu-edit-status">
+                                <div class="frost-custom-option" data-value="aktif">Aktif (Tayang di Rekrutmen)</div>
+                                <div class="frost-custom-option" data-value="recovery">Recovery</div>
+                                <div class="frost-custom-option" data-value="closed">Closed (Ditutup)</div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="col-12">
-                        <label class="form-label small fw-bold text-dark">Posisi Relawan Dibutuhkan</label>
-                        <input type="text" name="positions" id="edit-positions" class="form-control fs-8">
-                    </div>
-
-                    <div class="col-12">
-                        <label class="form-label small fw-bold text-dark">Persyaratan Khusus Relawan</label>
-                        <textarea name="requirements" id="edit-requirements" class="form-control fs-8"
-                            rows="2"></textarea>
+                        <div class="d-flex justify-content-between align-items-center mb-1.5">
+                            <label class="form-label small fw-bold text-dark mb-0">Persyaratan Khusus Relawan</label>
+                            <button type="button" class="btn btn-sm btn-outline-success border-0 fw-bold fs-9 py-0 px-1.5" id="btn-add-edit-requirement">
+                                <i class="bi bi-plus-circle-fill me-1"></i> Tambah Syarat
+                            </button>
+                        </div>
+                        <div id="edit-requirements-wrapper" class="d-flex flex-column gap-2">
+                            <!-- Populated dynamically via JS -->
+                        </div>
                     </div>
 
                     <div class="col-12">
                         <label class="form-label small fw-bold text-dark">Kontak Person / Call Center BPBD Posko</label>
-                        <input type="text" name="contact_person" id="edit-contact_person" class="form-control fs-8">
+                        <input type="text" name="contact_person" id="edit-contact_person" class="frost-input-field">
                     </div>
                 </div>
 
@@ -1308,15 +1574,359 @@
 
 <!-- JavaScript for Custom Floating Dropdowns, Search Button Submission & Cascading Select -->
 <script>
+    let ALL_REGENCIES_MAP = <?= $allRegenciesJson ?? '{}' ?>;
+    const regencyCache = {};
+
+    function escapeHtml(text) {
+        if (!text) return '';
+        return String(text)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    function getRegenciesData(provinceId) {
+        if (!provinceId) return Promise.resolve([]);
+        const keyStr = String(provinceId);
+        const keyNum = Number(provinceId);
+
+        if (ALL_REGENCIES_MAP[keyStr]) {
+            return Promise.resolve(ALL_REGENCIES_MAP[keyStr]);
+        }
+        if (ALL_REGENCIES_MAP[keyNum]) {
+            return Promise.resolve(ALL_REGENCIES_MAP[keyNum]);
+        }
+        if (regencyCache[keyStr]) {
+            return Promise.resolve(regencyCache[keyStr]);
+        }
+
+        const jsonUrl = window.location.origin + '/data/regencies_grouped.json';
+        return fetch(jsonUrl)
+            .then(res => res.json())
+            .then(map => {
+                ALL_REGENCIES_MAP = map || {};
+                const list = ALL_REGENCIES_MAP[keyStr] || ALL_REGENCIES_MAP[keyNum] || [];
+                regencyCache[keyStr] = list;
+                return list;
+            })
+            .catch(() => {
+                const url = window.location.origin + '/bpbd/manage-posko/get-regencies/' + provinceId;
+                return fetch(url)
+                    .then(res => res.json())
+                    .then(res => {
+                        const list = (res.status === 'success' && res.data) ? res.data : [];
+                        regencyCache[keyStr] = list;
+                        return list;
+                    })
+                    .catch(() => []);
+            });
+    }
+
+    // Helper for progressive rate-limited chunk loading (10 items immediately, then 10 items every 1.5s)
+    function populateKabupatenProgressive(triggerKab, nativeKab, menuId, data, selectedRegencyId = null, defaultLabel = 'Semua Kabupaten', onComplete = null) {
+        if (!triggerKab) return;
+
+        if (triggerKab._progressiveTimer) {
+            clearInterval(triggerKab._progressiveTimer);
+            triggerKab._progressiveTimer = null;
+        }
+
+        triggerKab.classList.remove('disabled');
+
+        if (!data || data.length === 0) {
+            triggerKab.querySelector('.trigger-label').textContent = defaultLabel;
+            updateCustomMenuOptions(menuId, `<div class="frost-custom-option selected" data-value="">${defaultLabel}</div>`);
+            if (typeof onComplete === 'function') onComplete();
+            return;
+        }
+
+        const CHUNK_SIZE = 10;
+        let offset = 0;
+        let nativeHtml = `<option value="">${defaultLabel}</option>`;
+        let menuHtml = `<div class="frost-custom-option selected" data-value="">${defaultLabel}</div>`;
+        let selectedName = defaultLabel;
+
+        function appendChunk(chunk) {
+            chunk.forEach(reg => {
+                const isSel = selectedRegencyId && reg.id == selectedRegencyId;
+                nativeHtml += `<option value="${reg.id}" ${isSel ? 'selected' : ''}>${escapeHtml(reg.name)}</option>`;
+                menuHtml += `<div class="frost-custom-option ${isSel ? 'selected' : ''}" data-value="${reg.id}">${escapeHtml(reg.name)}</div>`;
+                if (isSel) selectedName = reg.name;
+            });
+
+            if (nativeKab) {
+                nativeKab.innerHTML = nativeHtml;
+                if (selectedRegencyId) nativeKab.value = selectedRegencyId;
+                nativeKab.disabled = false;
+            }
+
+            updateCustomMenuOptions(menuId, menuHtml);
+            triggerKab.querySelector('.trigger-label').textContent = selectedName;
+        }
+
+        // Render initial 10 items INSTANTLY (0ms)
+        const firstChunk = data.slice(offset, offset + CHUNK_SIZE);
+        offset += CHUNK_SIZE;
+        appendChunk(firstChunk);
+
+        if (typeof onComplete === 'function') onComplete();
+
+        // Rate-limited progressive streaming for remaining items (10 items every 1.5s)
+        if (offset < data.length) {
+            triggerKab._progressiveTimer = setInterval(() => {
+                if (offset >= data.length) {
+                    clearInterval(triggerKab._progressiveTimer);
+                    triggerKab._progressiveTimer = null;
+                    return;
+                }
+                const nextChunk = data.slice(offset, offset + CHUNK_SIZE);
+                offset += CHUNK_SIZE;
+                appendChunk(nextChunk);
+            }, 1500);
+        }
+    }
+
+    // Helper to update custom menu options
+    function updateCustomMenuOptions(menuId, menuHtml) {
+        const menu = document.getElementById(menuId);
+        if (!menu) return;
+        let optionsList = menu.querySelector('.frost-options-list');
+        if (!optionsList) {
+            optionsList = document.createElement('div');
+            optionsList.className = 'frost-options-list';
+            menu.appendChild(optionsList);
+        }
+        optionsList.innerHTML = menuHtml;
+
+        const searchInput = menu.querySelector('.frost-dropdown-search-input');
+        if (searchInput) {
+            searchInput.value = '';
+            optionsList.querySelectorAll('.frost-custom-option').forEach(opt => opt.style.display = 'flex');
+            const noResults = menu.querySelector('.frost-no-results');
+            if (noResults) noResults.classList.add('d-none');
+        }
+    }
+
+    // Province Change Event for Filter Bar
+    function onProvinceChange(provinceId) {
+        const triggerKab = document.getElementById('trigger-kabupaten');
+        const kabSelect = document.getElementById('filter-kabupaten');
+        const filterForm = document.getElementById('filter-manage-form');
+
+        if (kabSelect) {
+            kabSelect.innerHTML = '<option value="">Semua Kabupaten</option>';
+            kabSelect.value = '';
+            kabSelect.disabled = true;
+        }
+
+        if (triggerKab) {
+            triggerKab.classList.add('disabled');
+            triggerKab.querySelector('.trigger-label').textContent = provinceId ? 'Memuat Kabupaten...' : 'Pilih Provinsi Dahulu';
+        }
+        updateCustomMenuOptions('menu-kabupaten', `<div class="frost-custom-option selected" data-value="">${provinceId ? 'Memuat Kabupaten...' : 'Pilih Provinsi Dahulu'}</div>`);
+
+        if (!provinceId) {
+            if (filterForm) filterForm.submit();
+            return;
+        }
+
+        getRegenciesData(provinceId).then(data => {
+            populateKabupatenProgressive(triggerKab, kabSelect, 'menu-kabupaten', data, null, 'Semua Kabupaten', function () {
+                if (filterForm) filterForm.submit();
+            });
+        }).catch(err => {
+            console.error('Error on province change:', err);
+            if (triggerKab) {
+                triggerKab.classList.remove('disabled');
+                triggerKab.querySelector('.trigger-label').textContent = 'Semua Kabupaten';
+            }
+            if (filterForm) filterForm.submit();
+        });
+    }
+
+    // Helper to load regencies for Create Posko Modal
+    function loadCreateRegencies(provinceId, selectedRegencyId = null) {
+        const nativeKab = document.getElementById('create-regency_id');
+        const triggerKab = document.getElementById('trigger-create-kabupaten');
+
+        if (nativeKab) {
+            nativeKab.innerHTML = '<option value="">Pilih Provinsi Dahulu</option>';
+            nativeKab.value = '';
+            nativeKab.disabled = true;
+        }
+
+        if (triggerKab) {
+            triggerKab.classList.add('disabled');
+            triggerKab.querySelector('.trigger-label').textContent = provinceId ? 'Memuat Kabupaten...' : 'Pilih Provinsi Dahulu';
+        }
+        updateCustomMenuOptions('menu-create-kabupaten', `<div class="frost-custom-option selected" data-value="">${provinceId ? 'Memuat Kabupaten...' : 'Pilih Provinsi Dahulu'}</div>`);
+
+        if (!provinceId) return;
+
+        getRegenciesData(provinceId).then(data => {
+            populateKabupatenProgressive(triggerKab, nativeKab, 'menu-create-kabupaten', data, selectedRegencyId, 'Pilih Kabupaten / Kota');
+        }).catch(err => {
+            console.error('Error loading create regencies:', err);
+            if (triggerKab) {
+                triggerKab.classList.remove('disabled');
+                triggerKab.querySelector('.trigger-label').textContent = 'Pilih Kabupaten / Kota';
+            }
+        });
+    }
+
+    // Helper to load regencies for Edit Posko Modal
+    function loadEditRegencies(provinceId, selectedRegencyId = null) {
+        const nativeKab = document.getElementById('edit-regency_id');
+        const triggerKab = document.getElementById('trigger-edit-kabupaten');
+
+        if (nativeKab) {
+            nativeKab.innerHTML = '<option value="">Pilih Provinsi Dahulu</option>';
+            nativeKab.value = '';
+            nativeKab.disabled = true;
+        }
+
+        if (triggerKab) {
+            triggerKab.classList.add('disabled');
+            triggerKab.querySelector('.trigger-label').textContent = provinceId ? 'Memuat Kabupaten...' : 'Pilih Provinsi Dahulu';
+        }
+        updateCustomMenuOptions('menu-edit-kabupaten', `<div class="frost-custom-option selected" data-value="">${provinceId ? 'Memuat Kabupaten...' : 'Pilih Provinsi Dahulu'}</div>`);
+
+        if (!provinceId) return;
+
+        getRegenciesData(provinceId).then(data => {
+            populateKabupatenProgressive(triggerKab, nativeKab, 'menu-edit-kabupaten', data, selectedRegencyId, 'Pilih Kabupaten / Kota');
+        }).catch(err => {
+            console.error('Error loading edit regencies:', err);
+            if (triggerKab) {
+                triggerKab.classList.remove('disabled');
+                triggerKab.querySelector('.trigger-label').textContent = 'Pilih Kabupaten / Kota';
+            }
+        });
+    }
+
+    // Helper to set custom select value programmatically
+    function setCustomSelectValue(wrapperId, triggerId, menuId, nativeId, val) {
+        const native = document.getElementById(nativeId);
+        const trigger = document.getElementById(triggerId);
+        const menu = document.getElementById(menuId);
+
+        if (!native || !trigger || !menu) return;
+
+        native.value = val;
+        let foundTxt = '';
+
+        menu.querySelectorAll('.frost-custom-option').forEach(opt => {
+            if (opt.getAttribute('data-value') == val) {
+                opt.classList.add('selected');
+                foundTxt = opt.textContent.trim();
+            } else {
+                opt.classList.remove('selected');
+            }
+        });
+
+        if (foundTxt) {
+            trigger.querySelector('.trigger-label').textContent = foundTxt;
+        }
+    }
+
+    // Helper to add requirement row dynamically
+    function addRequirementRow(container, textValue = '', num = 1) {
+        if (!container) return;
+        const row = document.createElement('div');
+        row.className = 'd-flex align-items-center gap-2 requirement-item-row';
+        row.innerHTML = `
+            <span class="badge bg-light text-secondary border fw-bold px-2 py-2 fs-9 req-num-label flex-shrink-0" style="min-width: 68px; text-align: center;">Syarat ${num}</span>
+            <input type="text" name="requirements_options[]" class="frost-input-field form-control form-control-sm flex-grow-1" value="${escapeHtml(textValue)}" placeholder="Contoh: Sehat jasmani &amp; rohani">
+            <button type="button" class="btn btn-sm btn-outline-danger btn-remove-req flex-shrink-0 px-2.5 py-1.5" title="Hapus syarat" style="border-radius: 6px;">
+                <i class="bi bi-trash-fill"></i>
+            </button>
+        `;
+        container.appendChild(row);
+
+        row.querySelector('.btn-remove-req').addEventListener('click', function () {
+            if (container.querySelectorAll('.requirement-item-row').length > 1) {
+                row.remove();
+                updateRequirementNumbers(container);
+            }
+        });
+
+        updateRequirementNumbers(container);
+    }
+
+    function updateRequirementNumbers(container) {
+        if (!container) return;
+        const rows = container.querySelectorAll('.requirement-item-row');
+        rows.forEach((row, index) => {
+            const lbl = row.querySelector('.req-num-label');
+            if (lbl) lbl.textContent = `Syarat ${index + 1}`;
+            const btnRemove = row.querySelector('.btn-remove-req');
+            if (btnRemove) {
+                btnRemove.style.display = rows.length > 1 ? 'inline-block' : 'none';
+            }
+        });
+    }
+
+    function renderEditRequirements(reqString) {
+        const container = document.getElementById('edit-requirements-wrapper');
+        if (!container) return;
+        container.innerHTML = '';
+
+        let items = [];
+        if (reqString) {
+            if (typeof reqString === 'string') {
+                try {
+                    const parsed = JSON.parse(reqString);
+                    if (Array.isArray(parsed)) items = parsed;
+                } catch (e) {
+                    if (reqString.includes('\n')) {
+                        items = reqString.split('\n');
+                    } else if (reqString.includes(',')) {
+                        items = reqString.split(',');
+                    } else {
+                        items = [reqString];
+                    }
+                }
+            } else if (Array.isArray(reqString)) {
+                items = reqString;
+            }
+        }
+
+        items = items.map(s => String(s).trim()).filter(s => s.length > 0);
+        if (items.length === 0) items = [''];
+
+        items.forEach((txt, idx) => {
+            addRequirementRow(container, txt, idx + 1);
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', function () {
         const filterForm = document.getElementById('filter-manage-form');
-        const provSelect = document.getElementById('filter-provinsi');
         const kabSelect = document.getElementById('filter-kabupaten');
-        const bencSelect = document.getElementById('filter-bencana');
-        const statSelect = document.getElementById('filter-status');
-
         const searchInput = document.getElementById('search-input-query');
         const clearBtn = document.getElementById('btn-clear-search');
+
+        // Dynamic Requirement Button Handlers
+        const btnAddCreate = document.getElementById('btn-add-create-requirement');
+        if (btnAddCreate) {
+            btnAddCreate.addEventListener('click', function () {
+                const container = document.getElementById('create-requirements-wrapper');
+                if (container) {
+                    addRequirementRow(container, '', container.querySelectorAll('.requirement-item-row').length + 1);
+                }
+            });
+        }
+
+        const btnAddEdit = document.getElementById('btn-add-edit-requirement');
+        if (btnAddEdit) {
+            btnAddEdit.addEventListener('click', function () {
+                const container = document.getElementById('edit-requirements-wrapper');
+                if (container) {
+                    addRequirementRow(container, '', container.querySelectorAll('.requirement-item-row').length + 1);
+                }
+            });
+        }
 
         // Toggle Clear (X) icon when typing inside search input
         if (searchInput) {
@@ -1342,14 +1952,87 @@
             });
         }
 
-        // Setup Custom Floating Dropdowns
-        function setupCustomDropdown(key) {
-            const wrapper = document.getElementById('custom-wrapper-' + key);
-            const trigger = document.getElementById('trigger-' + key);
-            const menu = document.getElementById('menu-' + key);
-            const native = document.getElementById('filter-' + key);
+        // Generic Custom Dropdown Binder with optional Live Auto-Recommendation Search
+        function setupCustomSelectGeneric(wrapperId, triggerId, menuId, nativeId, onChange, isSearchable = false, searchPlaceholder = 'Cari...') {
+            const wrapper = document.getElementById(wrapperId);
+            const trigger = document.getElementById(triggerId);
+            const menu = document.getElementById(menuId);
+            const native = document.getElementById(nativeId);
 
             if (!wrapper || !trigger || !menu || !native) return;
+
+            // Ensure options are grouped inside .frost-options-list
+            let optionsList = menu.querySelector('.frost-options-list');
+            if (!optionsList) {
+                optionsList = document.createElement('div');
+                optionsList.className = 'frost-options-list';
+                const children = Array.from(menu.childNodes);
+                children.forEach(child => optionsList.appendChild(child));
+                menu.appendChild(optionsList);
+            }
+
+            let searchInput = null;
+            let noResults = null;
+
+            if (isSearchable) {
+                if (!menu.querySelector('.frost-menu-search-wrapper')) {
+                    const searchBoxWrapper = document.createElement('div');
+                    searchBoxWrapper.className = 'frost-menu-search-wrapper';
+                    searchBoxWrapper.innerHTML = `
+                        <div class="frost-menu-search-box">
+                            <i class="bi bi-search frost-menu-search-icon"></i>
+                            <input type="text" class="frost-dropdown-search-input form-control form-control-sm" placeholder="${escapeHtml(searchPlaceholder)}" autocomplete="off">
+                        </div>
+                        <div class="frost-no-results p-2 text-muted fs-8 text-center d-none">Tidak ditemukan rekomendasi nama</div>
+                    `;
+                    menu.insertBefore(searchBoxWrapper, optionsList);
+                }
+
+                searchInput = menu.querySelector('.frost-dropdown-search-input');
+                noResults = menu.querySelector('.frost-no-results');
+
+                if (searchInput) {
+                    searchInput.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                    });
+
+                    searchInput.addEventListener('input', function () {
+                        const query = this.value.toLowerCase().trim();
+                        const currentList = menu.querySelector('.frost-options-list') || optionsList;
+                        const options = currentList.querySelectorAll('.frost-custom-option');
+                        let matchCount = 0;
+
+                        options.forEach(opt => {
+                            const txt = opt.textContent.toLowerCase();
+                            if (!query || txt.includes(query)) {
+                                opt.style.display = 'flex';
+                                matchCount++;
+                            } else {
+                                opt.style.display = 'none';
+                            }
+                        });
+
+                        if (noResults) {
+                            if (matchCount === 0) {
+                                noResults.classList.remove('d-none');
+                            } else {
+                                noResults.classList.add('d-none');
+                            }
+                        }
+                    });
+
+                    searchInput.addEventListener('keydown', function (e) {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            const currentList = menu.querySelector('.frost-options-list') || optionsList;
+                            const firstVisible = Array.from(currentList.querySelectorAll('.frost-custom-option')).find(opt => opt.style.display !== 'none');
+                            if (firstVisible) {
+                                firstVisible.click();
+                            }
+                        }
+                    });
+                }
+            }
 
             trigger.addEventListener('click', function (e) {
                 e.stopPropagation();
@@ -1365,6 +2048,14 @@
                     menu.classList.add('show');
                     trigger.classList.add('active');
                     wrapper.classList.add('active-dropdown');
+
+                    if (searchInput) {
+                        searchInput.value = '';
+                        const currentList = menu.querySelector('.frost-options-list') || optionsList;
+                        currentList.querySelectorAll('.frost-custom-option').forEach(opt => opt.style.display = 'flex');
+                        if (noResults) noResults.classList.add('d-none');
+                        setTimeout(() => searchInput.focus(), 60);
+                    }
                 }
             });
 
@@ -1386,19 +2077,44 @@
 
                 if (native.value !== val) {
                     native.value = val;
-                    if (key === 'provinsi') {
-                        onProvinceChange(val);
-                    } else {
-                        filterForm.submit();
+                    if (typeof onChange === 'function') {
+                        onChange(val, txt);
                     }
                 }
             });
         }
 
-        setupCustomDropdown('provinsi');
-        setupCustomDropdown('kabupaten');
-        setupCustomDropdown('bencana');
-        setupCustomDropdown('status');
+        // Filter Bar Custom Dropdowns
+        setupCustomSelectGeneric('custom-wrapper-provinsi', 'trigger-provinsi', 'menu-provinsi', 'filter-provinsi', function (val) {
+            onProvinceChange(val);
+        }, true, 'Cari provinsi...');
+        setupCustomSelectGeneric('custom-wrapper-kabupaten', 'trigger-kabupaten', 'menu-kabupaten', 'filter-kabupaten', function () {
+            if (filterForm) filterForm.submit();
+        }, true, 'Cari kabupaten / kota...');
+        setupCustomSelectGeneric('custom-wrapper-bencana', 'trigger-bencana', 'menu-bencana', 'filter-bencana', function () {
+            if (filterForm) filterForm.submit();
+        });
+        setupCustomSelectGeneric('custom-wrapper-status', 'trigger-status', 'menu-status', 'filter-status', function () {
+            if (filterForm) filterForm.submit();
+        });
+
+        // Create Posko Modal Custom Dropdowns
+        setupCustomSelectGeneric('custom-wrapper-create-bencana', 'trigger-create-bencana', 'menu-create-bencana', 'create-jenis_bencana');
+        setupCustomSelectGeneric('custom-wrapper-create-urgency', 'trigger-create-urgency', 'menu-create-urgency', 'create-urgency');
+        setupCustomSelectGeneric('custom-wrapper-create-status', 'trigger-create-status', 'menu-create-status', 'create-status');
+        setupCustomSelectGeneric('custom-wrapper-create-provinsi', 'trigger-create-provinsi', 'menu-create-provinsi', 'create-province_id', function (provId) {
+            loadCreateRegencies(provId);
+        }, true, 'Cari provinsi...');
+        setupCustomSelectGeneric('custom-wrapper-create-kabupaten', 'trigger-create-kabupaten', 'menu-create-kabupaten', 'create-regency_id', null, true, 'Cari kabupaten / kota...');
+
+        // Edit Posko Modal Custom Dropdowns
+        setupCustomSelectGeneric('custom-wrapper-edit-bencana', 'trigger-edit-bencana', 'menu-edit-bencana', 'edit-jenis_bencana');
+        setupCustomSelectGeneric('custom-wrapper-edit-urgency', 'trigger-edit-urgency', 'menu-edit-urgency', 'edit-urgency');
+        setupCustomSelectGeneric('custom-wrapper-edit-status', 'trigger-edit-status', 'menu-edit-status', 'edit-status');
+        setupCustomSelectGeneric('custom-wrapper-edit-provinsi', 'trigger-edit-provinsi', 'menu-edit-provinsi', 'edit-province_id', function (provId) {
+            loadEditRegencies(provId);
+        }, true, 'Cari provinsi...');
+        setupCustomSelectGeneric('custom-wrapper-edit-kabupaten', 'trigger-edit-kabupaten', 'menu-edit-kabupaten', 'edit-regency_id', null, true, 'Cari kabupaten / kota...');
 
         // Close dropdowns on outside click
         document.addEventListener('click', function () {
@@ -1406,145 +2122,33 @@
             document.querySelectorAll('.frost-custom-trigger').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.frost-custom-select-wrapper').forEach(w => w.classList.remove('active-dropdown'));
         });
-
-        // Province Change Event with Cascading Regency Fetching
-        function onProvinceChange(provinceId) {
-            const triggerKab = document.getElementById('trigger-kabupaten');
-            const menuKab = document.getElementById('menu-kabupaten');
-
-            kabSelect.innerHTML = '<option value="">Semua Kabupaten</option>';
-            kabSelect.value = '';
-            kabSelect.disabled = true;
-
-            triggerKab.classList.add('disabled');
-            triggerKab.querySelector('.trigger-label').textContent = provinceId ? 'Memuat Kabupaten...' : 'Pilih Provinsi Dahulu';
-            menuKab.innerHTML = `<div class="frost-custom-option selected" data-value="">${provinceId ? 'Memuat Kabupaten...' : 'Pilih Provinsi Dahulu'}</div>`;
-
-            if (!provinceId) {
-                filterForm.submit();
-                return;
-            }
-
-            const url = window.location.origin + '/bpbd/manage-posko/get-regencies/' + provinceId;
-
-            fetch(url)
-                .then(res => res.json())
-                .then(res => {
-                    if (res.status === 'success') {
-                        triggerKab.querySelector('.trigger-label').textContent = 'Semua Kabupaten';
-                        triggerKab.classList.remove('disabled');
-
-                        let menuHtml = '<div class="frost-custom-option selected" data-value="">Semua Kabupaten</div>';
-                        res.data.forEach(reg => {
-                            const opt = document.createElement('option');
-                            opt.value = reg.id;
-                            opt.textContent = reg.name;
-                            kabSelect.appendChild(opt);
-
-                            menuHtml += `<div class="frost-custom-option" data-value="${reg.id}">${escapeHtml(reg.name)}</div>`;
-                        });
-                        kabSelect.disabled = false;
-                        menuKab.innerHTML = menuHtml;
-                    }
-                    filterForm.submit();
-                })
-                .catch(err => {
-                    console.error('Error loading regencies:', err);
-                    filterForm.submit();
-                });
-        }
-
-        // Helper for Create & Edit Modals (Cascading Regencies)
-        function loadRegencies(provinceId, targetSelect) {
-            targetSelect.innerHTML = '<option value="">Memuat...</option>';
-            targetSelect.disabled = true;
-
-            if (!provinceId) {
-                targetSelect.innerHTML = '<option value="">Pilih Provinsi Dahulu</option>';
-                return;
-            }
-
-            const url = window.location.origin + '/bpbd/manage-posko/get-regencies/' + provinceId;
-            fetch(url)
-                .then(res => res.json())
-                .then(res => {
-                    if (res.status === 'success') {
-                        let html = '<option value="">-- Pilih Kabupaten / Kota --</option>';
-                        res.data.forEach(reg => {
-                            html += `<option value="${reg.id}">${reg.name}</option>`;
-                        });
-                        targetSelect.innerHTML = html;
-                        targetSelect.disabled = false;
-                    } else {
-                        targetSelect.innerHTML = '<option value="">Gagal Memuat</option>';
-                    }
-                })
-                .catch(err => {
-                    console.error('Error loading regencies:', err);
-                    targetSelect.innerHTML = '<option value="">Error Memuat</option>';
-                });
-        }
-
-        const createProv = document.getElementById('create-province_id');
-        const createKab = document.getElementById('create-regency_id');
-        const editProv = document.getElementById('edit-province_id');
-        const editKab = document.getElementById('edit-regency_id');
-
-        if (createProv && createKab) {
-            createProv.addEventListener('change', function () {
-                loadRegencies(this.value, createKab);
-            });
-        }
-
-        if (editProv && editKab) {
-            editProv.addEventListener('change', function () {
-                loadRegencies(this.value, editKab);
-            });
-        }
-
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/[&<>"']/g, function (m) {
-                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
-            });
-        }
     });
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>"']/g, function (m) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+        });
+    }
 
     // Modal Edit Handler
     function openEditModal(posko) {
         document.getElementById('editPoskoForm').action = window.location.origin + '/bpbd/manage-posko/update/' + posko.id;
         document.getElementById('edit-name').value = posko.name || '';
         document.getElementById('edit-quota').value = posko.quota || 10;
-        document.getElementById('edit-urgency').value = posko.urgency || 'Urgent';
-        document.getElementById('edit-status').value = posko.status || 'aktif';
-        document.getElementById('edit-positions').value = posko.positions || '';
-        document.getElementById('edit-requirements').value = posko.requirements || '';
+        renderEditRequirements(posko.requirements || '');
         document.getElementById('edit-contact_person').value = posko.contact_person || '';
 
-        const editProv = document.getElementById('edit-province_id');
-        const editKab = document.getElementById('edit-regency_id');
+        setCustomSelectValue('custom-wrapper-edit-bencana', 'trigger-edit-bencana', 'menu-edit-bencana', 'edit-jenis_bencana', posko.jenis_bencana || 'Gempa Bumi');
+        setCustomSelectValue('custom-wrapper-edit-urgency', 'trigger-edit-urgency', 'menu-edit-urgency', 'edit-urgency', posko.urgency || 'Urgent');
+        setCustomSelectValue('custom-wrapper-edit-status', 'trigger-edit-status', 'menu-edit-status', 'edit-status', posko.status || 'aktif');
 
         if (posko.province_id) {
-            editProv.value = posko.province_id;
-
-            const url = window.location.origin + '/bpbd/manage-posko/get-regencies/' + posko.province_id;
-            fetch(url)
-                .then(res => res.json())
-                .then(res => {
-                    if (res.status === 'success') {
-                        let html = '<option value="">-- Pilih Kabupaten / Kota --</option>';
-                        res.data.forEach(reg => {
-                            const isSel = reg.id == posko.regency_id ? 'selected' : '';
-                            html += `<option value="${reg.id}" ${isSel}>${reg.name}</option>`;
-                        });
-                        editKab.innerHTML = html;
-                        editKab.disabled = false;
-                    }
-                });
-        }
-
-        if (posko.jenis_bencana) {
-            document.getElementById('edit-jenis_bencana').value = posko.jenis_bencana;
+            setCustomSelectValue('custom-wrapper-edit-provinsi', 'trigger-edit-provinsi', 'menu-edit-provinsi', 'edit-province_id', posko.province_id);
+            loadEditRegencies(posko.province_id, posko.regency_id);
+        } else {
+            setCustomSelectValue('custom-wrapper-edit-provinsi', 'trigger-edit-provinsi', 'menu-edit-provinsi', 'edit-province_id', '');
+            loadEditRegencies('', null);
         }
 
         const editModal = new bootstrap.Modal(document.getElementById('editPoskoModal'));
