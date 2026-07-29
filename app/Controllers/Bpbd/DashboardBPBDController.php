@@ -13,13 +13,13 @@ class DashboardBPBDController extends Controller
     public function index()
     {
         $provinceModel = new ProvinceModel();
-        $poskoModel    = new PoskoModel();
-        $victimModel   = new VictimModel();
+        $poskoModel = new PoskoModel();
+        $victimModel = new VictimModel();
 
-        $provinces    = $provinceModel->orderBy('name', 'ASC')->findAll();
+        $provinces = $provinceModel->orderBy('name', 'ASC')->findAll();
         $jenisBencana = $poskoModel->getDistinctJenisBencana();
-        $stats        = $victimModel->getDashboardStats();
-        $poskoList    = $this->getFilteredPoskoList();
+        $stats = $victimModel->getDashboardStats();
+        $poskoList = $this->getFilteredPoskoList();
 
         // Resolve highest priority posko (posko with highest high_risk_count)
         $highestPriorityPosko = null;
@@ -34,11 +34,11 @@ class DashboardBPBDController extends Controller
         }
 
         $data = [
-            'title'                => 'Dashboard BPBD — Executive Summary',
-            'provinces'            => $provinces,
-            'jenisBencana'         => $jenisBencana,
-            'stats'                => $stats,
-            'poskoList'            => $poskoList,
+            'title' => 'Dashboard BPBD - Executive Summary',
+            'provinces' => $provinces,
+            'jenisBencana' => $jenisBencana,
+            'stats' => $stats,
+            'poskoList' => $poskoList,
             'highestPriorityPosko' => $highestPriorityPosko,
         ];
 
@@ -50,7 +50,7 @@ class DashboardBPBDController extends Controller
      */
     private function getFilteredPoskoList(array $filters = []): array
     {
-        $db      = \Config\Database::connect();
+        $db = \Config\Database::connect();
         $builder = $db->table('posko');
         $builder->select("
             posko.id, posko.name as posko_name, posko.jenis_bencana, posko.status,
@@ -88,11 +88,11 @@ class DashboardBPBDController extends Controller
         }
 
         foreach ($list as &$item) {
-            $item['high_risk_count']   = (int) $item['high_risk_count'];
+            $item['high_risk_count'] = (int) $item['high_risk_count'];
             $item['medium_risk_count'] = (int) $item['medium_risk_count'];
-            $item['low_risk_count']    = (int) $item['low_risk_count'];
-            $item['total_korban']      = (int) $item['total_korban'];
-            $item['sudah_screening']   = (int) $item['sudah_screening'];
+            $item['low_risk_count'] = (int) $item['low_risk_count'];
+            $item['total_korban'] = (int) $item['total_korban'];
+            $item['sudah_screening'] = (int) $item['sudah_screening'];
             $item['is_highest_priority'] = ($maxHigh > 0 && $item['high_risk_count'] === $maxHigh);
         }
 
