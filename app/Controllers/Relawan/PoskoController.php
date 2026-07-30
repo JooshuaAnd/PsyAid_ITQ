@@ -11,7 +11,7 @@ class PoskoController extends Controller
 {
     public function detail($poskoId)
     {
-        $db      = \Config\Database::connect();
+        $db = \Config\Database::connect();
         $builder = $db->table('posko');
         $builder->select('
             posko.*,
@@ -23,7 +23,7 @@ class PoskoController extends Controller
         $builder->where('posko.id', $poskoId);
         $posko = $builder->get()->getRowArray();
 
-        if (! $posko) {
+        if (!$posko) {
             return redirect()->to('/command-center')->with('error', 'Posko tidak ditemukan.');
         }
 
@@ -33,29 +33,68 @@ class PoskoController extends Controller
 
         // Calculate summary stats for this Posko
         $victimModel = new VictimModel();
-        $stats       = $victimModel->getDashboardStats(['posko_id' => $poskoId]);
+        $stats = $victimModel->getDashboardStats(['posko_id' => $poskoId]);
 
         $req = service('request');
 
         // Search & Filter parameters for Victims table
         $searchFilters = [
-            'keyword'          => $req->getGet('q'),
+            'keyword' => $req->getGet('q'),
             'screening_status' => $req->getGet('screening_status'),
-            'risk_level'       => $req->getGet('risk_level'),
+            'risk_level' => $req->getGet('risk_level'),
         ];
 
         // Fetch Victims at this Posko
         $victims = $victimModel->getVictimsByPosko((int) $poskoId, $searchFilters);
 
         $data = [
-            'title'         => 'Dashboard Posko — ' . $posko['name'],
-            'posko'         => $posko,
-            'personnel'     => $personnel,
-            'stats'         => $stats,
-            'victims'       => $victims,
+            'title' => 'Dashboard Posko - ' . $posko['name'],
+            'posko' => $posko,
+            'personnel' => $personnel,
+            'stats' => $stats,
+            'victims' => $victims,
             'searchFilters' => $searchFilters,
         ];
 
         return view('relawan/PoskoDetail', $data);
+    }
+
+    public function manajemenPenyintas()
+    {
+        $poskoId = session()->get('posko_id') ?? 1;
+        $db = \Config\Database::connect();
+        $builder = $db->table('posko');
+        $builder->select('
+            posko.*,
+            regencies.name as regency_name,
+            provinces.name as province_name
+        ');
+        $builder->join('regencies', 'regencies.id = posko.regency_id', 'left');
+        $builder->join('provinces', 'provinces.id = regencies.province_id', 'left');
+        $builder->where('posko.id', $poskoId);
+        $posko = $builder->get()->getRowArray();
+
+        $victimModel = new VictimModel();
+        $stats = $victimModel->getDashboardStats(['posko_id' => $poskoId]);
+
+        $req = service('request');
+
+        $searchFilters = [
+            'keyword' => $req->getGet('q'),
+            'screening_status' => $req->getGet('screening_status'),
+            'risk_level' => $req->getGet('risk_level'),
+        ];
+
+        $victims = $victimModel->getVictimsByPosko((int) $poskoId, $searchFilters);
+
+        $data = [
+            'title' => 'Manajemen Data Penyintas — PsyAid',
+            'posko' => $posko ?: ['id' => 1, 'name' => 'Posko Utama'],
+            'stats' => $stats,
+            'victims' => $victims,
+            'searchFilters' => $searchFilters,
+        ];
+
+        return view('relawan/ManajemenDataPenyintas', $data);
     }
 }

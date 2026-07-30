@@ -636,7 +636,7 @@
     <div class="card posko-item-card p-4 mb-4" style="overflow: visible !important;">
         <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3 border-bottom pb-3">
             <h5 class="fw-bold mb-0 d-flex align-items-center" style="color: #064e3b;">
-                <i class="bi bi-person-lines-fill text-success me-2 fs-5"></i> Daftar Manajemen Penyintas (Victims)
+                <i class="bi bi-person-lines-fill text-success me-2 fs-5"></i> Ringkasan Penyintas
             </h5>
             <div class="d-flex align-items-center gap-2 flex-wrap card-header-actions">
                 <span class="badge px-3 py-1.5 fs-8"
@@ -650,8 +650,8 @@
         </div>
 
         <!-- Form Filter & Pencarian Penyintas -->
-        <form method="GET" action="<?= site_url('/posko/' . $posko['id']) ?>" class="row g-2.5 gy-3 posko-filter-form mb-4 p-3 rounded"
-            style="background: rgba(236, 253, 245, 0.7); border: 1.5px solid #a7f3d0 !important; overflow: visible !important;">
+        <form method="GET" action="<?= site_url('/posko/' . $posko['id']) ?>" class="row g-2.5 gy-3 align-items-center mb-4 pb-3 border-bottom"
+            style="overflow: visible !important;">
             <div class="col-12 col-md-5">
                 <input type="text" name="q" class="frost-input-field" placeholder="Cari Nama Penyintas atau NIK..."
                     value="<?= esc($searchFilters['keyword'] ?? '') ?>">
@@ -772,20 +772,17 @@
             <table class="table table-hover align-middle mb-0">
                 <thead style="background-color: #f8fafc;" class="text-secondary small text-uppercase">
                     <tr>
-                        <th style="width: 5%;">No</th>
-                        <th style="width: 25%;">Nama & NIK</th>
-                        <th style="width: 12%;">GENDER & UMUR</th>
-                        <th style="width: 15%;">Waktu Datang</th>
-                        <th style="width: 15%;">Status Skrining</th>
-                        <th style="width: 13%;">AI Risk Level</th>
-                        <th style="width: 15%;">Psikolog Assigned</th>
-                        <th style="width: 10%;" class="text-end">Aksi</th>
+                        <th style="width: 8%;">No</th>
+                        <th style="width: 37%;">Nama & NIK</th>
+                        <th style="width: 17%;">GENDER & UMUR</th>
+                        <th style="width: 20%;">Waktu Datang</th>
+                        <th style="width: 18%;">Status Skrining</th>
                     </tr>
                 </thead>
                 <tbody id="victims-tbody">
                     <?php if (empty($victims)): ?>
                         <tr>
-                            <td colspan="8" class="text-center py-4 text-muted">
+                            <td colspan="5" class="text-center py-4 text-muted">
                                 <i class="bi bi-inbox fs-3 d-block mb-1 text-emerald-600"></i>
                                 Tidak ada data penyintas yang sesuai dengan kriteria pencarian.
                             </td>
@@ -808,10 +805,9 @@
                                     <span class="small text-muted fs-8"><?= esc($v['umur']) ?> Thn</span>
                                 </td>
                                 <td class="small text-muted">
-                                    <div><i class="bi bi-calendar3 me-1 text-emerald-600"></i> <?= esc($v['tanggal_datang']) ?>
+                                    <div><i class="bi bi-calendar3 me-1 text-emerald-600"></i> <span data-device-time="<?= esc($v['tanggal_datang']) ?>" data-format-type="date-only"><?= esc($v['tanggal_datang']) ?></span>
                                     </div>
-                                    <div class="fs-8"><i class="bi bi-clock me-1 text-emerald-600"></i>
-                                        <?= esc($v['jam_datang']) ?>
+                                    <div class="fs-8"><i class="bi bi-clock me-1 text-emerald-600"></i> <span data-device-time="<?= esc($v['tanggal_datang'] . ' ' . $v['jam_datang']) ?>" data-format-type="time-only" data-show-tz="true"><?= esc($v['jam_datang']) ?></span>
                                     </div>
                                 </td>
                                 <td>
@@ -826,40 +822,6 @@
                                             <i class="bi bi-clock-history me-1"></i> Belum Skrining
                                         </span>
                                     <?php endif; ?>
-                                </td>
-                                <td>
-                                    <?php if ($v['risk_level'] === 'high'): ?>
-                                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle fs-8 px-2 py-1">
-                                            <i class="bi bi-exclamation-triangle-fill me-1"></i> HIGH RISK
-                                        </span>
-                                    <?php elseif ($v['risk_level'] === 'medium'): ?>
-                                        <span
-                                            class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle fs-8 px-2 py-1">
-                                            <i class="bi bi-dash-circle-fill me-1"></i> MEDIUM RISK
-                                        </span>
-                                    <?php elseif ($v['risk_level'] === 'low'): ?>
-                                        <span
-                                            class="badge bg-info-subtle text-info-emphasis border border-info-subtle fs-8 px-2 py-1">
-                                            <i class="bi bi-check-circle-fill me-1"></i> LOW RISK
-                                        </span>
-                                    <?php else: ?>
-                                        <span class="badge bg-light text-muted border fs-9">Belum AI</span>
-                                    <?php endif; ?>
-                                </td>
-                                <td>
-                                    <?php if ($v['psikolog_name']): ?>
-                                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle fs-8">
-                                            <i class="bi bi-person-check-fill me-1"></i> <?= esc($v['psikolog_name']) ?>
-                                        </span>
-                                    <?php else: ?>
-                                        <span class="badge bg-light text-muted border fs-9">Belum Ditugaskan</span>
-                                    <?php endif; ?>
-                                </td>
-                                <td class="text-end">
-                                    <a href="<?= site_url('/victim/detail/' . $v['id']) ?>"
-                                        class="frost-btn-primary py-1 px-2.5 fs-8" title="Buka Detail Penyintas">
-                                        Detail <i class="bi bi-arrow-right"></i>
-                                    </a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>

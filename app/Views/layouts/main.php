@@ -708,10 +708,16 @@ if (session()->get('logged_in')) {
                         <!-- Relawan Posko Menu -->
                         <?php $poskoId = session()->get('posko_id') ?? 1; ?>
                         <a href="<?= site_url('/relawan/posko/' . $poskoId) ?>"
-                            class="sidebar-nav-item <?= (url_is('relawan/posko*') || url_is('posko*')) ? 'active' : '' ?>"
+                            class="sidebar-nav-item <?= (url_is('relawan/posko*') || (url_is('posko*') && !url_is('relawan/manajemen-penyintas*'))) ? 'active' : '' ?>"
                             title="Posko Relawan Saya">
                             <i class="nav-icon bi bi-geo-alt-fill text-success"></i>
                             <span class="sidebar-label">Posko Saya</span>
+                        </a>
+                        <a href="<?= site_url('/relawan/manajemen-penyintas') ?>"
+                            class="sidebar-nav-item <?= url_is('relawan/manajemen-penyintas*') ? 'active' : '' ?>"
+                            title="Manajemen Data Penyintas">
+                            <i class="nav-icon bi bi-person-lines-fill text-success"></i>
+                            <span class="sidebar-label">Data Penyintas</span>
                         </a>
                         <a href="<?= site_url('/victim/create/' . $poskoId) ?>"
                             class="sidebar-nav-item <?= url_is('victim/create*') ? 'active' : '' ?>" title="Tambah Penyintas Baru">
@@ -917,9 +923,14 @@ if (session()->get('logged_in')) {
                     <?php elseif ($role === 'relawan'): ?>
                         <?php $poskoId = session()->get('posko_id') ?? 1; ?>
                         <a href="<?= site_url('/relawan/posko/' . $poskoId) ?>"
-                            class="sidebar-nav-item py-2 px-3 mb-1 <?= (url_is('relawan/posko*') || url_is('posko*')) ? 'active' : '' ?>">
+                            class="sidebar-nav-item py-2 px-3 mb-1 <?= (url_is('relawan/posko*') || (url_is('posko*') && !url_is('relawan/manajemen-penyintas*'))) ? 'active' : '' ?>">
                             <i class="nav-icon bi bi-geo-alt-fill text-success"></i>
                             <span class="sidebar-label">Posko Saya</span>
+                        </a>
+                        <a href="<?= site_url('/relawan/manajemen-penyintas') ?>"
+                            class="sidebar-nav-item py-2 px-3 mb-1 <?= url_is('relawan/manajemen-penyintas*') ? 'active' : '' ?>">
+                            <i class="nav-icon bi bi-person-lines-fill text-success"></i>
+                            <span class="sidebar-label">Data Penyintas</span>
                         </a>
                         <a href="<?= site_url('/victim/create/' . $poskoId) ?>"
                             class="sidebar-nav-item py-2 px-3 mb-1 <?= url_is('victim/create*') ? 'active' : '' ?>">

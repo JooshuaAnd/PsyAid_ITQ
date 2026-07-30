@@ -54,10 +54,13 @@ $routes->get('/api/earthquake-data', 'Bpbd\EarthquakeRadarController::fetchBmkgD
 // Posko detail route (Relawan namespace)
 $routes->get('/posko/(:num)', 'Relawan\PoskoController::detail/$1', ['filter' => ['auth']]);
 $routes->get('/relawan/posko/(:num)', 'Relawan\RelawanController::posko/$1', ['filter' => ['auth', 'role:relawan']]);
+$routes->get('/relawan/manajemen-penyintas', 'Relawan\PoskoController::manajemenPenyintas', ['filter' => ['auth']]);
 
 // Victim detail & update routes (Relawan namespace)
 $routes->get('/victim/create/(:num)', 'Relawan\VictimController::create/$1', ['filter' => ['auth', 'role:relawan,psikolog']]);
+$routes->post('/victim/store/(:num)', 'Relawan\VictimController::store/$1', ['filter' => ['auth', 'role:relawan,psikolog']]);
 $routes->get('/victim/detail/(:num)', 'Relawan\VictimController::detail/$1', ['filter' => ['auth']]);
+$routes->get('/victim/detail-json/(:num)', 'Relawan\VictimController::detailJson/$1', ['filter' => ['auth']]);
 $routes->post('/victim/update/(:num)', 'Relawan\VictimController::update/$1', ['filter' => ['auth']]);
 $routes->post('/victim/update-psychological/(:num)', 'Relawan\VictimController::updatePsychologicalHistory/$1', ['filter' => ['auth', 'role:relawan,psikolog']]);
 
