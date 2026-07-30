@@ -38,6 +38,9 @@ class VictimModel extends Model
         $builder->join('volunteer_screening', 'volunteer_screening.victim_id = victims.id', 'left');
         $builder->join('ai_assessment', 'ai_assessment.victim_id = victims.id', 'left');
 
+        if (! empty($filters['posko_id'])) {
+            $builder->where('posko.id', $filters['posko_id']);
+        }
         if (! empty($filters['province_id'])) {
             $builder->where('provinces.id', $filters['province_id']);
         }
@@ -63,6 +66,9 @@ class VictimModel extends Model
         $userBuilder->join('regencies', 'regencies.id = posko.regency_id', 'left');
         $userBuilder->join('provinces', 'provinces.id = regencies.province_id', 'left');
 
+        if (! empty($filters['posko_id'])) {
+            $userBuilder->where('posko.id', $filters['posko_id']);
+        }
         if (! empty($filters['province_id'])) {
             $userBuilder->where('provinces.id', $filters['province_id']);
         }
@@ -137,14 +143,9 @@ class VictimModel extends Model
             $builder->where('ai_assessment.risk_level', $searchFilters['risk_level']);
         }
 
-        // Priority ordering: high risk first, then medium, low, unassessed, then newest arrival
-        $builder->orderBy("
-            CASE 
-                WHEN ai_assessment.risk_level = 'high' THEN 1 
-                WHEN ai_assessment.risk_level = 'medium' THEN 2 
-                WHEN ai_assessment.risk_level = 'low' THEN 3 
-                ELSE 4 
-            END", "ASC", false);
+        // Order strictly by newest arrival date time
+        $builder->orderBy('victims.tanggal_datang', 'DESC');
+        $builder->orderBy('victims.jam_datang', 'DESC');
         $builder->orderBy('victims.created_at', 'DESC');
 
         return $builder->get()->getResultArray();
