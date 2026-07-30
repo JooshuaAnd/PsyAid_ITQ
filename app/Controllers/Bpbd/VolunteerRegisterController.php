@@ -23,6 +23,44 @@ class VolunteerRegisterController extends BaseController
     }
 
     /**
+     * Store Volunteer Registration directly from BPBD Admin
+     */
+    public function store()
+    {
+        $nik        = trim($this->request->getPost('nik') ?? '');
+        $nama       = trim($this->request->getPost('nama') ?? '');
+        $provinsi   = trim($this->request->getPost('provinsi') ?? '');
+        $tglLahir   = trim($this->request->getPost('tgl_lahir') ?? '');
+        $whatsapp   = trim($this->request->getPost('whatsapp') ?? '');
+        $poskoName  = trim($this->request->getPost('posko_name') ?? '');
+
+        if (empty($nik) || empty($nama) || empty($whatsapp)) {
+            return redirect()->back()->withInput()->with('error', 'NIK, Nama Lengkap, dan Nomor WhatsApp wajib diisi.');
+        }
+
+        $regModel = new VolunteerRegistrationModel();
+
+        $existing = $regModel->where('nik', $nik)->first();
+        if ($existing) {
+            return redirect()->back()->withInput()->with('error', 'NIK ini sudah terdaftar dalam sistem pendaftaran relawan.');
+        }
+
+        $regModel->insert([
+            'nik'        => $nik,
+            'nama'       => $nama,
+            'provinsi'   => $provinsi,
+            'tgl_lahir'  => !empty($tglLahir) ? $tglLahir : null,
+            'whatsapp'   => $whatsapp,
+            'posko_name' => !empty($poskoName) ? $poskoName : null,
+            'status'     => 'pending',
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
+
+        return redirect()->to('/bpbd/register-relawan')->with('success', 'Permohonan pendaftaran relawan baru berhasil ditambahkan!');
+    }
+
+    /**
      * Approve Volunteer Registration Request & Create User Account with Random Temporary Password
      */
     public function approve($id)

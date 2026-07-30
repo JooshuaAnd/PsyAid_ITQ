@@ -958,17 +958,19 @@
                     currentStep = 6;
 
                     // Send data to backend API for BPBD Approval
-                    const bodyPayload = new FormData();
-                    bodyPayload.append('nik', formData.nik);
-                    bodyPayload.append('nama', formData.nama);
-                    bodyPayload.append('provinsi', formData.provinsi);
-                    bodyPayload.append('tgl_lahir', formData.tgl_lahir);
-                    bodyPayload.append('whatsapp', formData.whatsapp);
-                    bodyPayload.append('posko_name', activePoskoName);
-
                     fetch('<?= site_url('/api/register-volunteer-request') ?>', {
                         method: 'POST',
-                        body: bodyPayload
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            nik: formData.nik,
+                            nama: formData.nama,
+                            provinsi: formData.provinsi,
+                            tgl_lahir: formData.tgl_lahir,
+                            whatsapp: formData.whatsapp,
+                            posko_name: activePoskoName
+                        })
                     })
                     .then(res => res.json())
                     .then(data => {

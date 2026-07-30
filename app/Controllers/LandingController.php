@@ -115,14 +115,17 @@ class LandingController extends BaseController
      */
     public function storeVolunteerRequest()
     {
-        $input = $this->request->getJSON(true) ?? $this->request->getPost();
+        $input = $this->request->getJSON(true);
+        if (empty($input) || !is_array($input)) {
+            $input = $this->request->getPost();
+        }
 
-        $nik        = trim($input['nik'] ?? '');
-        $nama       = trim($input['nama'] ?? '');
-        $provinsi   = trim($input['provinsi'] ?? '');
-        $tglLahir   = trim($input['tgl_lahir'] ?? '');
-        $whatsapp   = trim($input['whatsapp'] ?? '');
-        $poskoName  = trim($input['posko_name'] ?? '');
+        $nik        = trim($input['nik'] ?? $this->request->getVar('nik') ?? '');
+        $nama       = trim($input['nama'] ?? $this->request->getVar('nama') ?? '');
+        $provinsi   = trim($input['provinsi'] ?? $this->request->getVar('provinsi') ?? '');
+        $tglLahir   = trim($input['tgl_lahir'] ?? $this->request->getVar('tgl_lahir') ?? '');
+        $whatsapp   = trim($input['whatsapp'] ?? $this->request->getVar('whatsapp') ?? '');
+        $poskoName  = trim($input['posko_name'] ?? $this->request->getVar('posko_name') ?? '');
 
         if (empty($nik) || empty($nama) || empty($whatsapp)) {
             return $this->response->setJSON([
@@ -133,14 +136,6 @@ class LandingController extends BaseController
 
         $model = new VolunteerRegistrationModel();
 
-        $existing = $model->where('nik', $nik)->first();
-        if ($existing) {
-            return $this->response->setJSON([
-                'status'  => 'error',
-                'message' => 'NIK Anda sudah terdaftar dalam sistem pendaftaran relawan.',
-            ]);
-        }
-
         $data = [
             'nik'        => $nik,
             'nama'       => $nama,
@@ -149,10 +144,20 @@ class LandingController extends BaseController
             'whatsapp'   => $whatsapp,
             'posko_name' => ! empty($poskoName) ? $poskoName : null,
             'status'     => 'pending',
-            'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s'),
         ];
 
+        $existing = $model->where('nik', $nik)->first();
+        if ($existing) {
+            $model->update($existing['id'], $data);
+
+            return $this->response->setJSON([
+                'status'  => 'success',
+                'message' => 'Permohonan pendaftaran relawan Anda berhasil diperbarui & terkirim ke BPBD.',
+            ]);
+        }
+
+        $data['created_at'] = date('Y-m-d H:i:s');
         $model->insert($data);
 
         return $this->response->setJSON([
@@ -183,24 +188,46 @@ class LandingController extends BaseController
      */
     public function storeDisasterReport()
     {
-        $input = $this->request->getJSON(true) ?? $this->request->getPost();
+        $input = $this->request->getJSON(true);
+        if (empty($input) || !is_array($input)) {
+            $input = $this->request->getPost();
+        }
+        if (empty($input) || !is_array($input)) {
+            $input = $this->request->getRawInput();
+        }
 
-        $nama          = trim($input['nama'] ?? '');
-        $whatsapp      = trim($input['whatsapp'] ?? '');
-        $jenisBencana  = trim($input['jenis_bencana'] ?? '');
-        $lokasiDetail  = trim($input['lokasi_detail'] ?? '');
-        $estimasi      = trim($input['estimasi_korban'] ?? '');
-        $kebutuhan     = $input['kebutuhan'] ?? [];
+        $nama              = trim($input['nama'] ?? '');
+        $whatsapp          = trim($input['whatsapp'] ?? '');
+        $jenisBencana      = trim($input['jenis_bencana'] ?? '');
+        $lokasiBencana     = trim($input['lokasi_bencana'] ?? $input['lokasi_detail'] ?? '');
+        $tanggalBencana    = trim($input['tanggal_bencana'] ?? '');
+        $statusBerlangsung = trim($input['status_berlangsung'] ?? 'Ya');
+        $skalaKeparahan    = trim($input['skala_keparahan'] ?? '');
+        $catatanTambahan   = trim($input['catatan_tambahan'] ?? '');
 
-        if (empty($nama) || empty($whatsapp) || empty($lokasiDetail)) {
+        if (empty($nama) || empty($whatsapp) || empty($lokasiBencana)) {
             return $this->response->setJSON([
                 'status'  => 'error',
-                'message' => 'Nama, WhatsApp, dan Lokasi Detail wajib diisi.',
+                'message' => 'Nama, WhatsApp, dan Lokasi Bencana wajib diisi.',
             ]);
         }
 
         // Generate report ticket reference number
         $ticketCode = 'REP-' . date('Ymd') . '-' . rand(1000, 9999);
+
+        $reportModel = new \App\Models\DisasterReportModel();
+        $reportModel->insert([
+            'ticket_code'        => $ticketCode,
+            'nama'               => $nama,
+            'whatsapp'           => $whatsapp,
+            'jenis_bencana'      => $jenisBencana,
+            'lokasi_bencana'     => $lokasiBencana,
+            'tanggal_bencana'    => $tanggalBencana,
+            'status_berlangsung' => $statusBerlangsung,
+            'skala_keparahan'    => $skalaKeparahan,
+            'catatan_tambahan'   => $catatanTambahan,
+            'status'             => 'pending',
+        ]);
 
         return $this->response->setJSON([
             'status'      => 'success',

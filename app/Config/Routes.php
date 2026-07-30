@@ -42,6 +42,12 @@ $routes->post('/bpbd/approval-relawan/approve/(:num)', 'Bpbd\VolunteerRegisterCo
 $routes->post('/bpbd/approval-relawan/reject/(:num)', 'Bpbd\VolunteerRegisterController::reject/$1', ['filter' => ['auth', 'role:bpbd_admin']]);
 $routes->get('/bpbd/register-psikolog', 'Bpbd\VolunteerRegisterController::psikologPage', ['filter' => ['auth', 'role:bpbd_admin']]);
 $routes->post('/bpbd/register-psikolog', 'Bpbd\VolunteerRegisterController::storePsikolog', ['filter' => ['auth', 'role:bpbd_admin']]);
+
+// BPBD Disaster Report Ticketing routes
+$routes->get('/bpbd/ticketing-laporan', 'Bpbd\ReportTicketingController::index', ['filter' => ['auth', 'role:bpbd_admin']]);
+$routes->post('/bpbd/ticketing-laporan/update-status/(:num)', 'Bpbd\ReportTicketingController::updateStatus/$1', ['filter' => ['auth', 'role:bpbd_admin']]);
+$routes->post('/bpbd/ticketing-laporan/delete/(:num)', 'Bpbd\ReportTicketingController::delete/$1', ['filter' => ['auth', 'role:bpbd_admin']]);
+
 $routes->post('/api/register-volunteer-request', 'LandingController::storeVolunteerRequest');
 $routes->get('/api/earthquake-data', 'Bpbd\EarthquakeRadarController::fetchBmkgData', ['filter' => ['auth']]);
 
@@ -60,8 +66,10 @@ $routes->post('/screening/store/(:num)', 'Relawan\ScreeningController::store/$1'
 $routes->get('/screening/reassess/(:num)', 'Relawan\ScreeningController::reassess/$1', ['filter' => ['auth', 'role:relawan,psikolog']]);
 $routes->post('/screening/reassess/(:num)', 'Relawan\ScreeningController::reassess/$1', ['filter' => ['auth', 'role:relawan,psikolog']]);
 
-// Psychologist Mapping & Clinical Workspaces (Psikolog namespace)
-$routes->get('/psychologist-mapping', 'Psikolog\PsychologistMappingController::index', ['filter' => ['auth']]);
+// Psychologist Mapping & Clinical Workspaces
+$routes->get('/psychologist-mapping', 'Bpbd\PsychologistMappingController::index', ['filter' => ['auth']]);
+$routes->get('/bpbd/psychologist-mapping', 'Bpbd\PsychologistMappingController::index', ['filter' => ['auth']]);
+$routes->post('/bpbd/psychologist-mapping/update/(:num)', 'Bpbd\PsychologistMappingController::updateMapping/$1', ['filter' => ['auth', 'role:bpbd_admin']]);
 $routes->get('/psikolog/dashboard', 'Psikolog\PsikologController::index', ['filter' => ['auth', 'role:psikolog']]);
 
 $routes->get('/psychologist-review/(:num)', 'Psikolog\PsychologistReviewController::show/$1', ['filter' => ['auth', 'role:psikolog']]);

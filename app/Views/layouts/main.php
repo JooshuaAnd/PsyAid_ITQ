@@ -664,6 +664,12 @@ if (session()->get('logged_in')) {
                             <i class="nav-icon bi bi-diagram-3-fill text-primary"></i>
                             <span class="sidebar-label">Pemetaan Psikolog</span>
                         </a>
+                        <a href="<?= site_url('/bpbd/ticketing-laporan') ?>"
+                            class="sidebar-nav-item <?= url_is('bpbd/ticketing-laporan*') ? 'active' : '' ?>"
+                            title="Ticketing Laporan Bencana">
+                            <i class="nav-icon bi bi-ticket-perforated-fill text-emerald-600"></i>
+                            <span class="sidebar-label">Ticketing Laporan</span>
+                        </a>
 
                         <!-- Dropdown Registrasi Akun -->
                         <?php $isRegisterActive = url_is('bpbd/register*') || (url_is('register*') && !url_is('bpbd/register*')); ?>
@@ -872,6 +878,11 @@ if (session()->get('logged_in')) {
                             class="sidebar-nav-item py-2 px-3 mb-1 <?= url_is('psychologist-mapping*') ? 'active' : '' ?>">
                             <i class="nav-icon bi bi-diagram-3-fill text-primary"></i>
                             <span class="sidebar-label">Pemetaan Psikolog</span>
+                        </a>
+                        <a href="<?= site_url('/bpbd/ticketing-laporan') ?>"
+                            class="sidebar-nav-item py-2 px-3 mb-1 <?= url_is('bpbd/ticketing-laporan*') ? 'active' : '' ?>">
+                            <i class="nav-icon bi bi-ticket-perforated-fill text-emerald-600"></i>
+                            <span class="sidebar-label">Ticketing Laporan</span>
                         </a>
 
                         <!-- Mobile Dropdown Registrasi Akun -->

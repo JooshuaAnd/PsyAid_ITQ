@@ -1010,15 +1010,15 @@
             })
                 .then(res => res.json())
                 .then(data => {
-                    renderSuccessReportCard();
+                    renderSuccessReportCard(data && data.ticket_code ? data.ticket_code : null);
                 })
                 .catch(err => {
                     renderSuccessReportCard();
                 });
         }
 
-        function renderSuccessReportCard() {
-            const reportCode = 'REP-' + Math.floor(100000 + Math.random() * 900000);
+        function renderSuccessReportCard(codeFromBackend = null) {
+            const reportCode = codeFromBackend || ('REP-' + Math.floor(100000 + Math.random() * 900000));
             const successHtml = `
                 <div class="p-3.5 bg-emerald-100/95 border border-emerald-300 text-slate-900 space-y-2 rounded-xl shadow-sm" style="border-radius: 12px !important;">
                     <div class="flex items-center gap-2 text-emerald-950 font-extrabold text-xs sm:text-sm">
