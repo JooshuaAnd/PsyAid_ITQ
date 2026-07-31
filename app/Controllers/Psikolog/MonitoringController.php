@@ -124,4 +124,19 @@ class MonitoringController extends Controller
 
         return redirect()->back()->with('success', 'Keputusan akhir berhasil disimpan.');
     }
+
+    public function updateAiSummary($victimId, $faseKe)
+    {
+        $aiSummary = $this->request->getPost('ai_summary');
+
+        $aiModel = new \App\Models\AiAssessmentModel();
+        $existing = $aiModel->where('victim_id', $victimId)->where('fase_ke', $faseKe)->first();
+
+        if ($existing) {
+            $aiModel->update($existing['id'], ['ai_summary' => $aiSummary]);
+            return $this->response->setJSON(['status' => 'success', 'message' => 'AI Summary berhasil diperbarui.']);
+        }
+
+        return $this->response->setJSON(['status' => 'error', 'message' => 'Data AI tidak ditemukan.']);
+    }
 }

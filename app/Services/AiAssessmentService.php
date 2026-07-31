@@ -34,6 +34,12 @@ class AiAssessmentService
         $psych     = $psychModel->getByVictimId($victimId) ?? [];
         $itqResult = $itqResultModel->getByVictimId($victimId, $faseKe) ?? [];
 
+        $reviewModel = new \App\Models\PsychologistReviewModel();
+        $mseReview = $faseKe >= 0 ? ($reviewModel->where('victim_id', $victimId)->where('fase_ke', $faseKe)->first() ?? []) : [];
+
+        $clinicalModel = new \App\Models\ClinicalActionModel();
+        $clinicalAction = $faseKe >= 0 ? ($clinicalModel->where('victim_id', $victimId)->where('fase_ke', $faseKe)->first() ?? []) : [];
+
         // 2. Perform RAG Knowledge Base Retrieval
         $ragService   = new ClinicalRagKnowledgeService();
         $ragKnowledge = $ragService->retrieveRelevantKnowledge([
@@ -42,6 +48,7 @@ class AiAssessmentService
             'disaster'  => $disaster,
             'psych'     => $psych,
             'itq'       => $itqResult,
+            'mse'       => $mseReview,
         ]);
 
         // 3. Check if Gemini API key is configured
@@ -49,12 +56,12 @@ class AiAssessmentService
         $assessmentData = null;
 
         if (! empty($apiKey)) {
-            $assessmentData = $this->analyzeWithGemini($apiKey, $victim, $screening, $disaster, $psych, $itqResult, $ragKnowledge);
+            $assessmentData = $this->analyzeWithGemini($apiKey, $victim, $screening, $disaster, $psych, $itqResult, $ragKnowledge, $faseKe, $mseReview, $clinicalAction);
         }
 
         // Fallback to Rule-Based Engine with RAG if Gemini failed or unconfigured
         if (empty($assessmentData)) {
-            $assessmentData = $this->calculateRuleBasedRisk($victimId, $victim, $screening, $disaster, $psych, $itqResult, $ragKnowledge);
+            $assessmentData = $this->calculateRuleBasedRisk($victimId, $victim, $screening, $disaster, $psych, $itqResult, $ragKnowledge, $faseKe, $mseReview, $clinicalAction);
         } else {
             $assessmentData['victim_id'] = $victimId;
         }
@@ -83,12 +90,12 @@ class AiAssessmentService
     /**
      * Call Google Gemini API with Web Search Grounding & RAG Context
      */
-    private function analyzeWithGemini(string $apiKey, array $victim, array $screening, array $disaster, array $psych, array $itqResult, array $ragKnowledge): ?array
+    private function analyzeWithGemini(string $apiKey, array $victim, array $screening, array $disaster, array $psych, array $itqResult, array $ragKnowledge, int $faseKe = -1, array $mseReview = [], array $clinicalAction = []): ?array
     {
         $modelName = env('GEMINI_MODEL', getenv('GEMINI_MODEL') ?: 'gemini-1.5-flash');
         $url       = 'https://generativelanguage.googleapis.com/v1beta/models/' . $modelName . ':generateContent?key=' . $apiKey;
 
-        $prompt = $this->buildClinicalPrompt($victim, $screening, $disaster, $psych, $itqResult, $ragKnowledge);
+        $prompt = $this->buildClinicalPrompt($victim, $screening, $disaster, $psych, $itqResult, $ragKnowledge, $faseKe, $mseReview, $clinicalAction);
 
         $payload = [
             'contents' => [
@@ -200,7 +207,7 @@ class AiAssessmentService
     /**
      * Build Prompt formatted for Gemini API JSON analysis with RAG Context
      */
-    private function buildClinicalPrompt(array $victim, array $screening, array $disaster, array $psych, array $itqResult, array $ragKnowledge): string
+    private function buildClinicalPrompt(array $victim, array $screening, array $disaster, array $psych, array $itqResult, array $ragKnowledge, int $faseKe = -1, array $mseReview = [], array $clinicalAction = []): string
     {
         $context = [
             'victim_identity_biodata' => [
@@ -268,18 +275,50 @@ class AiAssessmentService
             }, $ragKnowledge)
         ];
 
+        if ($faseKe >= 0) {
+            $context['psychologist_mental_status_examination'] = ! empty($mseReview) ? [
+                'chief_complaint' => $mseReview['chief_complaint'] ?? '-',
+                'appearance'      => ($mseReview['mse_appearance'] ?? '-') . ' (' . ($mseReview['mse_appearance_note'] ?? '') . ')',
+                'behavior'        => ($mseReview['mse_behavior'] ?? '-') . ' (' . ($mseReview['mse_behavior_note'] ?? '') . ')',
+                'speech'          => ($mseReview['mse_speech'] ?? '-') . ' (' . ($mseReview['mse_speech_note'] ?? '') . ')',
+                'mood'            => ($mseReview['mse_mood'] ?? '-') . ' (' . ($mseReview['mse_mood_note'] ?? '') . ')',
+                'affect'          => ($mseReview['mse_affect'] ?? '-') . ' (' . ($mseReview['mse_affect_note'] ?? '') . ')',
+                'thought'         => ($mseReview['mse_thought'] ?? '-') . ' (' . ($mseReview['mse_thought_note'] ?? '') . ')',
+                'orientation'     => ($mseReview['mse_orientation'] ?? '-') . ' (' . ($mseReview['mse_orientation_note'] ?? '') . ')',
+                'insight'         => ($mseReview['mse_insight'] ?? '-') . ' (' . ($mseReview['mse_insight_note'] ?? '') . ')',
+                'perception'      => ($mseReview['mse_perception'] ?? '-') . ' (' . ($mseReview['mse_perception_note'] ?? '') . ')',
+                'risk_assessment' => ($mseReview['risk_assessment'] ?? '-') . ' (' . ($mseReview['risk_assessment_note'] ?? '') . ')',
+            ] : 'MSE belum diisi';
+            
+            $context['psychologist_clinical_action'] = ! empty($clinicalAction) ? [
+                'diagnosis_sementara' => $clinicalAction['diagnosis_sementara'] ?? '-',
+                'intervensi_utama'    => $clinicalAction['intervensi'] ?? '-',
+                'catatan_klinis'      => $clinicalAction['catatan_klinis'] ?? '-',
+            ] : 'Catatan intervensi belum diisi';
+        }
+
         $jsonContext = json_encode($context, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+
+        if ($faseKe >= 0) {
+            $promptTask = "Tugas Anda adalah merangkum dan mengevaluasi hasil konsultasi/follow-up psikolog (ITQ, MSE, dan Catatan Klinis), sambil tetap mempertimbangkan riwayat dan skrining awal relawan.";
+            $promptExtraRule = "Karena ini adalah sesi Psikolog, fokuskan 'ai_summary' Anda pada integrasi antara keluhan utama, MSE (Mental Status Examination), hasil kuesioner ITQ, dan rencana intervensi psikolog. Nilai apakah kondisi pasien membaik atau memburuk jika ini adalah follow-up.";
+        } else {
+            $promptTask = "Tugas Anda adalah menganalisis BIODATA PENYINTAS, paparan bencana, observasi skrining relawan, dan riwayat medis psikologis (Fase Relawan) untuk skrining awal kedaruratan.";
+            $promptExtraRule = "Karena ini adalah sesi Skrining Relawan, fokuskan 'ai_summary' pada kondisi observasi lapangan (mampu sebut nama, menangis, gemetar, dll) dan tentukan tingkat krisis/urgensinya.";
+        }
 
         return <<<PROMPT
 Anda adalah sistem pendukung keputusan klinis psikologi bencana (Clinical Decision Support AI) untuk platform PsyAid.
-Tugas Anda adalah menganalisis BIODATA PENYINTAS, paparan bencana, observasi skrining relawan, riwayat medis psikologis, hasil ITQ, serta mengintegrasikan PEDOMAN KLINIS RAG (WHO PFA, IASC MHPSS, HIMPSI, ICD-11) dan pencarian Google Web Search.
+{$promptTask}
+Anda harus mengintegrasikan PEDOMAN KLINIS RAG (WHO PFA, IASC MHPSS, HIMPSI, ICD-11) dan pencarian Google Web Search.
 
 Data Penyintas Bencana & RAG Knowledge Context:
 {$jsonContext}
 
 Petunjuk Analisis & Output Wajib:
 1. Mulai narasi 'ai_summary' secara eksplisit menyebutkan nama penyintas, contoh: "Atas nama [Nama Penyintas] (NIK: [NIK], Umur: [Umur] tahun)..."
-2. Jika terdapat indikator kritis bunuh diri (menyebut ingin mati / mengancam bunuh diri / melukai diri / riwayat percobaan bunuh diri), tingkat risiko HARUS 'high' dan clinical_priority HARUS 'Urgent'.
+{$promptExtraRule}
+2. Jika terdapat indikator kritis bunuh diri (menyebut ingin mati / mengancam bunuh diri / melukai diri / riwayat percobaan bunuh diri / MSE Risk Assessment: Suicide), tingkat risiko HARUS 'high' dan clinical_priority HARUS 'Urgent'.
 3. Rujuk pedoman klinis RAG (WHO PFA, IASC MHPSS, HIMPSI, ICD-11) yang relevan dalam merumuskan rekomendasi intervensi psikologis.
 4. Gunakan fitur Google Web Search Grounding untuk menelusuri penanganan klinis / protokol darurat terkini jika diperlukan.
 5. Evaluasi tingkat risiko: 'high' (krisis/darurat trauma), 'medium' (sedang/butuh konseling), 'low' (ringan/stabil).

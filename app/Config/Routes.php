@@ -90,6 +90,8 @@ $routes->get('/psikolog/monitoring', 'Psikolog\MonitoringController::index', ['f
 $routes->get('/psikolog/monitoring/detail/(:num)', 'Psikolog\MonitoringController::detail/$1', ['filter' => ['auth', 'role:psikolog']]);
 $routes->get('/psikolog/monitoring/generate-ai-summary/(:num)', 'Psikolog\MonitoringController::generateAiSummary/$1', ['filter' => ['auth', 'role:psikolog']]);
 $routes->post('/psikolog/monitoring/store/(:num)', 'Psikolog\MonitoringController::storeFollowUp/$1', ['filter' => ['auth', 'role:psikolog']]);
+$routes->post('/psikolog/monitoring/store-final-decision/(:num)', 'Psikolog\MonitoringController::storeFinalDecision/$1', ['filter' => ['auth', 'role:psikolog']]);
+$routes->post('/psikolog/monitoring/update-ai-summary/(:num)/(:num)', 'Psikolog\MonitoringController::updateAiSummary/$1/$2', ['filter' => ['auth', 'role:psikolog']]);
 
 // Clinical Action route (Psikolog namespace)
 $routes->post('/clinical-action/save/(:num)', 'Psikolog\ClinicalActionController::save/$1', ['filter' => ['auth', 'role:psikolog']]);

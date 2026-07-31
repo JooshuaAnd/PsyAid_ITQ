@@ -133,7 +133,7 @@ class ScreeningController extends Controller
     private function generateAiAssessment(int $victimId, array $screening)
     {
         $service = new \App\Services\AiAssessmentService();
-        $service->calculateRisk($victimId);
+        $service->calculateRisk($victimId, -1);
     }
 
     /**
@@ -142,7 +142,7 @@ class ScreeningController extends Controller
     public function reassess($victimId)
     {
         $service = new \App\Services\AiAssessmentService();
-        $result  = $service->calculateRisk((int) $victimId);
+        $result  = $service->calculateRisk((int) $victimId, -1);
 
         $isGemini = strpos($result['ai_summary'] ?? '', '[Gemini AI]') !== false;
         $engine   = $isGemini ? 'Google Gemini API' : 'Rule-Based Engine (Fallback)';
