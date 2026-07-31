@@ -129,7 +129,7 @@
                     <div class="col-12 col-md-7">
                         <div class="p-3">
                             <span class="text-muted small d-block mb-1">Status AI</span>
-                            <?php if ($aiAssessment['status'] === 'completed'): ?>
+                            <?php if (in_array($aiAssessment['status'], ['completed', 'ai_generated'], true)): ?>
                                 <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-1.5 fs-7 fw-bold mb-3 d-inline-block">
                                     <i class="bi bi-check-all me-1"></i> Completed
                                 </span>

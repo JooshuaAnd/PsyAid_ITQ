@@ -185,7 +185,7 @@ class AiAssessmentService
                 'risiko_ptsd_berkembang'  => $ptsdRisk,
                 'evidence_sources'       => $evidenceText,
                 'ai_summary'             => '[Gemini AI + RAG + Web Search] ' . ($aiData['ai_summary'] ?? ''),
-                'status'                 => 'ai_generated',
+                'status'                 => 'completed',
                 'generated_at'           => date('Y-m-d H:i:s'),
             ];
 
@@ -520,6 +520,7 @@ PROMPT;
             'risiko_ptsd_berkembang'   => $risikoPtsd,
             'evidence_sources'        => $evidenceText,
             'ai_summary'              => $aiSummary,
+            'status'                  => 'completed',
             'generated_at'            => date('Y-m-d H:i:s'),
         ];
     }

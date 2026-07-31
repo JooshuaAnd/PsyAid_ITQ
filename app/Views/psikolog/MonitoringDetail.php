@@ -46,74 +46,45 @@
     <h5 class="fw-bold mb-3"><i class="bi bi-calendar-check me-2"></i> Data Longitudinal Follow-up</h5>
     
     <div class="row g-4 mb-4">
-        <!-- Follow Up 1 -->
+        <?php foreach ([1 => 7, 2 => 14, 3 => 30] as $ke => $hari): ?>
         <div class="col-12 col-md-4">
             <div class="card-followup h-100">
                 <div class="card-followup-header d-flex justify-content-between align-items-center">
-                    <span>Follow-Up #1 (Hari ke-7)</span>
-                    <?php if($organizedFollowups[1]): ?>
+                    <span>Follow-Up #<?= $ke ?> (Hari ke-<?= $hari ?>)</span>
+                    <?php if($organizedFollowups[$ke]): ?>
                         <span class="badge bg-success"><i class="bi bi-check"></i> Selesai</span>
                     <?php else: ?>
                         <span class="badge bg-secondary">Pending</span>
                     <?php endif; ?>
                 </div>
                 <div class="p-3">
-                    <?php if($organizedFollowups[1]): ?>
-                        <div class="mb-2"><strong>Skor PTSD:</strong> <?= $organizedFollowups[1]['ptsd_score'] ?></div>
-                        <div class="mb-2"><strong>Skor DSO:</strong> <?= $organizedFollowups[1]['dso_score'] ?></div>
-                        <div><strong>Catatan:</strong><br><small><?= esc($organizedFollowups[1]['catatan_psikolog']) ?></small></div>
+                    <?php if($organizedFollowups[$ke]): ?>
+                        <div class="mb-2"><strong>Skor PTSD:</strong> <?= $organizedFollowups[$ke]['ptsd_score'] ?></div>
+                        <div class="mb-2"><strong>Skor DSO:</strong> <?= $organizedFollowups[$ke]['dso_score'] ?></div>
+                        <div><strong>Catatan:</strong><br><small><?= esc($organizedFollowups[$ke]['catatan_psikolog']) ?></small></div>
                     <?php else: ?>
-                        <div class="text-center text-muted py-4"><small>Belum dilakukan</small></div>
+                        <form action="<?= site_url('/psikolog/monitoring/store/' . $victim['id']) ?>" method="POST">
+                            <?= csrf_field() ?>
+                            <input type="hidden" name="hari" value="<?= $hari ?>">
+                            <div class="mb-2">
+                                <label class="form-label small fw-bold">Skor PTSD (0-24)</label>
+                                <input type="number" class="form-control form-control-sm" name="ptsd_score" min="0" max="24" required>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label small fw-bold">Skor DSO (0-24)</label>
+                                <input type="number" class="form-control form-control-sm" name="dso_score" min="0" max="24" required>
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label small fw-bold">Catatan Psikolog</label>
+                                <textarea class="form-control form-control-sm" name="catatan_psikolog" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-sm btn-frost w-100 mt-2"><i class="bi bi-save"></i> Simpan Follow-Up</button>
+                        </form>
                     <?php endif; ?>
                 </div>
             </div>
         </div>
-
-        <!-- Follow Up 2 -->
-        <div class="col-12 col-md-4">
-            <div class="card-followup h-100">
-                <div class="card-followup-header d-flex justify-content-between align-items-center">
-                    <span>Follow-Up #2 (Hari ke-14)</span>
-                    <?php if($organizedFollowups[2]): ?>
-                        <span class="badge bg-success"><i class="bi bi-check"></i> Selesai</span>
-                    <?php else: ?>
-                        <span class="badge bg-secondary">Pending</span>
-                    <?php endif; ?>
-                </div>
-                <div class="p-3">
-                    <?php if($organizedFollowups[2]): ?>
-                        <div class="mb-2"><strong>Skor PTSD:</strong> <?= $organizedFollowups[2]['ptsd_score'] ?></div>
-                        <div class="mb-2"><strong>Skor DSO:</strong> <?= $organizedFollowups[2]['dso_score'] ?></div>
-                        <div><strong>Catatan:</strong><br><small><?= esc($organizedFollowups[2]['catatan_psikolog']) ?></small></div>
-                    <?php else: ?>
-                        <div class="text-center text-muted py-4"><small>Belum dilakukan</small></div>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-
-        <!-- Follow Up 3 -->
-        <div class="col-12 col-md-4">
-            <div class="card-followup h-100">
-                <div class="card-followup-header d-flex justify-content-between align-items-center">
-                    <span>Follow-Up #3 (Hari ke-30)</span>
-                    <?php if($organizedFollowups[3]): ?>
-                        <span class="badge bg-success"><i class="bi bi-check"></i> Selesai</span>
-                    <?php else: ?>
-                        <span class="badge bg-secondary">Pending</span>
-                    <?php endif; ?>
-                </div>
-                <div class="p-3">
-                    <?php if($organizedFollowups[3]): ?>
-                        <div class="mb-2"><strong>Skor PTSD:</strong> <?= $organizedFollowups[3]['ptsd_score'] ?></div>
-                        <div class="mb-2"><strong>Skor DSO:</strong> <?= $organizedFollowups[3]['dso_score'] ?></div>
-                        <div><strong>Catatan:</strong><br><small><?= esc($organizedFollowups[3]['catatan_psikolog']) ?></small></div>
-                    <?php else: ?>
-                        <div class="text-center text-muted py-4"><small>Belum dilakukan</small></div>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
+        <?php endforeach; ?>
     </div>
 </div>
 

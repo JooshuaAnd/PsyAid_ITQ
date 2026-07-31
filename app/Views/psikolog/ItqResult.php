@@ -182,13 +182,34 @@ function getCriteriaClass($met) {
                     <h6 class="fw-bold text-primary mb-3"><i class="bi bi-person-badge"></i> Review Screening Relawan</h6>
                     <?php if($volunteerScreening): ?>
                         <div class="mb-2"><span class="text-muted small">Skala Distress:</span> <strong><?= $volunteerScreening['skala_distress'] ?>/10</strong></div>
-                        <div class="mb-2"><span class="text-muted small">Kondisi Observasi:</span> 
-                            <?= $volunteerScreening['menangis_terus'] ? '<span class="badge bg-danger">Menangis Terus</span>' : '' ?>
-                            <?= $volunteerScreening['tampak_panik'] ? '<span class="badge bg-warning text-dark">Tampak Panik</span>' : '' ?>
-                            <?= $volunteerScreening['gemetar'] ? '<span class="badge bg-warning text-dark">Gemetar</span>' : '' ?>
+                        <div class="mb-2"><span class="text-muted small">Kondisi Observasi:</span><br>
+                            <?php 
+                                $observations = [];
+                                if($volunteerScreening['mampu_sebut_nama']) $observations[] = '<span class="badge bg-success">Mampu Sebut Nama</span>';
+                                if($volunteerScreening['tahu_waktu_tempat']) $observations[] = '<span class="badge bg-success">Orientasi Baik</span>';
+                                if($volunteerScreening['disorientasi']) $observations[] = '<span class="badge bg-danger">Disorientasi</span>';
+                                if($volunteerScreening['menangis_terus']) $observations[] = '<span class="badge bg-danger">Menangis Terus</span>';
+                                if($volunteerScreening['tampak_panik']) $observations[] = '<span class="badge bg-warning text-dark">Tampak Panik</span>';
+                                if($volunteerScreening['gemetar']) $observations[] = '<span class="badge bg-warning text-dark">Gemetar</span>';
+                                if($volunteerScreening['tatapan_kosong']) $observations[] = '<span class="badge bg-secondary">Tatapan Kosong</span>';
+                                if($volunteerScreening['teriak_histeris']) $observations[] = '<span class="badge bg-danger">Teriak Histeris</span>';
+                                if($volunteerScreening['cenderung_diam']) $observations[] = '<span class="badge bg-secondary">Cenderung Diam</span>';
+                                if($volunteerScreening['sulit_tidur']) $observations[] = '<span class="badge bg-warning text-dark">Sulit Tidur</span>';
+                                if($volunteerScreening['sulit_makan']) $observations[] = '<span class="badge bg-warning text-dark">Sulit Makan</span>';
+                                if($volunteerScreening['keluhan_fisik']) $observations[] = '<span class="badge bg-danger">Keluhan Fisik (Luka/Sakit)</span>';
+                                if($volunteerScreening['konflik_keluarga']) $observations[] = '<span class="badge bg-warning text-dark">Konflik Keluarga</span>';
+                                if($volunteerScreening['terpisah_keluarga']) $observations[] = '<span class="badge bg-danger">Terpisah Keluarga</span>';
+                                if($volunteerScreening['kehilangan_anggota']) $observations[] = '<span class="badge bg-danger">Kehilangan Anggota</span>';
+                                if($volunteerScreening['kehilangan_harta']) $observations[] = '<span class="badge bg-warning text-dark">Kehilangan Harta</span>';
+                                if($volunteerScreening['menyebut_ingin_mati']) $observations[] = '<span class="badge bg-dark text-white">Menyebut Ingin Mati</span>';
+                                if($volunteerScreening['melukai_diri']) $observations[] = '<span class="badge bg-dark text-white">Melukai Diri</span>';
+                                if($volunteerScreening['perlu_rujukan_medis']) $observations[] = '<span class="badge bg-danger">Perlu Rujukan Medis</span>';
+
+                                echo empty($observations) ? '<span class="text-muted small">Tidak ada</span>' : implode(' ', $observations);
+                            ?>
                         </div>
                         <div class="mb-2"><span class="text-muted small">Catatan Relawan:</span><br/>
-                            <p class="mb-0 fst-italic">"<?= esc($volunteerScreening['catatan_relawan']) ?>"</p>
+                            <p class="mb-0 fst-italic border-start border-3 border-primary ps-2">"<?= esc($volunteerScreening['catatan_relawan']) ?>"</p>
                         </div>
                     <?php else: ?>
                         <p class="text-muted small">Tidak ada data screening relawan.</p>
@@ -256,20 +277,40 @@ function getCriteriaClass($met) {
 
 </div>
 
-<!-- Chart.js and Annotation Plugin -->
+<!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.2.1/dist/chartjs-plugin-annotation.min.js"></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Register Plugin
-    Chart.register(chartjsPluginAnnotation);
-
     // Dynamic data from controller
     const ptsdScore = <?= $detailedSubScores['overall']['ptsd']['score'] ?>;
     const dsoScore = <?= $detailedSubScores['overall']['dso']['score'] ?>;
 
-    // BAR CHART (Image 2 representation)
+    // Custom Plugin to draw background bands
+    const bgBandsPlugin = {
+        id: 'bgBands',
+        beforeDraw: (chart, args, options) => {
+            const { ctx, chartArea, scales } = chart;
+            const y = scales.y;
+            if (!y) return;
+            
+            const drawBand = (min, max, color) => {
+                const yTop = Math.max(chartArea.top, y.getPixelForValue(max));
+                const yBottom = Math.min(chartArea.bottom, y.getPixelForValue(min));
+                ctx.fillStyle = color;
+                ctx.fillRect(chartArea.left, yTop, chartArea.right - chartArea.left, yBottom - yTop);
+            };
+
+            // Draw bands for 0-24 scale
+            drawBand(0, 3.5, 'rgba(255, 255, 255, 1)'); // Minimal
+            drawBand(3.5, 6.5, 'rgba(254, 240, 138, 0.4)'); // Mild
+            drawBand(6.5, 10.5, 'rgba(253, 186, 116, 0.4)'); // Moderate
+            drawBand(10.5, 16.5, 'rgba(252, 165, 165, 0.4)'); // Severe
+            drawBand(16.5, 24, 'rgba(248, 113, 113, 0.4)'); // Very Severe
+        }
+    };
+
+    // BAR CHART
     const ctxBar = document.getElementById('barChart').getContext('2d');
     new Chart(ctxBar, {
         type: 'bar',
@@ -294,100 +335,49 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             },
             plugins: {
-                legend: { display: false },
-                annotation: {
-                    annotations: {
-                        boxMinimal: { type: 'box', xMin: 0, xMax: 3.5, backgroundColor: 'rgba(255, 255, 255, 0)', borderWidth: 0 },
-                        boxMild: { type: 'box', xMin: 3.5, xMax: 6.5, backgroundColor: 'rgba(254, 240, 138, 0.3)', borderWidth: 0 },
-                        boxModerate: { type: 'box', xMin: 6.5, xMax: 10.5, backgroundColor: 'rgba(253, 186, 116, 0.3)', borderWidth: 0 },
-                        boxSevere: { type: 'box', xMin: 10.5, xMax: 17.5, backgroundColor: 'rgba(252, 165, 165, 0.3)', borderWidth: 0 },
-                        boxVerySevere: { type: 'box', xMin: 17.5, xMax: 24, backgroundColor: 'rgba(248, 113, 113, 0.3)', borderWidth: 0 }
-                    }
-                }
+                legend: { display: false }
             }
         }
     });
 
-    // LINE CHART Longitudinal (Image 3 representation)
-    // Fetch longitudinal data from API
+    // LINE CHART Longitudinal
     fetch('<?= site_url('/itq/chart-data/' . $victim['id']) ?>')
         .then(res => res.json())
         .then(data => {
+            let labels = ['Initial Assessment', 'Current'];
+            let ptsdData = [ptsdScore, ptsdScore];
+            let dsoData = [dsoScore, dsoScore];
+
             if (data.status === 'success' && data.chart4.has_data) {
-                const ctxLine = document.getElementById('lineChart').getContext('2d');
-                new Chart(ctxLine, {
-                    type: 'line',
-                    data: {
-                        labels: data.chart4.labels,
-                        datasets: [
-                            { label: 'PTSD', data: data.chart4.ptsd, borderColor: '#dc2626', backgroundColor: '#dc2626', pointRadius: 5 },
-                            { label: 'DSO', data: data.chart4.dso, borderColor: '#0284c7', backgroundColor: '#0284c7', pointRadius: 5 }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                min: 0, max: 24,
-                                position: 'left',
-                                title: { display: true, text: 'ITQ Scores' }
-                            }
-                        },
-                        plugins: {
-                            annotation: {
-                                annotations: {
-                                    box1: { type: 'box', yMin: 0, yMax: 3.5, backgroundColor: 'rgba(255, 255, 255, 1)' },
-                                    box2: { type: 'box', yMin: 3.5, yMax: 6.5, backgroundColor: 'rgba(254, 240, 138, 0.4)' },
-                                    box3: { type: 'box', yMin: 6.5, yMax: 10.5, backgroundColor: 'rgba(253, 186, 116, 0.4)' },
-                                    box4: { type: 'box', yMin: 10.5, yMax: 16.5, backgroundColor: 'rgba(252, 165, 165, 0.4)' },
-                                    box5: { type: 'box', yMin: 16.5, yMax: 24, backgroundColor: 'rgba(248, 113, 113, 0.4)' },
-                                    // Labels
-                                    label1: { type: 'label', yValue: 1.5, xValue: 'end', content: 'Minimal', color: '#64748b' },
-                                    label2: { type: 'label', yValue: 5, xValue: 'end', content: 'Mild', color: '#64748b' },
-                                    label3: { type: 'label', yValue: 8.5, xValue: 'end', content: 'Moderate', color: '#64748b' },
-                                    label4: { type: 'label', yValue: 13.5, xValue: 'end', content: 'Severe', color: '#64748b' },
-                                    label5: { type: 'label', yValue: 20, xValue: 'end', content: 'Very Severe', color: '#64748b' }
-                                }
-                            }
-                        }
-                    }
-                });
-            } else {
-                // Mock default if no longitudinal data yet (just 2 points for UI demo)
-                const ctxLine = document.getElementById('lineChart').getContext('2d');
-                new Chart(ctxLine, {
-                    type: 'line',
-                    data: {
-                        labels: ['Initial Assessment', 'Current'],
-                        datasets: [
-                            { label: 'PTSD', data: [ptsdScore + 3, ptsdScore], borderColor: '#dc2626', backgroundColor: '#dc2626', pointRadius: 5 },
-                            { label: 'DSO', data: [dsoScore + 2, dsoScore], borderColor: '#0284c7', backgroundColor: '#0284c7', pointRadius: 5 }
-                        ]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: { y: { min: 0, max: 24 } },
-                        plugins: {
-                            annotation: {
-                                annotations: {
-                                    box1: { type: 'box', yMin: 0, yMax: 3.5, backgroundColor: 'rgba(255, 255, 255, 1)', drawTime: 'beforeDraw' },
-                                    box2: { type: 'box', yMin: 3.5, yMax: 6.5, backgroundColor: 'rgba(254, 240, 138, 0.4)', drawTime: 'beforeDraw' },
-                                    box3: { type: 'box', yMin: 6.5, yMax: 10.5, backgroundColor: 'rgba(253, 186, 116, 0.4)', drawTime: 'beforeDraw' },
-                                    box4: { type: 'box', yMin: 10.5, yMax: 16.5, backgroundColor: 'rgba(252, 165, 165, 0.4)', drawTime: 'beforeDraw' },
-                                    box5: { type: 'box', yMin: 16.5, yMax: 24, backgroundColor: 'rgba(248, 113, 113, 0.4)', drawTime: 'beforeDraw' },
-                                    label1: { type: 'label', yValue: 1.5, xValue: 0.1, content: 'Minimal', color: '#64748b' },
-                                    label2: { type: 'label', yValue: 5, xValue: 0.1, content: 'Mild', color: '#64748b' },
-                                    label3: { type: 'label', yValue: 8.5, xValue: 0.1, content: 'Moderate', color: '#64748b' },
-                                    label4: { type: 'label', yValue: 13.5, xValue: 0.1, content: 'Severe', color: '#64748b' },
-                                    label5: { type: 'label', yValue: 20, xValue: 0.1, content: 'Very Severe', color: '#64748b' }
-                                }
-                            }
-                        }
-                    }
-                });
+                labels = ['Initial', ...data.chart4.labels];
+                ptsdData = [ptsdScore, ...data.chart4.ptsd];
+                dsoData = [dsoScore, ...data.chart4.dso];
             }
+
+            const ctxLine = document.getElementById('lineChart').getContext('2d');
+            new Chart(ctxLine, {
+                type: 'line',
+                plugins: [bgBandsPlugin],
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'PTSD', data: ptsdData, borderColor: '#dc2626', backgroundColor: '#dc2626', pointRadius: 5 },
+                        { label: 'DSO', data: dsoData, borderColor: '#0284c7', backgroundColor: '#0284c7', pointRadius: 5 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            min: 0, max: 24,
+                            title: { display: true, text: 'ITQ Scores' }
+                        }
+                    }
+                }
+            });
+        }).catch(e => {
+            console.error("Failed to load chart data:", e);
         });
 });
 </script>

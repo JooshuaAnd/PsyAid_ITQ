@@ -92,4 +92,33 @@ class MonitoringController extends Controller
         
         return $this->response->setJSON(['status' => 'error', 'message' => 'Gagal menghasilkan summary AI.']);
     }
+
+    public function storeFollowUp($victimId)
+    {
+        $hari = (int) $this->request->getPost('hari');
+        $ptsd = (int) $this->request->getPost('ptsd_score');
+        $dso = (int) $this->request->getPost('dso_score');
+        $catatan = $this->request->getPost('catatan_psikolog');
+
+        $data = [
+            'victim_id' => $victimId,
+            'hari' => $hari,
+            'ptsd_score' => $ptsd,
+            'dso_score' => $dso,
+            'catatan_psikolog' => $catatan,
+            'recorded_at' => date('Y-m-d H:i:s'),
+        ];
+
+        $followupModel = new LongitudinalFollowupModel();
+        // Check if exists
+        $existing = $followupModel->where('victim_id', $victimId)->where('hari', $hari)->first();
+
+        if ($existing) {
+            $followupModel->update($existing['id'], $data);
+        } else {
+            $followupModel->insert($data);
+        }
+
+        return redirect()->back()->with('success', 'Data follow-up ke-' . $hari . ' berhasil disimpan.');
+    }
 }
