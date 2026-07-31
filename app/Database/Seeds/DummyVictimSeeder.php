@@ -277,7 +277,6 @@ class DummyVictimSeeder extends Seeder
             $assignments[] = [
                 'victim_id' => $i,
                 'psikolog_id' => 4,
-                'assigned_by' => 1,
                 'assigned_at' => $now,
             ];
         }
