@@ -151,7 +151,7 @@
             <div class="bg-white p-3 p-md-4 rounded border">
                 <h6 class="fw-bold text-dark mb-3"><i class="bi bi-chat-left-quote-fill text-primary me-2"></i> Analisis AI</h6>
                 <div class="p-3 p-md-4 bg-light border rounded" style="font-size: 0.95rem; line-height: 1.7;">
-                    <?= nl2br(esc($aiAssessment['ai_analysis'] ?? 'Belum ada hasil analisis AI yang dapat ditampilkan.')) ?>
+                    <?= nl2br(esc($aiAssessment['ai_summary'] ?? 'Belum ada hasil analisis AI yang dapat ditampilkan.')) ?>
                 </div>
             </div>
         <?php endif; ?>
@@ -179,7 +179,7 @@
                     <i class="bi bi-check-circle-fill fs-2 d-block mb-2 text-success"></i>
                     Penyintas telah menyelesaikan kuesioner ITQ.
                     <br>
-                    <a href="<?= site_url('/psikolog/itq-result/' . $victim['id']) ?>" class="btn btn-sm btn-outline-success mt-3 fw-bold">
+                    <a href="<?= site_url('/itq/result/' . $victim['id']) ?>" class="btn btn-sm btn-outline-success mt-3 fw-bold">
                         <i class="bi bi-box-arrow-up-right me-1"></i> Lihat Hasil ITQ Lengkap
                     </a>
                 </div>

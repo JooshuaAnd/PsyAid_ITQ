@@ -20,12 +20,14 @@ class PsikologController extends Controller
             posko.name as posko_name,
             ai_assessment.risk_level, ai_assessment.clinical_priority, ai_assessment.status as ai_status,
             psychologist_review.id as review_id, psychologist_review.reviewed_at,
+            clinical_action.id as clinical_action_id,
             itq_answers.id as itq_id
         ');
         $builder->join('victims', 'victims.id = psychologist_assignment.victim_id');
         $builder->join('posko', 'posko.id = victims.posko_id');
         $builder->join('ai_assessment', 'ai_assessment.victim_id = victims.id', 'left');
         $builder->join('psychologist_review', 'psychologist_review.victim_id = victims.id', 'left');
+        $builder->join('clinical_action', 'clinical_action.victim_id = victims.id', 'left');
         $builder->join('itq_answers', 'itq_answers.victim_id = victims.id', 'left');
         $builder->where('psychologist_assignment.psikolog_id', $psychId);
 
