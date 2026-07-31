@@ -59,8 +59,8 @@ class CreateDisasterReportsTable extends Migration
                 'null' => true,
             ],
             'status' => [
-                'type'       => 'ENUM',
-                'constraint' => ['pending', 'proses', 'selesai', 'ditolak'],
+                'type'       => 'VARCHAR',
+                'constraint' => 50,
                 'default'    => 'pending',
             ],
             'created_at' => [

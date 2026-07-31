@@ -112,6 +112,13 @@ class Database extends Config
         $pgPass = env('PGPASSWORD', getenv('PGPASSWORD') ?: getenv('POSTGRES_PASSWORD'));
         $pgPort = env('PGPORT', getenv('PGPORT') ?: getenv('POSTGRES_PORT'));
 
+        // Fetch Railway / MySQL specific env variables
+        $myHost = env('MYSQLHOST', getenv('MYSQLHOST') ?: getenv('MYSQL_HOST'));
+        $myDb   = env('MYSQLDATABASE', getenv('MYSQLDATABASE') ?: getenv('MYSQL_DATABASE'));
+        $myUser = env('MYSQLUSER', getenv('MYSQLUSER') ?: getenv('MYSQL_USER'));
+        $myPass = env('MYSQLPASSWORD', getenv('MYSQLPASSWORD') ?: getenv('MYSQL_PASSWORD'));
+        $myPort = env('MYSQLPORT', getenv('MYSQLPORT') ?: getenv('MYSQL_PORT'));
+
         // 2. Fetch standard CodeIgniter env overrides
         $ciDriver = env('database.default.DBDriver', getenv('database.default.DBDriver'));
         $ciHost   = env('database.default.hostname', getenv('database.default.hostname'));
@@ -120,33 +127,57 @@ class Database extends Config
         $ciPass   = env('database.default.password', getenv('database.default.password'));
         $ciPort   = env('database.default.port', getenv('database.default.port'));
 
-        // If DATABASE_URL / DATABASE_PUBLIC_URL is provided, parse it
+        $urlScheme = '';
         if (!empty($dbUrl)) {
             $parsed = parse_url($dbUrl);
             if ($parsed !== false) {
-                $pgHost = $parsed['host'] ?? $pgHost;
-                $pgPort = $parsed['port'] ?? $pgPort;
-                $pgUser = $parsed['user'] ?? $pgUser;
-                $pgPass = $parsed['pass'] ?? $pgPass;
-                if (!empty($parsed['path'])) {
-                    $pgDb = ltrim($parsed['path'], '/');
+                $urlScheme = strtolower($parsed['scheme'] ?? '');
+                $parsedHost = $parsed['host'] ?? null;
+                $parsedPort = $parsed['port'] ?? null;
+                $parsedUser = $parsed['user'] ?? null;
+                $parsedPass = $parsed['pass'] ?? null;
+                $parsedDb   = !empty($parsed['path']) ? ltrim($parsed['path'], '/') : null;
+
+                if (in_array($urlScheme, ['mysql', 'mysqli'])) {
+                    $myHost = $parsedHost ?: $myHost;
+                    $myPort = $parsedPort ?: $myPort;
+                    $myUser = $parsedUser ?: $myUser;
+                    $myPass = $parsedPass ?: $myPass;
+                    $myDb   = $parsedDb ?: $myDb;
+                } else {
+                    $pgHost = $parsedHost ?: $pgHost;
+                    $pgPort = $parsedPort ?: $pgPort;
+                    $pgUser = $parsedUser ?: $pgUser;
+                    $pgPass = $parsedPass ?: $pgPass;
+                    $pgDb   = $parsedDb ?: $pgDb;
                 }
             }
         }
 
-        // Determine effective values
-        $host     = $pgHost ?: $ciHost;
-        $database = $pgDb ?: $ciDb;
-        $username = $pgUser ?: $ciUser;
-        $password = $pgPass !== null ? $pgPass : $ciPass;
-        $port     = $pgPort ?: ($ciPort ?: 5432);
-        $driver   = (!empty($pgHost) || !empty($dbUrl)) ? 'Postgre' : (strtolower((string)$ciDriver) === 'mysqli' ? 'MySQLi' : 'Postgre');
+        // Determine driver and connection parameters
+        if (!empty($myHost) || in_array($urlScheme, ['mysql', 'mysqli']) || strtolower((string)$ciDriver) === 'mysqli') {
+            $driver   = 'MySQLi';
+            $host     = $myHost ?: $ciHost;
+            $database = $myDb ?: $ciDb;
+            $username = $myUser ?: $ciUser;
+            $password = $myPass !== null ? $myPass : $ciPass;
+            $port     = $myPort ?: ($ciPort ?: 3306);
+            $charset  = 'utf8mb4';
+        } else {
+            $driver   = 'Postgre';
+            $host     = $pgHost ?: $ciHost;
+            $database = $pgDb ?: $ciDb;
+            $username = $pgUser ?: $ciUser;
+            $password = $pgPass !== null ? $pgPass : $ciPass;
+            $port     = $pgPort ?: ($ciPort ?: 5432);
+            $charset  = 'utf8';
+        }
 
         // Check if database parameters are missing
         if (empty($host) || empty($database) || empty($username)) {
             throw new RuntimeException(
                 "Environment variable Database tidak lengkap. " .
-                "Harap atur PGHOST, PGDATABASE, PGUSER, dan PGPASSWORD di Railway atau .env file."
+                "Harap atur variabel environment database (PostgreSQL/MySQL) di Railway atau file .env."
             );
         }
 
@@ -157,6 +188,6 @@ class Database extends Config
         $this->default['password'] = (string)$password;
         $this->default['port']     = (int)$port;
         $this->default['schema']   = 'public';
-        $this->default['charset']  = $driver === 'Postgre' ? 'utf8' : 'utf8mb4';
+        $this->default['charset']  = $charset;
     }
 }
