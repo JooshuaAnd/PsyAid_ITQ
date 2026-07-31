@@ -120,7 +120,12 @@ class DummyVictimSeeder extends Seeder
         ];
 
         foreach ($victims as $row) {
-            $this->db->table('victims')->insert($row);
+            $exists = $this->db->table('victims')->where('nik', $row['nik'])->get()->getRow();
+            if (!$exists) {
+                $this->db->table('victims')->insert($row);
+            } else {
+                $this->db->table('victims')->where('nik', $row['nik'])->update($row);
+            }
         }
 
         // 2. Volunteer Screening (7 victims screened, victim #4 & #8 not screened yet)
@@ -173,7 +178,12 @@ class DummyVictimSeeder extends Seeder
         ];
 
         foreach ($screenings as $row) {
-            $this->db->table('volunteer_screening')->insert($row);
+            $exists = $this->db->table('volunteer_screening')->where('victim_id', $row['victim_id'])->get()->getRow();
+            if (!$exists) {
+                $this->db->table('volunteer_screening')->insert($row);
+            } else {
+                $this->db->table('volunteer_screening')->where('victim_id', $row['victim_id'])->update($row);
+            }
         }
 
         // 3. AI Assessment (for screened victims)
@@ -253,7 +263,12 @@ class DummyVictimSeeder extends Seeder
         ];
 
         foreach ($aiAssessments as $row) {
-            $this->db->table('ai_assessment')->insert($row);
+            $exists = $this->db->table('ai_assessment')->where('victim_id', $row['victim_id'])->get()->getRow();
+            if (!$exists) {
+                $this->db->table('ai_assessment')->insert($row);
+            } else {
+                $this->db->table('ai_assessment')->where('victim_id', $row['victim_id'])->update($row);
+            }
         }
     }
 }

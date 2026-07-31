@@ -8,6 +8,7 @@ class UserSeeder extends Seeder
 {
     public function run()
     {
+        $db = \Config\Database::connect();
         $defaultPassword = password_hash('password123', PASSWORD_BCRYPT);
         $now = date('Y-m-d H:i:s');
 
@@ -59,6 +60,13 @@ class UserSeeder extends Seeder
             ],
         ];
 
-        $this->db->table('users')->insertBatch($users);
+        foreach ($users as $u) {
+            $exists = $db->table('users')->where('email', $u['email'])->get()->getRow();
+            if (!$exists) {
+                $db->table('users')->insert($u);
+            } else {
+                $db->table('users')->where('email', $u['email'])->update($u);
+            }
+        }
     }
 }

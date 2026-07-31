@@ -8,6 +8,8 @@ class PoskoSeeder extends Seeder
 {
     public function run()
     {
+        $db = \Config\Database::connect();
+
         $poskoData = [
             [
                 'id'            => 1,
@@ -32,6 +34,13 @@ class PoskoSeeder extends Seeder
             ],
         ];
 
-        $this->db->table('posko')->insertBatch($poskoData);
+        foreach ($poskoData as $p) {
+            $exists = $db->table('posko')->where('id', $p['id'])->get()->getRow();
+            if (!$exists) {
+                $db->table('posko')->insert($p);
+            } else {
+                $db->table('posko')->where('id', $p['id'])->update($p);
+            }
+        }
     }
 }
