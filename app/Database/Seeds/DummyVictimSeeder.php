@@ -364,16 +364,13 @@ class DummyVictimSeeder extends Seeder
             $this->db->table('psychologist_review')->insert([
                 'victim_id' => 1,
                 'psikolog_id' => 4,
-                'keluhan_utama' => 'Sering bermimpi buruk dan menghindari tempat keramaian pasca gempa.',
-                'penampilan_perilaku' => 'Tampak gelisah, kontak mata kurang.',
-                'mood_afek' => 'Cemas, labil',
-                'proses_pikir' => 'Koheren tapi isi pikir didominasi rasa takut.',
-                'persepsi' => 'Kadang merasa tanah masih bergoyang (ilusi).',
-                'insight' => 'Baik',
-                'risiko_bunuh_diri' => 'Rendah',
-                'catatan_tambahan' => 'Penyintas membutuhkan intervensi intensif.',
-                'created_at' => $now,
-                'updated_at' => $now,
+                'chief_complaint' => 'Sering bermimpi buruk dan menghindari tempat keramaian pasca gempa.',
+                'mse_appearance' => 'Tampak gelisah',
+                'mse_behavior' => 'Kontak mata kurang.',
+                'mse_mood' => 'Cemas, labil',
+                'mse_thought' => 'Koheren tapi isi pikir didominasi rasa takut.',
+                'mse_insight' => 'Baik',
+                'reviewed_at' => $now,
             ]);
         }
 
@@ -388,7 +385,6 @@ class DummyVictimSeeder extends Seeder
                 'diagnosis_sementara' => 'Complex PTSD pasca bencana alam berat',
                 'catatan_klinis' => 'Mohon relawan posko memantau jika penyintas tampak menangis histeris.',
                 'jadwal_followup' => date('Y-m-d', strtotime('+3 days')),
-                'created_at' => $now,
             ]);
         }
     }
