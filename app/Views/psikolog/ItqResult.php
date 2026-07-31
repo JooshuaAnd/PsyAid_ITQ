@@ -121,15 +121,15 @@
         </div>
     </div>
 
-    <!-- Overall Risk Banner -->
-    <div class="p-3 mt-1 text-center" style="border-radius: 8px !important; <?= $itqResult['overall_risk'] === 'HIGH' ? 'background-color: #fef2f2; border: 1.5px solid #fecaca;' : 'background-color: #f8fafc; border: 1.5px solid #e2e8f0;' ?>">
-        <span class="text-muted small fw-semibold text-uppercase me-2">Overall ITQ Clinical Risk:</span>
-        <?php if ($itqResult['overall_risk'] === 'HIGH'): ?>
-            <span class="badge bg-danger fs-6 px-3 py-1"><i class="bi bi-exclamation-triangle-fill me-1"></i> HIGH RISK (Complex PTSD / High Trauma Risk)</span>
-        <?php elseif ($itqResult['overall_risk'] === 'MEDIUM'): ?>
-            <span class="badge bg-warning text-dark fs-6 px-3 py-1"><i class="bi bi-dash-circle-fill me-1"></i> MEDIUM RISK</span>
+    <!-- Final Diagnosis Banner -->
+    <div class="p-3 mt-1 text-center" style="border-radius: 8px !important; <?= $itqResult['final_diagnosis'] !== 'No PTSD/CPTSD' ? 'background-color: #fef2f2; border: 1.5px solid #fecaca;' : 'background-color: #f0fdf4; border: 1.5px solid #bbf7d0;' ?>">
+        <span class="text-muted small fw-semibold text-uppercase me-2">Final Diagnosis (ICD-11):</span>
+        <?php if ($itqResult['final_diagnosis'] === 'Complex PTSD (CPTSD)'): ?>
+            <span class="badge bg-danger fs-6 px-3 py-1"><i class="bi bi-exclamation-triangle-fill me-1"></i> Complex PTSD (CPTSD)</span>
+        <?php elseif ($itqResult['final_diagnosis'] === 'PTSD'): ?>
+            <span class="badge bg-warning text-dark fs-6 px-3 py-1"><i class="bi bi-dash-circle-fill me-1"></i> PTSD</span>
         <?php else: ?>
-            <span class="badge bg-success fs-6 px-3 py-1"><i class="bi bi-check-circle-fill me-1"></i> LOW RISK</span>
+            <span class="badge bg-success fs-6 px-3 py-1"><i class="bi bi-check-circle-fill me-1"></i> No PTSD/CPTSD</span>
         <?php endif; ?>
     </div>
 </div>

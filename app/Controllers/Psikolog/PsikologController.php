@@ -29,14 +29,8 @@ class PsikologController extends Controller
         $builder->join('itq_answers', 'itq_answers.victim_id = victims.id', 'left');
         $builder->where('psychologist_assignment.psikolog_id', $psychId);
 
-        // Order High Risk first, then unreviewed cases
-        $builder->orderBy("
-            CASE 
-                WHEN ai_assessment.risk_level = 'high' THEN 1 
-                WHEN ai_assessment.risk_level = 'medium' THEN 2 
-                ELSE 3 
-            END", "ASC", false);
-        $builder->orderBy('psychologist_assignment.assigned_at', 'DESC');
+        // Sort by Penyintas (Alphabetical)
+        $builder->orderBy('victims.nama', 'ASC');
 
         $assignedVictims = $builder->get()->getResultArray();
 

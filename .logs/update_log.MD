@@ -45,3 +45,7 @@ Format Entri: `[Timestamp], [Author], --> [Perubahan, Lokasi Perubahan]`
 - `[2026-07-25 21:30:00]`, `[Rafael Evan]`, --> `[Penambahan sistem notifikasi darurat gempa real-time (>= 5.0 SR) di latar belakang (background polling 30s) dengan efek suara peringatan Web Audio API dan modal darurat khusus peran BPBD Admin di seluruh halaman aplikasi, app/Views/layouts/main.php]`
 - `[2026-07-25 21:34:00]`, `[Rafael Evan]`, --> `[Perbaikan dan perapihan seluruh log catatan perubahan sistem agar tercatat lengkap secara kronologis tanpa ada yang terhapus, .logs/update_log.MD]`
 - `[2026-07-31 18:11:19]`, `[Rafael Evan]`, --> `[Pengubahan UI halaman ItqResult.php agar sesuai dengan tema frosted glass & color palette standar PsyAid (seperti ItqForm.php & VictimDetail.php), app/Views/psikolog/ItqResult.php]`
+- `[2026-07-31 18:49:33]`, `[Rafael Evan]`, --> `[Pembaruan UI Dashboard Psikolog dari format tabel menjadi grid card (maksimal 6 data per halaman) dengan styling paginasi identik Manajemen Data Penyintas Relawan, app/Views/psikolog/Dashboard.php]`
+- `[2026-07-31 18:49:33]`, `[Rafael Evan]`, --> `[Pembaruan pengurutan data penyintas ter-assign pada Dashboard Psikolog menjadi berdasarkan nama penyintas (Alphabetical A-Z), app/Controllers/psikolog/PsikologController.php]`
+-   [ x ]   I m p l e m e n t   I T Q   F i n a l   D i a g n o s i s   ( C P T S D / P T S D )   b a s e d   o n   I C D - 1 1   c r i t e r i a   i n   I t q S c o r i n g S e r v i c e  
+ 

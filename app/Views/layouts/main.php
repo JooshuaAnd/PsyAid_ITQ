@@ -733,6 +733,12 @@ if (session()->get('logged_in')) {
                             <i class="nav-icon bi bi-person-badge-fill text-primary"></i>
                             <span class="sidebar-label">Clinical Workspace</span>
                         </a>
+                        <a href="<?= site_url('/psikolog/assessment-history') ?>"
+                            class="sidebar-nav-item <?= url_is('psikolog/assessment-history*') ? 'active' : '' ?>"
+                            title="Data Assessment Penyintas">
+                            <i class="nav-icon bi bi-file-earmark-medical-fill text-success"></i>
+                            <span class="sidebar-label">Assessment Penyintas</span>
+                        </a>
                     <?php endif; ?>
 
                 <?php else: ?>

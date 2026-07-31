@@ -82,13 +82,13 @@ class ItqScoringService
         $ptsdMap = self::SEVERITY_MAPPING[min(24, max(0, $ptsdScore))];
         $dsoMap  = self::SEVERITY_MAPPING[min(24, max(0, $dsoScore))];
 
-        // 6. Overall Risk Level
-        if ($ptsdCriteriaMet || $dsoCriteriaMet) {
-            $overallRisk = 'HIGH';
-        } elseif ($ptsdScore >= 8 || $dsoScore >= 8) {
-            $overallRisk = 'MEDIUM';
+        // 6. Final Diagnosis
+        if ($ptsdCriteriaMet && $dsoCriteriaMet) {
+            $finalDiagnosis = 'Complex PTSD (CPTSD)';
+        } elseif ($ptsdCriteriaMet) {
+            $finalDiagnosis = 'PTSD';
         } else {
-            $overallRisk = 'LOW';
+            $finalDiagnosis = 'No PTSD/CPTSD';
         }
 
         $reviewerName = session()->get('user_name') ?? 'Psikolog Jaga';
@@ -107,7 +107,7 @@ class ItqScoringService
             'dso_severity'      => $dsoMap['severity'],
             'dso_percentile'    => $dsoMap['percentile'],
             'dso_criteria_met'  => $dsoCriteriaMet ? true : false,
-            'overall_risk'      => $overallRisk,
+            'final_diagnosis'   => $finalDiagnosis,
             'reviewed_by'       => session()->get('user_id') ?? 4,
             'reviewed_at'       => date('Y-m-d H:i:s'),
         ];

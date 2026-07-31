@@ -1683,8 +1683,8 @@
                                     <hr class="my-2 opacity-25" style="color: #059669;" />
                                     <?php if (!empty($itqResult)): ?>
                                         <div class="mb-1">
-                                            <span class="badge <?= ($itqResult['overall_risk'] ?? '') === 'HIGH' ? 'bg-danger' : 'bg-warning text-dark' ?> fs-7 px-2.5 py-1 fw-bold">
-                                                ITQ Risk: <?= esc($itqResult['overall_risk'] ?? 'MEDIUM') ?>
+                                            <span class="badge <?= ($itqResult['final_diagnosis'] ?? '') === 'Complex PTSD (CPTSD)' ? 'bg-danger' : 'bg-warning text-dark' ?> fs-7 px-2.5 py-1 fw-bold">
+                                                ITQ Risk: <?= esc($itqResult['final_diagnosis'] ?? 'NO PTSD/CPTSD') ?>
                                             </span>
                                         </div>
                                         <div class="fs-9 text-muted fw-semibold">

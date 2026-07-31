@@ -254,7 +254,7 @@ class AiAssessmentService
                 'ptsd_criteria_met' => ! empty($itqResult['ptsd_criteria_met']) ? 'TERPENUHI (PTSD Confirmed)' : 'Belum Terpenuhi',
                 'dso_score'         => ($itqResult['dso_score'] ?? 0) . ' / 24 (' . ($itqResult['dso_severity'] ?? 'N/A') . ')',
                 'dso_criteria_met'  => ! empty($itqResult['dso_criteria_met']) ? 'TERPENUHI (CPTSD Indicator)' : 'Belum Terpenuhi',
-                'overall_itq_risk'  => $itqResult['overall_risk'] ?? 'N/A',
+                'overall_itq_risk'  => $itqResult['final_diagnosis'] ?? 'N/A',
             ] : 'Instrumen ITQ belum diisi oleh Psikolog Jaga',
             'rag_clinical_retrieved_knowledge_base' => array_map(function($k) {
                 return [
@@ -404,7 +404,7 @@ PROMPT;
                 $score += 25;
                 $evidence[] = 'Kuesioner ITQ: Kriteria Complex PTSD (DSO) Terpenuhi (Skor DSO: ' . ($itqResult['dso_score'] ?? 0) . '/24)';
             }
-            if (($itqResult['overall_risk'] ?? '') === 'HIGH') {
+            if (($itqResult['final_diagnosis'] ?? '') === 'Complex PTSD (CPTSD)' || ($itqResult['final_diagnosis'] ?? '') === 'PTSD') {
                 $score += 20;
             }
         }

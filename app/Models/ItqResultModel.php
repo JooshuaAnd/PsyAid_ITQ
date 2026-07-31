@@ -13,7 +13,7 @@ class ItqResultModel extends Model
     protected $allowedFields    = [
         'victim_id', 'ptsd_score', 'ptsd_severity', 'ptsd_percentile',
         'ptsd_criteria_met', 'dso_score', 'dso_severity', 'dso_percentile',
-        'dso_criteria_met', 'overall_risk', 'reviewed_by', 'reviewed_at'
+        'dso_criteria_met', 'final_diagnosis', 'reviewed_by', 'reviewed_at'
     ];
 
     public function getByVictimId(int $victimId): ?array

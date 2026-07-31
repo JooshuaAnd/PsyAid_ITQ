@@ -401,113 +401,79 @@
         <div id="personnel-pagination-container" class="frost-pagination-wrapper d-none"></div>
     </div>
 
-    <!-- Table Assigned Victims for Psikolog -->
+    <!-- Manajemen Assessment (Card Layout) -->
     <div class="card posko-item-card p-4 mb-4">
         <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3 border-bottom pb-3">
             <h5 class="fw-bold mb-0 d-flex align-items-center" style="color: #064e3b;">
-                <i class="bi bi-list-task text-success me-2 fs-5"></i> Daftar Penyintas Ter-Assign (Ditinjau Berdasarkan
-                Prioritas Risiko)
+                <i class="bi bi-list-task text-success me-2 fs-5"></i> Manajemen Assessment
             </h5>
             <span class="badge px-3 py-1.5 fs-8"
                 style="background-color: rgba(6, 95, 70, 0.08); color: #047857; border: 1px solid rgba(6, 95, 70, 0.18);">
-                <?= count($assignedVictims) ?> Penugasan Active
+                <?= count($assignedVictims) ?> Penyintas
             </span>
         </div>
 
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0" id="psychologist-table">
-                <thead style="background-color: #f8fafc;" class="text-secondary small text-uppercase">
-                    <tr>
-                        <th style="width: 5%;">No</th>
-                        <th style="width: 24%;">Nama & NIK</th>
-                        <th style="width: 15%;">Posko</th>
-                        <th style="width: 14%;">AI Risk Level</th>
-                        <th style="width: 14%;">Clinical Priority</th>
-                        <th style="width: 13%;">Status Review</th>
-                        <th style="width: 15%;" class="text-end">Aksi Klinis</th>
-                    </tr>
-                </thead>
-                <tbody id="psychologist-tbody">
-                    <?php if (empty($assignedVictims)): ?>
-                        <tr>
-                            <td colspan="7" class="text-center py-4 text-muted">
-                                <i class="bi bi-inbox fs-3 d-block mb-1 text-emerald-600"></i>
-                                Saat ini belum ada penyintas yang ditugaskan kepada Anda.
-                            </td>
-                        </tr>
-                    <?php else: ?>
-                        <?php $no = 1;
-                        foreach ($assignedVictims as $v): ?>
-                            <tr>
-                                <td class="fw-bold text-muted"><?= $no++ ?></td>
-                                <td>
-                                    <a href="<?= site_url('/psychologist-review/' . $v['victim_id']) ?>"
-                                        class="fw-bold text-decoration-none" style="color: #064e3b !important;">
-                                        <?= esc($v['victim_nama']) ?>
-                                    </a>
-                                    <div class="fs-8 text-muted"><?= esc($v['jenis_kelamin']) ?> • <?= esc($v['umur']) ?> Thn •
-                                        NIK: <?= esc($v['nik'] ?? '-') ?></div>
-                                </td>
-                                <td class="small text-muted">
-                                    <i class="bi bi-geo-alt me-1 text-emerald-600"></i> <?= esc($v['posko_name']) ?>
-                                </td>
-                                <td>
-                                    <?php if ($v['risk_level'] === 'high'): ?>
-                                        <span
-                                            class="badge bg-danger-subtle text-danger border border-danger-subtle fs-8 px-2.5 py-1 fw-bold">
-                                            <i class="bi bi-exclamation-triangle-fill me-1"></i> HIGH RISK
-                                        </span>
-                                    <?php elseif ($v['risk_level'] === 'medium'): ?>
-                                        <span
-                                            class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle fs-8 px-2.5 py-1 fw-bold">
-                                            <i class="bi bi-dash-circle-fill me-1"></i> MEDIUM RISK
-                                        </span>
-                                    <?php else: ?>
-                                        <span
-                                            class="badge bg-success-subtle text-success border border-success-subtle fs-8 px-2.5 py-1 fw-bold">
-                                            <i class="bi bi-check-circle-fill me-1"></i> LOW RISK
-                                        </span>
-                                    <?php endif; ?>
-                                </td>
-                                <td>
-                                    <?php 
-                                    $priority = $v['clinical_priority'] ?? 'Normal';
-                                    $isUrgent = (stripos($priority, 'urgent') !== false || stripos($priority, 'prioritas 1') !== false || stripos($priority, 'p1') !== false || $v['risk_level'] === 'high');
-                                    ?>
-                                    <?php if ($isUrgent): ?>
-                                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle fs-8 px-2.5 py-1 fw-bold">
-                                            <?= esc($priority) ?>
-                                        </span>
-                                    <?php else: ?>
-                                        <span class="badge bg-light text-dark border fw-semibold fs-8">
-                                            <?= esc($priority) ?>
-                                        </span>
-                                    <?php endif; ?>
-                                </td>
-                                <td>
+        <div class="row g-4" id="psychologist-card-container">
+            <?php if (empty($assignedVictims)): ?>
+                <div class="col-12 empty-state">
+                    <div class="text-center py-4 text-muted border rounded" style="background-color: #f8fafc;">
+                        <i class="bi bi-inbox fs-3 d-block mb-1 text-emerald-600"></i>
+                        Saat ini belum ada penyintas yang ditugaskan kepada Anda.
+                    </div>
+                </div>
+            <?php else: ?>
+                <?php foreach ($assignedVictims as $v): ?>
+                    <div class="col-12 col-md-6 col-lg-4 psychologist-card-item">
+                        <div class="p-3 h-100 d-flex flex-column" style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 8px !important; box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <h6 class="fw-bold mb-1" style="color: #064e3b;"><?= esc($v['victim_nama']) ?></h6>
+                                    <div class="fs-8 text-muted">
+                                        <?= esc($v['jenis_kelamin']) ?> • <?= esc($v['umur']) ?> Thn • NIK: <?= esc($v['nik'] ?? '-') ?>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="small text-muted mb-3 fs-8">
+                                <i class="bi bi-geo-alt me-1 text-emerald-600"></i> <?= esc($v['posko_name']) ?>
+                            </div>
+
+                            <div class="mb-3 mt-auto">
+                                <?php if ($v['risk_level'] === 'high'): ?>
+                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle fs-8 px-2.5 py-1 fw-bold">
+                                        <i class="bi bi-exclamation-triangle-fill me-1"></i> HIGH RISK
+                                    </span>
+                                <?php elseif ($v['risk_level'] === 'medium'): ?>
+                                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle fs-8 px-2.5 py-1 fw-bold">
+                                        <i class="bi bi-dash-circle-fill me-1"></i> MEDIUM RISK
+                                    </span>
+                                <?php else: ?>
+                                    <span class="badge bg-success-subtle text-success border border-success-subtle fs-8 px-2.5 py-1 fw-bold">
+                                        <i class="bi bi-check-circle-fill me-1"></i> LOW RISK
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+                            
+                            <div class="d-flex align-items-center justify-content-between mt-3 border-top pt-3">
+                                <div>
                                     <?php if ($v['review_id']): ?>
-                                        <span
-                                            class="badge bg-success-subtle text-success border border-success-subtle fs-8 px-2.5 py-1">
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle fs-8 px-2.5 py-1">
                                             <i class="bi bi-check-all me-1"></i> Reviewed
                                         </span>
                                     <?php else: ?>
-                                        <span
-                                            class="badge bg-secondary-subtle text-secondary border border-secondary-subtle fs-8 px-2.5 py-1">
+                                        <span class="badge bg-secondary-subtle text-secondary border border-secondary-subtle fs-8 px-2.5 py-1">
                                             <i class="bi bi-clock-history me-1"></i> AI Generated
                                         </span>
                                     <?php endif; ?>
-                                </td>
-                                <td class="text-end text-nowrap">
-                                    <a href="<?= site_url('/psychologist-review/' . $v['victim_id']) ?>"
-                                        class="frost-btn-primary fs-8 text-nowrap">
-                                        <i class="bi bi-clipboard-pulse me-1"></i> Review MSE
-                                    </a>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                                </div>
+                                <a href="<?= site_url('/psikolog/assessment-history/detail/' . $v['victim_id']) ?>" class="frost-btn-primary fs-8 text-nowrap">
+                                    Detail <i class="bi bi-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </div>
 
         <!-- Pagination Assigned Victims -->
@@ -518,41 +484,46 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // CLIENT-SIDE PAGINATION LOGIC (> 10 ITEMS)
-        function initClientPagination(tableBodyId, paginationContainerId, itemsPerPage = 10) {
-            const tbody = document.getElementById(tableBodyId);
-            const container = document.getElementById(paginationContainerId);
-            if (!tbody || !container) return;
+        // CLIENT-SIDE PAGINATION LOGIC
+        function initClientPagination(containerId, paginationContainerId, itemsPerPage = 10, itemSelector = 'tr') {
+            const containerEl = document.getElementById(containerId);
+            const paginationContainer = document.getElementById(paginationContainerId);
+            if (!containerEl || !paginationContainer) return;
 
-            const rows = Array.from(tbody.querySelectorAll('tr'));
-            const validRows = rows.filter(r => !r.querySelector('td[colspan]'));
+            const items = Array.from(containerEl.querySelectorAll(itemSelector));
+            const validItems = items.filter(item => {
+                // Filter out empty state messages
+                if (item.tagName.toLowerCase() === 'tr' && item.querySelector('td[colspan]')) return false;
+                if (item.classList.contains('empty-state')) return false;
+                return true;
+            });
 
-            if (validRows.length <= itemsPerPage) {
-                container.innerHTML = '';
-                container.classList.add('d-none');
-                validRows.forEach(r => r.style.display = '');
+            if (validItems.length <= itemsPerPage) {
+                paginationContainer.innerHTML = '';
+                paginationContainer.classList.add('d-none');
+                validItems.forEach(i => i.style.display = '');
                 return;
             }
 
-            container.classList.remove('d-none');
+            paginationContainer.classList.remove('d-none');
             let currentPage = 1;
-            const totalPages = Math.ceil(validRows.length / itemsPerPage);
+            const totalPages = Math.ceil(validItems.length / itemsPerPage);
 
             function renderPage(page) {
                 currentPage = page;
                 const start = (page - 1) * itemsPerPage;
                 const end = start + itemsPerPage;
 
-                validRows.forEach((row, idx) => {
+                validItems.forEach((item, idx) => {
                     if (idx >= start && idx < end) {
-                        row.style.display = '';
+                        item.style.display = '';
                     } else {
-                        row.style.display = 'none';
+                        item.style.display = 'none';
                     }
                 });
 
-                const displayedEnd = Math.min(end, validRows.length);
-                const infoHtml = `<span class="frost-pagination-info">Menampilkan <strong class="text-dark">${start + 1} - ${displayedEnd}</strong> dari <strong class="text-dark">${validRows.length}</strong> Data</span>`;
+                const displayedEnd = Math.min(end, validItems.length);
+                const infoHtml = `<span class="frost-pagination-info">Menampilkan <strong class="text-dark">${start + 1} - ${displayedEnd}</strong> dari <strong class="text-dark">${validItems.length}</strong> Data</span>`;
 
                 let navHtml = `<div class="frost-pagination-nav">`;
 
@@ -573,9 +544,9 @@
                             </button>`;
                 navHtml += `</div>`;
 
-                container.innerHTML = infoHtml + navHtml;
+                paginationContainer.innerHTML = infoHtml + navHtml;
 
-                container.querySelectorAll('.frost-page-btn[data-page]').forEach(btn => {
+                paginationContainer.querySelectorAll('.frost-page-btn[data-page]').forEach(btn => {
                     btn.addEventListener('click', function () {
                         const targetPage = parseInt(this.getAttribute('data-page'));
                         if (targetPage >= 1 && targetPage <= totalPages && targetPage !== currentPage) {
@@ -588,8 +559,8 @@
             renderPage(1);
         }
 
-        initClientPagination('personnel-tbody', 'personnel-pagination-container', 10);
-        initClientPagination('psychologist-tbody', 'psychologist-pagination-container', 10);
+        initClientPagination('personnel-tbody', 'personnel-pagination-container', 10, 'tr');
+        initClientPagination('psychologist-card-container', 'psychologist-pagination-container', 6, '.psychologist-card-item');
     });
 </script>
 <?= $this->endSection() ?>

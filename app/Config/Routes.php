@@ -74,6 +74,8 @@ $routes->get('/psychologist-mapping', 'Bpbd\PsychologistMappingController::index
 $routes->get('/bpbd/psychologist-mapping', 'Bpbd\PsychologistMappingController::index', ['filter' => ['auth', 'role:bpbd_admin']]);
 $routes->post('/bpbd/psychologist-mapping/update/(:num)', 'Bpbd\PsychologistMappingController::updateMapping/$1', ['filter' => ['auth', 'role:bpbd_admin']]);
 $routes->get('/psikolog/dashboard', 'Psikolog\PsikologController::index', ['filter' => ['auth', 'role:psikolog']]);
+$routes->get('/psikolog/assessment-history', 'Psikolog\AssessmentHistoryController::index', ['filter' => ['auth', 'role:psikolog']]);
+$routes->get('/psikolog/assessment-history/detail/(:num)', 'Psikolog\AssessmentHistoryController::detail/$1', ['filter' => ['auth', 'role:psikolog']]);
 
 $routes->get('/psychologist-review/(:num)', 'Psikolog\PsychologistReviewController::show/$1', ['filter' => ['auth', 'role:psikolog']]);
 $routes->post('/psychologist-review/store/(:num)', 'Psikolog\PsychologistReviewController::store/$1', ['filter' => ['auth', 'role:psikolog']]);
