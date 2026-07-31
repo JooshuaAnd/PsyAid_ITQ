@@ -270,5 +270,127 @@ class DummyVictimSeeder extends Seeder
                 $this->db->table('ai_assessment')->where('victim_id', $row['victim_id'])->update($row);
             }
         }
+
+        // 4. Psychologist Assignments (Assign all victims to Psikolog ID 4)
+        $assignments = [];
+        for ($i = 1; $i <= 8; $i++) {
+            $assignments[] = [
+                'victim_id' => $i,
+                'psikolog_id' => 4,
+                'assigned_by' => 1,
+                'assigned_at' => $now,
+            ];
+        }
+
+        foreach ($assignments as $row) {
+            $exists = $this->db->table('psychologist_assignment')->where('victim_id', $row['victim_id'])->get()->getRow();
+            if (!$exists) {
+                $this->db->table('psychologist_assignment')->insert($row);
+            }
+        }
+
+        // 5. ITQ Answers (Victim 1: CPTSD High Risk, Victim 2: No PTSD)
+        $itqAnswers = [
+            [
+                'victim_id' => 1,
+                'psikolog_id' => 4,
+                'item_1' => 3, 'item_2' => 4, 'item_3' => 4, 'item_4' => 3, 'item_5' => 4, 'item_6' => 4, // PTSD (High)
+                'item_7' => 3, 'item_8' => 4, 'item_9' => 4, // Impairment
+                'item_10' => 4, 'item_11' => 3, 'item_12' => 4, 'item_13' => 4, 'item_14' => 3, 'item_15' => 4, // DSO (High)
+                'item_16' => 4, 'item_17' => 3, 'item_18' => 4, // Impairment DSO
+                'created_at' => $now
+            ],
+            [
+                'victim_id' => 2,
+                'psikolog_id' => 4,
+                'item_1' => 0, 'item_2' => 1, 'item_3' => 0, 'item_4' => 0, 'item_5' => 1, 'item_6' => 0, // PTSD (Low)
+                'item_7' => 0, 'item_8' => 0, 'item_9' => 0,
+                'item_10' => 1, 'item_11' => 0, 'item_12' => 0, 'item_13' => 1, 'item_14' => 0, 'item_15' => 0, // DSO (Low)
+                'item_16' => 0, 'item_17' => 0, 'item_18' => 0,
+                'created_at' => $now
+            ]
+        ];
+
+        foreach ($itqAnswers as $row) {
+            $exists = $this->db->table('itq_answers')->where('victim_id', $row['victim_id'])->get()->getRow();
+            if (!$exists) {
+                $this->db->table('itq_answers')->insert($row);
+            }
+        }
+
+        // 6. ITQ Result
+        $itqResults = [
+            [
+                'victim_id' => 1,
+                'ptsd_score' => 22,
+                'ptsd_severity' => 'Very Severe',
+                'ptsd_percentile' => 99.30,
+                'ptsd_criteria_met' => true,
+                'dso_score' => 22,
+                'dso_severity' => 'Very Severe',
+                'dso_percentile' => 99.30,
+                'dso_criteria_met' => true,
+                'final_diagnosis' => 'Complex PTSD (CPTSD)',
+                'reviewed_by' => 4,
+                'reviewed_at' => $now,
+            ],
+            [
+                'victim_id' => 2,
+                'ptsd_score' => 2,
+                'ptsd_severity' => 'Minimal',
+                'ptsd_percentile' => 18.00,
+                'ptsd_criteria_met' => false,
+                'dso_score' => 2,
+                'dso_severity' => 'Minimal',
+                'dso_percentile' => 18.00,
+                'dso_criteria_met' => false,
+                'final_diagnosis' => 'No PTSD/CPTSD',
+                'reviewed_by' => 4,
+                'reviewed_at' => $now,
+            ]
+        ];
+
+        foreach ($itqResults as $row) {
+            $exists = $this->db->table('itq_result')->where('victim_id', $row['victim_id'])->get()->getRow();
+            if (!$exists) {
+                $this->db->table('itq_result')->insert($row);
+            } else {
+                $this->db->table('itq_result')->where('victim_id', $row['victim_id'])->update($row);
+            }
+        }
+
+        // 7. Clinical Action & Review (for Victim 1)
+        $reviewExists = $this->db->table('psychologist_review')->where('victim_id', 1)->get()->getRow();
+        if (!$reviewExists) {
+            $this->db->table('psychologist_review')->insert([
+                'victim_id' => 1,
+                'psikolog_id' => 4,
+                'keluhan_utama' => 'Sering bermimpi buruk dan menghindari tempat keramaian pasca gempa.',
+                'penampilan_perilaku' => 'Tampak gelisah, kontak mata kurang.',
+                'mood_afek' => 'Cemas, labil',
+                'proses_pikir' => 'Koheren tapi isi pikir didominasi rasa takut.',
+                'persepsi' => 'Kadang merasa tanah masih bergoyang (ilusi).',
+                'insight' => 'Baik',
+                'risiko_bunuh_diri' => 'Rendah',
+                'catatan_tambahan' => 'Penyintas membutuhkan intervensi intensif.',
+                'created_at' => $now,
+                'updated_at' => $now,
+            ]);
+        }
+
+        $clinicalExists = $this->db->table('clinical_action')->where('victim_id', 1)->get()->getRow();
+        if (!$clinicalExists) {
+            $this->db->table('clinical_action')->insert([
+                'victim_id' => 1,
+                'psikolog_id' => 4,
+                'ai_recommendation_approved' => true,
+                'priority_override' => null,
+                'intervensi' => 'CBT',
+                'diagnosis_sementara' => 'Complex PTSD pasca bencana alam berat',
+                'catatan_klinis' => 'Mohon relawan posko memantau jika penyintas tampak menangis histeris.',
+                'jadwal_followup' => date('Y-m-d', strtotime('+3 days')),
+                'created_at' => $now,
+            ]);
+        }
     }
 }
