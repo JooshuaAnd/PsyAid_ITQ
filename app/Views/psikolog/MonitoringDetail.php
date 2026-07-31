@@ -321,6 +321,255 @@
         padding-block: 0.55rem !important;
     }
 
+    .journey-dashboard {
+        margin-bottom: 1.35rem;
+    }
+
+    .journey-card {
+        background: #ffffff;
+        border: 1.5px solid #d1fae5;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px -2px rgba(16, 185, 129, 0.08), 0 2px 5px -1px rgba(15, 23, 42, 0.04);
+        padding: 1.25rem;
+        height: 100%;
+    }
+
+    .journey-card-title {
+        color: #064e3b;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding-bottom: 0.85rem;
+        margin-bottom: 1rem;
+        border-bottom: 1.5px solid #e2e8f0;
+    }
+
+    .journey-stepper {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 0.75rem;
+    }
+
+    .journey-step {
+        position: relative;
+        background: #f8fafc;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 0.95rem;
+        min-height: 146px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .journey-step.is-complete {
+        background: #ecfdf5;
+        border-color: #a7f3d0;
+    }
+
+    .journey-step.is-active {
+        background: #fffbeb;
+        border-color: #fde68a;
+    }
+
+    .journey-step.is-final {
+        background: #f0fdf4;
+        border-color: #34d399;
+    }
+
+    .journey-step__icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        background: #ffffff;
+        color: #059669;
+        border: 1.5px solid #a7f3d0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0.65rem;
+        box-shadow: 0 2px 6px rgba(16, 185, 129, 0.1);
+    }
+
+    .journey-step__body {
+        border-top: 1.5px solid #e2e8f0;
+        padding-top: 0.7rem;
+        margin-top: 0.05rem;
+        flex: 1;
+    }
+
+    .journey-step.is-active .journey-step__icon {
+        color: #b45309;
+        border-color: #fde68a;
+    }
+
+    .journey-step__label {
+        color: #064e3b;
+        font-size: 0.8125rem;
+        font-weight: 800;
+        line-height: 1.3;
+        margin-bottom: 0.35rem;
+    }
+
+    .journey-step__meta {
+        color: #64748b;
+        font-size: 0.72rem;
+        line-height: 1.45;
+    }
+
+    .journey-step__badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        margin-top: 0.75rem;
+        border-radius: 8px;
+        padding: 0.32rem 0.55rem;
+        font-size: 0.68rem;
+        font-weight: 800;
+        border: 1px solid transparent;
+        align-self: flex-start;
+    }
+
+    .journey-step__status {
+        border-top: 1.5px solid #e2e8f0;
+        margin-top: 0.75rem;
+        padding-top: 0.75rem;
+    }
+
+    .journey-step__badge--complete {
+        background: #ecfdf5;
+        color: #047857;
+        border-color: #a7f3d0;
+    }
+
+    .journey-step__badge--pending {
+        background: #f8fafc;
+        color: #64748b;
+        border-color: #e2e8f0;
+    }
+
+    .journey-step__badge--active {
+        background: #fffbeb;
+        color: #b45309;
+        border-color: #fde68a;
+    }
+
+    .trend-summary-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .trend-stat {
+        background: #f8fafc;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 0.85rem;
+    }
+
+    .trend-stat__label {
+        display: block;
+        color: #64748b;
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.035em;
+        margin-bottom: 0.6rem;
+        padding-bottom: 0.55rem;
+        border-bottom: 1.5px solid #e2e8f0;
+    }
+
+    .trend-stat__value {
+        color: #064e3b;
+        font-size: 1.25rem;
+        font-weight: 800;
+    }
+
+    .trend-stat__value.is-danger {
+        color: #dc2626;
+    }
+
+    .trend-stat__value.is-warning {
+        color: #b45309;
+    }
+
+    .trend-stat__value.is-success {
+        color: #047857;
+    }
+
+    .trend-chart-shell {
+        background: linear-gradient(135deg, #ffffff 0%, rgba(236, 253, 245, 0.55) 100%);
+        border: 1.5px solid #d1fae5;
+        border-radius: 8px;
+        padding: 1rem;
+        overflow-x: auto;
+        scrollbar-color: #a7f3d0 #ecfdf5;
+        scrollbar-width: thin;
+    }
+
+    .trend-chart-shell::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .trend-chart-shell::-webkit-scrollbar-track {
+        background: #ecfdf5;
+        border-radius: 999px;
+    }
+
+    .trend-chart-shell::-webkit-scrollbar-thumb {
+        background: #a7f3d0;
+        border-radius: 999px;
+    }
+
+    .trend-chart {
+        min-width: 560px;
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    .trend-legend {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        margin-top: 0.85rem;
+        color: #64748b;
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+
+    .trend-legend__item {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+    }
+
+    .trend-legend__swatch {
+        width: 18px;
+        height: 3px;
+        border-radius: 999px;
+        display: inline-block;
+    }
+
+    .trend-scroll-hint {
+        display: none;
+        color: #64748b;
+        font-size: 0.72rem;
+        font-weight: 700;
+        margin-bottom: 0.65rem;
+    }
+
+    .trend-empty {
+        background: #f8fafc;
+        border: 1.5px solid #e2e8f0;
+        border-radius: 8px;
+        color: #64748b;
+        padding: 1.25rem;
+        text-align: center;
+    }
+
     @media (max-width: 767.98px) {
         .timeline-container {
             padding-left: 34px;
@@ -363,8 +612,199 @@
             line-height: 1.35;
             overflow-wrap: anywhere;
         }
+
+        .journey-card {
+            padding: 1rem;
+        }
+
+        .journey-stepper,
+        .trend-summary-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .journey-step {
+            min-height: 0;
+        }
+
+        .trend-chart-shell {
+            padding: 0.75rem;
+            margin-inline: -0.15rem;
+            border-color: #a7f3d0;
+        }
+
+        .trend-chart {
+            min-width: 430px;
+        }
+
+        .trend-scroll-hint {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 0.55rem 0.7rem;
+        }
+
+        .trend-legend {
+            align-items: stretch;
+            flex-direction: column;
+            gap: 0.55rem;
+            font-size: 0.72rem;
+        }
+
+        .trend-legend__item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 0.5rem 0.6rem;
+        }
+
+        .trend-stat {
+            padding: 0.75rem;
+        }
+
+        .trend-stat__value {
+            font-size: 1.1rem;
+        }
     }
 </style>
+
+<?php
+$phaseDefinitions = [
+    [
+        'key' => 'relawan',
+        'label' => 'Triase Relawan',
+        'meta' => 'Skrining awal & observasi lapangan',
+        'icon' => 'bi-person-badge',
+        'done' => !empty($volunteerScreening),
+    ],
+    [
+        'key' => 'baseline',
+        'label' => 'Baseline',
+        'meta' => 'ITQ awal + review MSE hari 0',
+        'icon' => 'bi-journal-medical',
+        'done' => isset($itqByFase[0]) && isset($reviewByFase[0]),
+    ],
+    [
+        'key' => 'fu1',
+        'label' => 'Follow-Up 1',
+        'meta' => 'Evaluasi hari ke-7',
+        'icon' => 'bi-calendar2-check',
+        'done' => isset($itqByFase[1]) && isset($reviewByFase[1]),
+    ],
+    [
+        'key' => 'fu2',
+        'label' => 'Follow-Up 2',
+        'meta' => 'Evaluasi hari ke-14',
+        'icon' => 'bi-calendar2-check',
+        'done' => isset($itqByFase[2]) && isset($reviewByFase[2]),
+    ],
+    [
+        'key' => 'fu3',
+        'label' => 'Follow-Up 3',
+        'meta' => 'Evaluasi hari ke-30',
+        'icon' => 'bi-calendar2-check',
+        'done' => isset($itqByFase[3]) && isset($reviewByFase[3]),
+    ],
+    [
+        'key' => 'final',
+        'label' => 'Keputusan Akhir',
+        'meta' => 'Status akhir / rujukan klinis',
+        'icon' => 'bi-flag-fill',
+        'done' => !empty($finalDecision),
+    ],
+];
+
+$activePhaseIndex = null;
+foreach ($phaseDefinitions as $idx => $phase) {
+    if (!$phase['done']) {
+        $activePhaseIndex = $idx;
+        break;
+    }
+}
+
+$phaseLabels = [
+    0 => 'Baseline',
+    1 => 'FU 1',
+    2 => 'FU 2',
+    3 => 'FU 3',
+];
+
+$itqTrend = [];
+foreach ($phaseLabels as $fase => $label) {
+    if (isset($itqByFase[$fase])) {
+        $itqTrend[] = [
+            'fase' => $fase,
+            'label' => $label,
+            'ptsd' => (int) ($itqByFase[$fase]['ptsd_score'] ?? 0),
+            'dso' => (int) ($itqByFase[$fase]['dso_score'] ?? 0),
+            'diagnosis' => $itqByFase[$fase]['final_diagnosis'] ?? '-',
+        ];
+    }
+}
+
+$trendCount = count($itqTrend);
+$latestTrend = $trendCount > 0 ? $itqTrend[$trendCount - 1] : null;
+$firstTrend = $trendCount > 0 ? $itqTrend[0] : null;
+$latestTotal = $latestTrend ? $latestTrend['ptsd'] + $latestTrend['dso'] : 0;
+$firstTotal = $firstTrend ? $firstTrend['ptsd'] + $firstTrend['dso'] : 0;
+$deltaTotal = $trendCount > 1 ? $latestTotal - $firstTotal : 0;
+$trendLabel = 'Belum Cukup Data';
+$trendValueClass = 'is-warning';
+$latestTotalClass = 'is-warning';
+
+if ($trendCount > 1) {
+    if ($deltaTotal <= -3) {
+        $trendLabel = 'Membaik';
+        $trendValueClass = 'is-success';
+        $latestTotalClass = 'is-success';
+    } elseif ($deltaTotal >= 3) {
+        $trendLabel = 'Memburuk';
+        $trendValueClass = 'is-danger';
+        $latestTotalClass = 'is-danger';
+    } else {
+        $trendLabel = 'Stabil';
+        $trendValueClass = 'is-warning';
+        $latestTotalClass = 'is-warning';
+    }
+} elseif ($trendCount === 1) {
+    $trendLabel = 'Baseline';
+    $trendValueClass = 'is-success';
+    $latestTotalClass = 'is-success';
+}
+
+$svgWidth = 900;
+$svgHeight = 280;
+$chartLeft = 54;
+$chartRight = 28;
+$chartTop = 24;
+$chartBottom = 48;
+$plotWidth = $svgWidth - $chartLeft - $chartRight;
+$plotHeight = $svgHeight - $chartTop - $chartBottom;
+$allScores = [];
+foreach ($itqTrend as $point) {
+    $allScores[] = $point['ptsd'];
+    $allScores[] = $point['dso'];
+}
+$maxScore = max(24, !empty($allScores) ? max($allScores) : 24);
+$maxScore = (int) (ceil($maxScore / 4) * 4);
+$scoreToY = static fn($score) => $chartTop + (($maxScore - (int) $score) / max(1, $maxScore)) * $plotHeight;
+$indexToX = static fn($idx, $count) => $count <= 1
+    ? $chartLeft + ($plotWidth / 2)
+    : $chartLeft + ($idx * ($plotWidth / ($count - 1)));
+
+$ptsdPoints = [];
+$dsoPoints = [];
+foreach ($itqTrend as $idx => $point) {
+    $x = $indexToX($idx, $trendCount);
+    $ptsdPoints[] = round($x, 2) . ',' . round($scoreToY($point['ptsd']), 2);
+    $dsoPoints[] = round($x, 2) . ',' . round($scoreToY($point['dso']), 2);
+}
+$yTicks = array_values(array_unique([0, (int) round($maxScore / 2), $maxScore]));
+sort($yTicks);
+?>
 
 <div class="container-fluid px-0">
     <div class="card frost-hero mb-4">
@@ -382,6 +822,128 @@
                 <a href="<?= site_url('/psikolog/monitoring') ?>" class="frost-btn-reset hero-action-btn">
                     <i class="bi bi-arrow-left me-1"></i> Kembali
                 </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 journey-dashboard">
+        <div class="col-12">
+            <div class="journey-card">
+                <div class="journey-card-title">
+                    <i class="bi bi-signpost-split-fill text-success"></i>
+                    Patient Journey Timeline
+                </div>
+                <div class="journey-stepper">
+                    <?php foreach ($phaseDefinitions as $idx => $phase): ?>
+                        <?php
+                        $isActivePhase = $activePhaseIndex === $idx;
+                        $stepClass = $phase['done'] ? 'is-complete' : ($isActivePhase ? 'is-active' : '');
+                        if ($phase['key'] === 'final' && $phase['done']) {
+                            $stepClass .= ' is-final';
+                        }
+                        $badgeClass = $phase['done'] ? 'journey-step__badge--complete' : ($isActivePhase ? 'journey-step__badge--active' : 'journey-step__badge--pending');
+                        $badgeIcon = $phase['done'] ? 'bi-check-circle-fill' : ($isActivePhase ? 'bi-hourglass-split' : 'bi-clock-history');
+                        $badgeText = $phase['done'] ? 'Selesai' : ($isActivePhase ? 'Dalam Proses' : 'Pending');
+                        ?>
+                        <div class="journey-step <?= esc(trim($stepClass)) ?>">
+                            <div class="journey-step__icon">
+                                <i class="bi <?= esc($phase['icon']) ?>"></i>
+                            </div>
+                            <div class="journey-step__body">
+                                <div class="journey-step__label"><?= esc($phase['label']) ?></div>
+                                <div class="journey-step__meta"><?= esc($phase['meta']) ?></div>
+                            </div>
+                            <div class="journey-step__status">
+                                <span class="journey-step__badge <?= esc($badgeClass) ?>">
+                                    <i class="bi <?= esc($badgeIcon) ?>"></i> <?= esc($badgeText) ?>
+                                </span>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="journey-card">
+                <div class="journey-card-title">
+                    <i class="bi bi-graph-up-arrow text-success"></i>
+                    Trend Skor ITQ Longitudinal
+                </div>
+
+                <div class="trend-summary-grid">
+                    <div class="trend-stat">
+                        <span class="trend-stat__label">Data ITQ Tersedia</span>
+                        <div class="trend-stat__value"><?= esc($trendCount) ?>/4 Fase</div>
+                    </div>
+                    <div class="trend-stat">
+                        <span class="trend-stat__label">Total Skor Terakhir</span>
+                        <div class="trend-stat__value <?= esc($latestTrend ? $latestTotalClass : 'is-warning') ?>">
+                            <?= esc($latestTrend ? $latestTotal : '-') ?>
+                        </div>
+                    </div>
+                    <div class="trend-stat">
+                        <span class="trend-stat__label">Arah Perubahan</span>
+                        <div class="trend-stat__value <?= esc($trendValueClass) ?>">
+                            <?= esc($trendLabel) ?>
+                            <?php if ($trendCount > 1): ?>
+                                <span class="fs-8">(<?= $deltaTotal > 0 ? '+' : '' ?><?= esc($deltaTotal) ?>)</span>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+
+                <?php if ($trendCount === 0): ?>
+                    <div class="trend-empty">
+                        <i class="bi bi-clipboard2-x fs-3 d-block mb-2 text-success"></i>
+                        Belum ada skor ITQ yang dapat ditampilkan sebagai trend longitudinal.
+                    </div>
+                <?php else: ?>
+                    <div class="trend-chart-shell">
+                        <div class="trend-scroll-hint">
+                            <i class="bi bi-arrows"></i> Geser grafik untuk melihat seluruh fase ITQ
+                        </div>
+                        <svg class="trend-chart" viewBox="0 0 <?= esc($svgWidth) ?> <?= esc($svgHeight) ?>" role="img" aria-label="Trend skor ITQ PTSD dan DSO">
+                            <rect x="0" y="0" width="<?= esc($svgWidth) ?>" height="<?= esc($svgHeight) ?>" rx="8" fill="transparent"></rect>
+
+                            <?php foreach ($yTicks as $tick): ?>
+                                <?php $y = round($scoreToY($tick), 2); ?>
+                                <line x1="<?= esc($chartLeft) ?>" y1="<?= esc($y) ?>" x2="<?= esc($svgWidth - $chartRight) ?>" y2="<?= esc($y) ?>" stroke="#e2e8f0" stroke-width="1"></line>
+                                <text x="<?= esc($chartLeft - 12) ?>" y="<?= esc($y + 4) ?>" text-anchor="end" fill="#64748b" font-size="12" font-weight="700"><?= esc($tick) ?></text>
+                            <?php endforeach; ?>
+
+                            <line x1="<?= esc($chartLeft) ?>" y1="<?= esc($chartTop) ?>" x2="<?= esc($chartLeft) ?>" y2="<?= esc($svgHeight - $chartBottom) ?>" stroke="#cbd5e1" stroke-width="1.5"></line>
+                            <line x1="<?= esc($chartLeft) ?>" y1="<?= esc($svgHeight - $chartBottom) ?>" x2="<?= esc($svgWidth - $chartRight) ?>" y2="<?= esc($svgHeight - $chartBottom) ?>" stroke="#cbd5e1" stroke-width="1.5"></line>
+
+                            <?php if ($trendCount > 1): ?>
+                                <polyline points="<?= esc(implode(' ', $ptsdPoints)) ?>" fill="none" stroke="#dc2626" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                                <polyline points="<?= esc(implode(' ', $dsoPoints)) ?>" fill="none" stroke="#059669" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+                            <?php endif; ?>
+
+                            <?php foreach ($itqTrend as $idx => $point): ?>
+                                <?php
+                                $x = round($indexToX($idx, $trendCount), 2);
+                                $ptsdY = round($scoreToY($point['ptsd']), 2);
+                                $dsoY = round($scoreToY($point['dso']), 2);
+                                ?>
+                                <line x1="<?= esc($x) ?>" y1="<?= esc($chartTop) ?>" x2="<?= esc($x) ?>" y2="<?= esc($svgHeight - $chartBottom) ?>" stroke="#f1f5f9" stroke-width="1"></line>
+                                <circle cx="<?= esc($x) ?>" cy="<?= esc($ptsdY) ?>" r="7" fill="#dc2626" stroke="#ffffff" stroke-width="3"></circle>
+                                <circle cx="<?= esc($x) ?>" cy="<?= esc($dsoY) ?>" r="7" fill="#059669" stroke="#ffffff" stroke-width="3"></circle>
+                                <text x="<?= esc($x) ?>" y="<?= esc($svgHeight - 22) ?>" text-anchor="middle" fill="#064e3b" font-size="13" font-weight="800"><?= esc($point['label']) ?></text>
+                                <text x="<?= esc($x) ?>" y="<?= esc(max(16, $ptsdY - 12)) ?>" text-anchor="middle" fill="#dc2626" font-size="12" font-weight="800"><?= esc($point['ptsd']) ?></text>
+                                <text x="<?= esc($x) ?>" y="<?= esc(min($svgHeight - $chartBottom - 10, $dsoY + 22)) ?>" text-anchor="middle" fill="#047857" font-size="12" font-weight="800"><?= esc($point['dso']) ?></text>
+                            <?php endforeach; ?>
+                        </svg>
+
+                        <div class="trend-legend">
+                            <span class="trend-legend__item"><span class="trend-legend__swatch" style="background: #dc2626;"></span> PTSD Score</span>
+                            <span class="trend-legend__item"><span class="trend-legend__swatch" style="background: #059669;"></span> DSO Score</span>
+                            <?php if ($latestTrend): ?>
+                                <span class="trend-legend__item"><i class="bi bi-clipboard2-pulse text-success"></i> Diagnosis terakhir: <?= esc($latestTrend['diagnosis']) ?></span>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
