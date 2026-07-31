@@ -34,12 +34,15 @@ class ClinicalActionController extends Controller
         $aiApproved       = $this->request->getPost('ai_recommendation_approved') ? true : false;
         $priorityOverride = $this->request->getPost('priority_override') ?: null;
 
+        $faseKe = (int) $this->request->getGet('fase_ke') ?: 0;
+
         $clinicalModel = new ClinicalActionModel();
-        $existing      = $clinicalModel->getByVictimId((int) $victimId);
+        $existing      = $clinicalModel->getByVictimId((int) $victimId, $faseKe);
 
         $actionData = [
             'victim_id'                  => (int) $victimId,
             'psikolog_id'                => session()->get('user_id') ?? 4,
+            'fase_ke'                    => $faseKe,
             'ai_recommendation_approved' => $aiApproved,
             'priority_override'          => $aiApproved ? null : $priorityOverride,
             'diagnosis_sementara'        => $this->request->getPost('diagnosis_sementara'),
@@ -55,25 +58,11 @@ class ClinicalActionController extends Controller
             $clinicalModel->insert($actionData);
         }
 
-        // Update status in ai_assessment table to 'reviewed'
-        $aiModel  = new AiAssessmentModel();
-        $existingAi = $aiModel->where('victim_id', $victimId)->first();
+        // Trigger AI Generation for Psychologist Review (Phase 0, 1, 2, 3...)
+        $aiService = new \App\Services\AiAssessmentService();
+        $aiService->calculateRisk((int) $victimId, $faseKe);
 
-        if ($existingAi) {
-            $aiData = [
-                'status' => 'reviewed',
-            ];
-
-            // If psychologist overrode priority, update clinical priority
-            if (! $aiApproved && ! empty($priorityOverride)) {
-                $aiData['clinical_priority'] = 'Prioritas (Override: ' . $priorityOverride . ')';
-                $aiData['risk_level']        = strtolower($priorityOverride);
-            }
-
-            $aiModel->update($existingAi['id'], $aiData);
-        }
-
-        return redirect()->to('/psikolog/dashboard')
-            ->with('success', 'Aksi klinis psikolog berhasil disimpan. Status rekam medis penyintas di seluruh dashboard otomatis ter-update menjadi REVIEWED oleh ' . session()->get('user_name') . '.');
+        return redirect()->to('/psikolog/monitoring/detail/' . $victimId)
+            ->with('success', 'Aksi klinis psikolog berhasil disimpan. Hasil Analisis AI terbaru telah digenerate.');
     }
 }

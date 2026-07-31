@@ -227,7 +227,9 @@ function getCriteriaClass($met) {
                             <p class="mb-0 fst-italic">"<?= esc($aiAssessment['ai_summary']) ?>"</p>
                         </div>
                     <?php else: ?>
-                        <p class="text-muted small">Tidak ada analisis AI.</p>
+                        <div class="alert alert-info small py-2 mb-0 border-0" style="background: rgba(59, 130, 246, 0.1);">
+                            <i class="bi bi-info-circle me-1"></i> Analisis AI untuk Fase <?= $faseKe ?> akan digenerate <b>secara otomatis</b> oleh sistem setelah Anda menyimpan form <i>Catatan & Rencana Follow-up Psikolog</i> di bawah ini.
+                        </div>
                     <?php endif; ?>
                 </div>
             </div>
@@ -292,7 +294,7 @@ function getCriteriaClass($met) {
             </div>
         </div>
 
-        <form action="<?= site_url('/clinical-action/save/' . $victim['id']) ?>" method="POST">
+        <form action="<?= site_url('/clinical-action/save/' . $victim['id'] . '?fase_ke=' . $faseKe) ?>" method="POST">
             <?= csrf_field() ?>
             <h6 class="fw-bold text-dark border-bottom pb-2 mb-3">Catatan & Rencana Follow-up Psikolog</h6>
             <div class="row g-3">

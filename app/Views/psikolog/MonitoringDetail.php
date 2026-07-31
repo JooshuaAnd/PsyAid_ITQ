@@ -184,6 +184,9 @@
                                     <?= esc($itqByFase[0]['final_diagnosis']) ?>
                                 </span>
                             </div>
+                            <a href="<?= site_url('/itq/result/' . $victim['id'] . '?fase_ke=0') ?>" class="btn btn-sm btn-outline-primary mt-3">
+                                <i class="bi bi-graph-up"></i> Detail Grafik & Skor
+                            </a>
                         <?php else: ?>
                             <a href="<?= site_url('/itq/form/' . $victim['id'] . '?fase_ke=0') ?>" class="btn btn-sm btn-outline-primary mb-2">
                                 <i class="bi bi-pencil-square"></i> Isi ITQ Awal
@@ -239,6 +242,9 @@
                                     <?= esc($itqByFase[$ke]['final_diagnosis']) ?>
                                 </span>
                             </div>
+                            <a href="<?= site_url('/itq/result/' . $victim['id'] . '?fase_ke=' . $ke) ?>" class="btn btn-sm btn-outline-primary mt-3" style="color: #6d28d9; border-color: #6d28d9;">
+                                <i class="bi bi-graph-up"></i> Detail Grafik & Skor
+                            </a>
                         <?php else: ?>
                             <a href="<?= site_url('/itq/form/' . $victim['id'] . '?fase_ke=' . $ke) ?>" class="btn btn-sm btn-outline-primary mb-2">
                                 <i class="bi bi-pencil-square"></i> Isi Follow-Up ITQ
