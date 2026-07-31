@@ -3,20 +3,37 @@
 <?= $this->section('content') ?>
 <style>
     .tabular-nums { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
-    .frost-card, .frost-hero, .frost-btn-primary, .frost-btn-danger, .frost-btn-reset, .posko-item-card, .btn, .modal-content, .badge, .form-control, .form-select, .progress, .alert, .card, .table-responsive { border-radius: 8px !important; }
-    .frost-card { background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(244, 251, 247, 0.9) 100%); backdrop-filter: blur(12px) saturate(160%); -webkit-backdrop-filter: blur(12px) saturate(160%); border: 1.5px solid #a7f3d0; box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.02); }
+    .frost-card, .frost-hero, .frost-btn-primary, .posko-item-card, .btn, .badge, .form-control, .form-select, .card, .table-responsive { border-radius: 8px !important; }
     .frost-hero { background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 60%, #a7f3d0 100%); border: 1.5px solid #a7f3d0; color: #064e3b; position: relative; overflow: hidden; box-shadow: 0 10px 30px -4px rgba(16, 185, 129, 0.12), inset 0 1.5px 2px rgba(255, 255, 255, 0.85); }
-    .frost-btn-primary { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); color: #065f46 !important; border: 1.5px solid #34d399; border-radius: 8px !important; font-weight: 700; font-size: 0.8125rem; padding: 0.45rem 0.95rem; transition: all 0.2s ease; text-decoration: none; display: inline-flex; align-items: center; gap: 0.35rem; box-shadow: 0 2px 6px rgba(16, 185, 129, 0.15); cursor: pointer; }
-    .frost-btn-primary:hover { background: linear-gradient(135deg, #a7f3d0 0%, #6ee7b7 100%); color: #064e3b !important; border-color: #10b981; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25); transform: translateY(-1px); }
+    .frost-btn-primary { background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); color: #065f46 !important; border: 1.5px solid #34d399; font-weight: 700; font-size: 0.8125rem; padding: 0.45rem 0.95rem; transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; }
+    .frost-btn-primary:hover { background: linear-gradient(135deg, #a7f3d0 0%, #6ee7b7 100%); color: #064e3b !important; border-color: #10b981; }
     .frost-btn-reset { background: #ffffff !important; color: #475569 !important; border: 1.5px solid #cbd5e1 !important; border-radius: 8px !important; font-weight: 600 !important; font-size: 0.8125rem !important; padding: 0.45rem 0.85rem !important; transition: all 0.2s ease; cursor: pointer; display: inline-flex; align-items: center; gap: 0.35rem; text-decoration: none; }
-    .frost-btn-reset:hover { background-color: #f8fafc !important; color: #0f172a !important; border-color: #94a3b8 !important; }
-    .posko-item-card { background: #ffffff !important; border: 1.5px solid #d1fae5 !important; border-radius: 8px !important; box-shadow: 0 4px 12px -2px rgba(16, 185, 129, 0.08), 0 2px 5px -1px rgba(15, 23, 42, 0.04) !important; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important; }
-    .posko-item-card:hover { background: #ffffff !important; border-color: #34d399 !important; box-shadow: 0 12px 28px -4px rgba(16, 185, 129, 0.18), 0 4px 10px -2px rgba(15, 23, 42, 0.04) !important; transform: translateY(-2px) !important; }
-    .form-control, .form-select { background: #ffffff !important; border: 1.5px solid #cbd5e1 !important; border-radius: 8px !important; padding: 0.5rem 0.75rem !important; font-size: 0.875rem !important; font-weight: 600 !important; color: #0f172a !important; transition: all 0.2s ease; box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04); }
-    .form-control:focus, .form-select:focus { border-color: #059669 !important; box-shadow: 0 0 0 3.5px rgba(5, 150, 105, 0.18) !important; outline: none; }
-    .fs-7 { font-size: 0.8125rem; } .fs-8 { font-size: 0.75rem; } .fs-9 { font-size: 0.6875rem; }
-    @media (max-width: 767.98px) { .frost-hero .card-body, .posko-item-card { padding: 1.15rem !important; } .frost-hero h3 { font-size: 1.25rem !important; } }
+    .posko-item-card { background: #ffffff !important; border: 1.5px solid #e2e8f0 !important; box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.04) !important; }
+    .table-itq { width: 100%; border-collapse: collapse; margin-bottom: 2rem; font-size: 0.875rem; }
+    .table-itq th, .table-itq td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: center; }
+    .table-itq th { background-color: #f8fafc; font-weight: 600; color: #334155; }
+    .table-itq .header-row { background-color: #e0f2fe; text-align: left; font-size: 1rem; font-weight: 700; color: #0f172a; padding: 12px 16px; border: none; }
+    .table-itq .sub-header { border-bottom: 2px solid #94a3b8; }
+    .table-itq td.text-start { text-align: left; }
+    .bg-severe { background-color: #fecaca !important; color: #991b1b; }
+    .bg-very-severe { background-color: #fca5a5 !important; color: #7f1d1d; }
+    .bg-moderate { background-color: #fef08a !important; color: #854d0e; }
+    .bg-mild { background-color: #fef9c3 !important; color: #a16207; }
+    .bg-minimal { background-color: #ffffff !important; color: #475569; }
 </style>
+
+<?php
+function getSeverityClass($sev) {
+    if ($sev === 'Very Severe') return 'bg-very-severe';
+    if ($sev === 'Severe') return 'bg-severe';
+    if ($sev === 'Moderate') return 'bg-moderate';
+    if ($sev === 'Mild') return 'bg-mild';
+    return 'bg-minimal';
+}
+function getCriteriaClass($met) {
+    return $met ? 'bg-severe' : 'bg-minimal';
+}
+?>
 
 <div class="container-fluid px-0">
 
@@ -33,276 +50,237 @@
                 </div>
                 <div>
                     <a href="<?= site_url('/psikolog/dashboard') ?>" class="frost-btn-reset">
-                        <i class="bi bi-arrow-left me-1"></i> Kembali ke Dashboard Psikolog
+                        <i class="bi bi-arrow-left me-1"></i> Kembali ke Dashboard
                     </a>
                 </div>
             </div>
             <h3 class="fw-bold mb-1" style="color: #064e3b;">
-                <i class="bi bi-bar-chart-line-fill me-2" style="color: #059669;"></i> Hasil Skoring ITQ & Visualisasi Grafik Klinis
+                <i class="bi bi-bar-chart-line-fill me-2" style="color: #059669;"></i> Laporan Klinis & Analisis ITQ
             </h3>
             <p class="small mb-0" style="color: #047857; max-width: 75ch;">
-                Penyintas: <strong><?= esc($victim['nama']) ?></strong> (NIK: <?= esc($victim['nik'] ?? '-') ?>) • Evaluasi Kriteria ICD-11 (PTSD & DSO)
+                Penyintas: <strong><?= esc($victim['nama']) ?></strong> (NIK: <?= esc($victim['nik'] ?? '-') ?>)
             </p>
         </div>
     </div>
 
-<!-- Display Flash Messages -->
-<?php if (session()->getFlashdata('success')): ?>
-    <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" style="border-radius: 8px !important;" role="alert">
-        <i class="bi bi-check-circle-fill me-1"></i> <?= session()->getFlashdata('success') ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-<?php endif; ?>
+    <!-- 1. TABEL HASIL ITQ (IMAGE 1) -->
+    <div class="card posko-item-card p-4 mb-4">
+        <h5 class="fw-bold mb-3" style="color: #0f172a;"><i class="bi bi-table text-primary me-2"></i> Laporan Detail Skor ITQ</h5>
+        
+        <div class="table-responsive">
+            <table class="table-itq">
+                <!-- RESULTS TABLE -->
+                <tr><td colspan="5" class="header-row">Results</td></tr>
+                <tr class="sub-header">
+                    <th style="width: 30%;"></th>
+                    <th style="width: 15%;">Raw Score (0-24)</th>
+                    <th style="width: 15%;">Percentile</th>
+                    <th style="width: 20%;">Descriptor</th>
+                    <th style="width: 20%;">Diagnostic Criteria</th>
+                </tr>
+                <tr>
+                    <td class="fw-bold bg-light">PTSD</td>
+                    <td><?= $detailedSubScores['overall']['ptsd']['score'] ?></td>
+                    <td><?= $detailedSubScores['overall']['ptsd']['percentile'] ?></td>
+                    <td class="<?= getSeverityClass($detailedSubScores['overall']['ptsd']['severity']) ?>"><?= $detailedSubScores['overall']['ptsd']['severity'] ?></td>
+                    <td class="<?= getCriteriaClass($detailedSubScores['overall']['ptsd']['criteria']) ?>"><?= $detailedSubScores['overall']['ptsd']['criteria'] ? 'Criteria met' : 'Criteria not met' ?></td>
+                </tr>
+                <tr>
+                    <td class="fw-bold" style="background-color: #eff6ff;">DSO</td>
+                    <td><?= $detailedSubScores['overall']['dso']['score'] ?></td>
+                    <td><?= $detailedSubScores['overall']['dso']['percentile'] ?></td>
+                    <td class="<?= getSeverityClass($detailedSubScores['overall']['dso']['severity']) ?>"><?= $detailedSubScores['overall']['dso']['severity'] ?></td>
+                    <td class="<?= getCriteriaClass($detailedSubScores['overall']['dso']['criteria']) ?>"><?= $detailedSubScores['overall']['dso']['criteria'] ? 'Criteria met' : 'Criteria not met' ?></td>
+                </tr>
+                
+                <tr><td colspan="5" style="border:none; height:20px;"></td></tr>
 
-<!-- 1. CARD RINGKASAN SKORING ITQ (SEGMEN 13) -->
-<div class="card posko-item-card p-4 mb-4">
-    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 border-bottom pb-3 mb-4">
-        <div>
-            <h5 class="fw-bold mb-1" style="color: #064e3b;"><i class="bi bi-journal-check text-success me-2"></i> Ringkasan Kriteria Diagnosis ITQ (ICD-11)</h5>
-            <p class="text-muted small mb-0">Diskor otomatis berdasarkan algoritma resmi Cloitre et al.</p>
-        </div>
-        <div class="text-end">
-            <span class="badge px-3 py-2 fs-7" style="background-color: #f1f5f9; color: #334155; border: 1px solid #cbd5e1;"><i class="bi bi-person-check-fill me-1 text-primary"></i> Reviewed by <?= esc($itqResult['reviewed_by_name']) ?></span>
-            <div class="fs-8 text-muted mt-1"><?= esc($itqResult['reviewed_at']) ?></div>
-        </div>
-    </div>
+                <!-- PTSD SYMPTOMS TABLE -->
+                <tr><td colspan="5" class="header-row">PTSD Symptoms and Functioning</td></tr>
+                <tr class="sub-header">
+                    <th></th>
+                    <th>Raw Score</th>
+                    <th>Percentile</th>
+                    <th>Descriptor</th>
+                    <th>Diagnostic Criteria</th>
+                </tr>
+                <?php foreach([
+                    'Re-experiencing (0-8)' => $detailedSubScores['ptsd_symptoms']['reexp'],
+                    'Avoidance (0-8)' => $detailedSubScores['ptsd_symptoms']['avoid'],
+                    'Sense of threat (0-8)' => $detailedSubScores['ptsd_symptoms']['threat'],
+                    'Functional impairment (0-12)' => $detailedSubScores['ptsd_symptoms']['impairment']
+                ] as $label => $data): ?>
+                <tr>
+                    <td class="text-start ps-4"><?= $label ?></td>
+                    <td><?= $data['score'] ?></td>
+                    <td><?= $data['percentile'] ?></td>
+                    <td class="<?= getSeverityClass($data['severity']) ?>"><?= $data['severity'] ?></td>
+                    <td class="<?= getCriteriaClass($data['present']) ?>"><?= $data['present'] ? 'Present' : 'Absent' ?></td>
+                </tr>
+                <?php endforeach; ?>
 
-    <div class="row g-4 mb-3">
-        <!-- Cluster PTSD -->
-        <div class="col-12 col-md-6">
-            <div class="p-3 h-100" style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px !important;">
-                <div class="d-flex align-items-center justify-content-between mb-2">
-                    <h6 class="fw-bold mb-0" style="color: #0f172a;"><i class="bi bi-activity me-1 text-primary"></i> A. PTSD (Post-Traumatic Stress Disorder)</h6>
-                    <?php if (! empty($itqResult['ptsd_criteria_met'])): ?>
-                        <span class="badge bg-danger"><i class="bi bi-exclamation-octagon-fill me-1"></i> CRITERIA MET</span>
-                    <?php else: ?>
-                        <span class="badge bg-secondary"><i class="bi bi-dash-circle me-1"></i> NOT MET</span>
-                    <?php endif; ?>
-                </div>
+                <tr><td colspan="5" style="border:none; height:20px;"></td></tr>
 
-                <div class="row align-items-center mt-3">
-                    <div class="col-6">
-                        <div class="text-muted small">Skor PTSD:</div>
-                        <div class="fs-2 fw-bold text-dark"><?= esc($itqResult['ptsd_score']) ?> <span class="fs-6 text-muted">/ 24</span></div>
-                    </div>
-                    <div class="col-6 text-end">
-                        <div class="text-muted small">Tingkat Keparahan:</div>
-                        <span class="badge bg-warning text-dark fs-6 px-3 py-1"><?= esc($itqResult['ptsd_severity']) ?></span>
-                        <div class="fs-8 text-muted mt-1">Persentil: <strong><?= esc($itqResult['ptsd_percentile']) ?>%</strong></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Cluster DSO -->
-        <div class="col-12 col-md-6">
-            <div class="p-3 h-100" style="background: #fdf2f8; border: 1.5px solid #fbcfe8; border-radius: 8px !important;">
-                <div class="d-flex align-items-center justify-content-between mb-2">
-                    <h6 class="fw-bold mb-0" style="color: #9d174d;"><i class="bi bi-heart-pulse me-1 text-danger"></i> B. DSO (Disturbances in Self-Organization)</h6>
-                    <?php if (! empty($itqResult['dso_criteria_met'])): ?>
-                        <span class="badge bg-danger"><i class="bi bi-exclamation-octagon-fill me-1"></i> CRITERIA MET</span>
-                    <?php else: ?>
-                        <span class="badge bg-secondary"><i class="bi bi-dash-circle me-1"></i> NOT MET</span>
-                    <?php endif; ?>
-                </div>
-
-                <div class="row align-items-center mt-3">
-                    <div class="col-6">
-                        <div class="text-muted small">Skor DSO:</div>
-                        <div class="fs-2 fw-bold text-dark"><?= esc($itqResult['dso_score']) ?> <span class="fs-6 text-muted">/ 24</span></div>
-                    </div>
-                    <div class="col-6 text-end">
-                        <div class="text-muted small">Tingkat Keparahan:</div>
-                        <span class="badge bg-warning text-dark fs-6 px-3 py-1"><?= esc($itqResult['dso_severity']) ?></span>
-                        <div class="fs-8 text-muted mt-1">Persentil: <strong><?= esc($itqResult['dso_percentile']) ?>%</strong></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Final Diagnosis Banner -->
-    <div class="p-3 mt-1 text-center" style="border-radius: 8px !important; <?= $itqResult['final_diagnosis'] !== 'No PTSD/CPTSD' ? 'background-color: #fef2f2; border: 1.5px solid #fecaca;' : 'background-color: #f0fdf4; border: 1.5px solid #bbf7d0;' ?>">
-        <span class="text-muted small fw-semibold text-uppercase me-2">Final Diagnosis (ICD-11):</span>
-        <?php if ($itqResult['final_diagnosis'] === 'Complex PTSD (CPTSD)'): ?>
-            <span class="badge bg-danger fs-6 px-3 py-1"><i class="bi bi-exclamation-triangle-fill me-1"></i> Complex PTSD (CPTSD)</span>
-        <?php elseif ($itqResult['final_diagnosis'] === 'PTSD'): ?>
-            <span class="badge bg-warning text-dark fs-6 px-3 py-1"><i class="bi bi-dash-circle-fill me-1"></i> PTSD</span>
-        <?php else: ?>
-            <span class="badge bg-success fs-6 px-3 py-1"><i class="bi bi-check-circle-fill me-1"></i> No PTSD/CPTSD</span>
-        <?php endif; ?>
-    </div>
-</div>
-
-<!-- 2. VISUALISASI 4 GRAFIK CHART.JS (SEGMEN 14) -->
-<div class="card posko-item-card p-4 mb-4">
-    <div class="border-bottom pb-3 mb-4">
-        <h5 class="fw-bold mb-1" style="color: #064e3b;"><i class="bi bi-pie-chart-fill text-success me-2"></i> Visualisasi Grafik Klinis (Chart.js)</h5>
-        <p class="text-muted small mb-0">Analisis profil kluster gejala dan tren longitudinal follow-up penyintas.</p>
-    </div>
-
-    <div class="row g-4">
-        <!-- Grafik 1: Horizontal Bar PTSD vs DSO -->
-        <div class="col-12 col-md-6">
-            <div class="p-3 h-100 bg-white" style="border: 1.5px solid #cbd5e1; border-radius: 8px !important;">
-                <h6 class="fw-bold text-dark small mb-3">1. Skor Total PTSD vs DSO (Skala 0-24)</h6>
-                <div style="position: relative; height: 220px;">
-                    <canvas id="chart1Canvas"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- Grafik 2: Cluster Bar PTSD -->
-        <div class="col-12 col-md-6">
-            <div class="p-3 h-100 bg-white" style="border: 1.5px solid #cbd5e1; border-radius: 8px !important;">
-                <h6 class="fw-bold text-dark small mb-3">2. Profil Rata-Rata Kluster PTSD</h6>
-                <div style="position: relative; height: 220px;">
-                    <canvas id="chart2Canvas"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- Grafik 3: Cluster Bar DSO -->
-        <div class="col-12 col-md-6">
-            <div class="p-3 h-100 bg-white" style="border: 1.5px solid #cbd5e1; border-radius: 8px !important;">
-                <h6 class="fw-bold text-dark small mb-3">3. Profil Rata-Rata Kluster DSO</h6>
-                <div style="position: relative; height: 220px;">
-                    <canvas id="chart3Canvas"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <!-- Grafik 4: Line Chart Longitudinal -->
-        <div class="col-12 col-md-6">
-            <div class="p-3 h-100 bg-white" style="border: 1.5px solid #cbd5e1; border-radius: 8px !important;">
-                <h6 class="fw-bold text-dark small mb-3">4. Tren Longitudinal Follow-up (Hari 1-90)</h6>
-                <div id="chart4Container" style="position: relative; height: 220px;">
-                    <canvas id="chart4Canvas"></canvas>
-                    <div id="noFollowupMsg" class="d-none text-center py-5 text-muted small">
-                        <i class="bi bi-graph-up-arrow fs-2 d-block mb-1"></i>
-                        Belum ada data follow-up berkala untuk penyintas ini.
-                    </div>
-                </div>
-            </div>
+                <!-- DSO SYMPTOMS TABLE -->
+                <tr><td colspan="5" class="header-row">DSO Symptoms and Functioning</td></tr>
+                <tr class="sub-header">
+                    <th></th>
+                    <th>Raw Score</th>
+                    <th>Percentile</th>
+                    <th>Descriptor</th>
+                    <th>Diagnostic Criteria</th>
+                </tr>
+                <?php foreach([
+                    'Affective dysregulation (0-8)' => $detailedSubScores['dso_symptoms']['affect'],
+                    'Negative self-concept (0-8)' => $detailedSubScores['dso_symptoms']['self'],
+                    'Disturbances in relationships (0-8)' => $detailedSubScores['dso_symptoms']['rel'],
+                    'Functional impairment (0-12)' => $detailedSubScores['dso_symptoms']['impairment']
+                ] as $label => $data): ?>
+                <tr>
+                    <td class="text-start ps-4"><?= $label ?></td>
+                    <td><?= $data['score'] ?></td>
+                    <td><?= $data['percentile'] ?></td>
+                    <td class="<?= getSeverityClass($data['severity']) ?>"><?= $data['severity'] ?></td>
+                    <td class="<?= getCriteriaClass($data['present']) ?>"><?= $data['present'] ? 'Present' : 'Absent' ?></td>
+                </tr>
+                <?php endforeach; ?>
+            </table>
         </div>
     </div>
-</div>
 
-<!-- 3. FORM AKSI FINAL PSIKOLOG & FOLLOW-UP (SEGMEN 15) -->
-<div class="card posko-item-card p-4 mb-4">
-    <div class="border-bottom pb-3 mb-4">
-        <h5 class="fw-bold mb-1" style="color: #064e3b;"><i class="bi bi-clipboard-check-fill text-success me-2"></i> Form Aksi Final Psikolog & Rencana Follow-up</h5>
-        <p class="text-muted small mb-0">Tetapkan diagnosis sementara, intervensi, dan jadwal pemantauan klinis.</p>
-    </div>
-
-    <form action="<?= site_url('/clinical-action/save/' . $victim['id']) ?>" method="POST">
-        <?= csrf_field() ?>
-
+    <!-- 2. GRAFIK ITQ (IMAGE 2 & 3) -->
+    <div class="card posko-item-card p-4 mb-4">
+        <h5 class="fw-bold mb-4" style="color: #0f172a;"><i class="bi bi-graph-up text-primary me-2"></i> Visualisasi Data Klinis</h5>
         <div class="row g-4">
-            <!-- Approval / Override Switch -->
-            <div class="col-12 col-md-6">
-                <div class="p-3 h-100" style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px !important;">
-                    <div class="form-check form-switch mb-3">
-                        <input class="form-check-input" type="checkbox" id="ai_recommendation_approved" name="ai_recommendation_approved" value="1"
-                               <?= old('ai_recommendation_approved', $clinicalAction['ai_recommendation_approved'] ?? 1) ? 'checked' : '' ?>
-                               onchange="toggleOverrideDropdown(this.checked)">
-                        <label class="form-check-label fw-bold text-dark" for="ai_recommendation_approved">Setujui Rekomendasi Prioritas AI</label>
-                    </div>
-
-                    <div id="override-container" class="<?= old('ai_recommendation_approved', $clinicalAction['ai_recommendation_approved'] ?? 1) ? 'd-none' : '' ?>">
-                        <label for="priority_override" class="form-label small fw-semibold">Ubah Prioritas (Override Psikolog)</label>
-                        <select class="form-select form-select-sm" id="priority_override" name="priority_override">
-                            <option value="High" <?= old('priority_override', $clinicalAction['priority_override'] ?? '') === 'High' ? 'selected' : '' ?>>High Risk (Prioritas 1)</option>
-                            <option value="Medium" <?= old('priority_override', $clinicalAction['priority_override'] ?? '') === 'Medium' ? 'selected' : '' ?>>Medium Risk (Prioritas 2)</option>
-                            <option value="Low" <?= old('priority_override', $clinicalAction['priority_override'] ?? '') === 'Low' ? 'selected' : '' ?>>Low Risk (Prioritas 3)</option>
-                        </select>
+            <div class="col-12">
+                <div class="p-3 bg-white" style="border: 1px solid #cbd5e1; border-radius: 8px;">
+                    <h6 class="fw-bold text-center mb-3">ITQ Subscale Scores Compared to Normative Samples</h6>
+                    <div style="position: relative; height: 350px;">
+                        <canvas id="barChart"></canvas>
                     </div>
                 </div>
             </div>
+            <div class="col-12">
+                <div class="p-3 bg-white" style="border: 1px solid #cbd5e1; border-radius: 8px;">
+                    <h6 class="fw-bold text-center mb-3">ITQ PTSD and DSO Symptom Severity Scores (Longitudinal)</h6>
+                    <div style="position: relative; height: 350px;">
+                        <canvas id="lineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            <!-- Intervensi Dropdown -->
+    <!-- 3. SEGMEN INFORMASI TERPADU & FORM AKSI FINAL -->
+    <div class="card posko-item-card p-4 mb-4">
+        <h5 class="fw-bold mb-4" style="color: #0f172a;"><i class="bi bi-file-earmark-medical text-primary me-2"></i> Informasi Terpadu & Aksi Klinis</h5>
+        
+        <div class="row g-4 mb-4">
+            <!-- Review Relawan -->
             <div class="col-12 col-md-6">
-                <div class="p-3 h-100" style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px !important;">
-                    <label for="intervensi" class="form-label fw-semibold">Pilih Intervensi Utama <span class="text-danger">*</span></label>
-                    <?php $int = old('intervensi', $clinicalAction['intervensi'] ?? 'PFA'); ?>
-                    <select class="form-select" id="intervensi" name="intervensi" required>
-                        <option value="PFA" <?= $int === 'PFA' ? 'selected' : '' ?>>Psychological First Aid (PFA)</option>
-                        <option value="CBT" <?= $int === 'CBT' ? 'selected' : '' ?>>Cognitive Behavioral Therapy (CBT)</option>
-                        <option value="Konseling Individu" <?= $int === 'Konseling Individu' ? 'selected' : '' ?>>Konseling Individu Trauma</option>
-                        <option value="Terapi Kelompok" <?= $int === 'Terapi Kelompok' ? 'selected' : '' ?>>Terapi Kelompok Support Group</option>
-                        <option value="Rujukan Psikiater" <?= $int === 'Rujukan Psikiater' ? 'selected' : '' ?>>Rujukan Psikiater / Rumah Sakit</option>
+                <div class="p-3 h-100" style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px;">
+                    <h6 class="fw-bold text-primary mb-3"><i class="bi bi-person-badge"></i> Review Screening Relawan</h6>
+                    <?php if($volunteerScreening): ?>
+                        <div class="mb-2"><span class="text-muted small">Skala Distress:</span> <strong><?= $volunteerScreening['skala_distress'] ?>/10</strong></div>
+                        <div class="mb-2"><span class="text-muted small">Kondisi Observasi:</span> 
+                            <?= $volunteerScreening['menangis_terus'] ? '<span class="badge bg-danger">Menangis Terus</span>' : '' ?>
+                            <?= $volunteerScreening['tampak_panik'] ? '<span class="badge bg-warning text-dark">Tampak Panik</span>' : '' ?>
+                            <?= $volunteerScreening['gemetar'] ? '<span class="badge bg-warning text-dark">Gemetar</span>' : '' ?>
+                        </div>
+                        <div class="mb-2"><span class="text-muted small">Catatan Relawan:</span><br/>
+                            <p class="mb-0 fst-italic">"<?= esc($volunteerScreening['catatan_relawan']) ?>"</p>
+                        </div>
+                    <?php else: ?>
+                        <p class="text-muted small">Tidak ada data screening relawan.</p>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <!-- Analisis AI -->
+            <div class="col-12 col-md-6">
+                <div class="p-3 h-100" style="background: #eff6ff; border: 1.5px solid #bfdbfe; border-radius: 8px;">
+                    <h6 class="fw-bold text-primary mb-3"><i class="bi bi-robot"></i> Analisis Awal AI PsyAid</h6>
+                    <?php if($aiAssessment): ?>
+                        <div class="mb-2"><span class="text-muted small">Risk Level:</span> 
+                            <span class="badge bg-dark"><?= strtoupper($aiAssessment['risk_level']) ?></span>
+                        </div>
+                        <div class="mb-2"><span class="text-muted small">Rekomendasi Diagnosis:</span><br/>
+                            <strong><?= esc($aiAssessment['kemungkinan_diagnosis']) ?></strong>
+                        </div>
+                        <div class="mb-0"><span class="text-muted small">Summary AI:</span><br/>
+                            <p class="mb-0 fst-italic">"<?= esc($aiAssessment['ai_summary']) ?>"</p>
+                        </div>
+                    <?php else: ?>
+                        <p class="text-muted small">Tidak ada analisis AI.</p>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+
+        <form action="<?= site_url('/clinical-action/save/' . $victim['id']) ?>" method="POST">
+            <?= csrf_field() ?>
+            <h6 class="fw-bold text-dark border-bottom pb-2 mb-3">Catatan & Rencana Follow-up Psikolog</h6>
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    <label class="form-label fw-semibold">Intervensi Utama <span class="text-danger">*</span></label>
+                    <select class="form-select" name="intervensi" required>
+                        <?php $int = old('intervensi', $clinicalAction['intervensi'] ?? 'PFA'); ?>
+                        <option value="PFA" <?= $int==='PFA'?'selected':'' ?>>Psychological First Aid (PFA)</option>
+                        <option value="CBT" <?= $int==='CBT'?'selected':'' ?>>Cognitive Behavioral Therapy (CBT)</option>
+                        <option value="Konseling Individu" <?= $int==='Konseling Individu'?'selected':'' ?>>Konseling Individu Trauma</option>
+                        <option value="Rujukan Psikiater" <?= $int==='Rujukan Psikiater'?'selected':'' ?>>Rujukan Psikiater</option>
                     </select>
                 </div>
+                <div class="col-12 col-md-6">
+                    <label class="form-label fw-semibold">Jadwal Follow-up <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" name="jadwal_followup" required 
+                           value="<?= old('jadwal_followup', $clinicalAction['jadwal_followup'] ?? date('Y-m-d', strtotime('+7 days'))) ?>">
+                </div>
+                <div class="col-12">
+                    <label class="form-label fw-semibold">Diagnosis Sementara <span class="text-danger">*</span></label>
+                    <textarea class="form-control" name="diagnosis_sementara" rows="2" required><?= old('diagnosis_sementara', $clinicalAction['diagnosis_sementara'] ?? $itqResult['final_diagnosis']) ?></textarea>
+                </div>
+                <div class="col-12">
+                    <label class="form-label fw-semibold">Catatan Klinis Tambahan</label>
+                    <textarea class="form-control" name="catatan_klinis" rows="3"><?= old('catatan_klinis', $clinicalAction['catatan_klinis'] ?? '') ?></textarea>
+                </div>
             </div>
-
-            <!-- Diagnosis Sementara -->
-            <div class="col-12 col-md-6">
-                <label for="diagnosis_sementara" class="form-label fw-semibold">Diagnosis Sementara Psikolog <span class="text-danger">*</span></label>
-                <textarea class="form-control" id="diagnosis_sementara" name="diagnosis_sementara" rows="3" 
-                          placeholder="Misal: F43.1 PTSD pasca bencana gempa bumi..." required><?= old('diagnosis_sementara', $clinicalAction['diagnosis_sementara'] ?? 'Acute Stress Disorder pasca bencana') ?></textarea>
+            
+            <div class="mt-4 text-end">
+                <button type="submit" class="frost-btn-primary">
+                    <i class="bi bi-save me-1"></i> Simpan Laporan Final
+                </button>
             </div>
+        </form>
+    </div>
 
-            <!-- Catatan Klinis -->
-            <div class="col-12 col-md-6">
-                <label for="catatan_klinis" class="form-label fw-semibold">Catatan Klinis & Rekomendasi Lapangan</label>
-                <textarea class="form-control" id="catatan_klinis" name="catatan_klinis" rows="3" 
-                          placeholder="Catatan tambahan untuk relawan posko atau instruksi pendampingan..."><?= old('catatan_klinis', $clinicalAction['catatan_klinis'] ?? '') ?></textarea>
-            </div>
-
-            <!-- Jadwal Follow-up -->
-            <div class="col-12 col-md-4">
-                <label for="jadwal_followup" class="form-label fw-semibold">Jadwal Follow-up Berkelanjutan</label>
-                <input type="date" class="form-control" id="jadwal_followup" name="jadwal_followup" 
-                       value="<?= old('jadwal_followup', $clinicalAction['jadwal_followup'] ?? date('Y-m-d', strtotime('+7 days'))) ?>">
-            </div>
-        </div>
-
-        <div class="border-top pt-3 mt-4 d-flex justify-content-end">
-            <button type="submit" class="frost-btn-primary px-4 py-2">
-                <i class="bi bi-check-all me-1"></i> Simpan Aksi Klinis & Finalisasi Review
-            </button>
-        </div>
-    </form>
 </div>
 
-</div> <!-- container-fluid -->
-
-<!-- Load Chart.js CDN -->
+<!-- Chart.js and Annotation Plugin -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.2.1/dist/chartjs-plugin-annotation.min.js"></script>
 
 <script>
-function toggleOverrideDropdown(approved) {
-    const el = document.getElementById('override-container');
-    if (el) {
-        if (!approved) el.classList.remove('d-none');
-        else el.classList.add('d-none');
-    }
-}
-
-// Fetch Chart.js data via AJAX JSON API (SEGMEN 14)
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('<?= site_url('/itq/chart-data/' . $victim['id']) ?>')
-        .then(res => res.json())
-        .then(data => {
-            if (data.status === 'success') {
-                renderCharts(data);
-            }
-        })
-        .catch(err => console.error('Error fetching Chart.js data:', err));
-});
+    // Register Plugin
+    Chart.register(chartjsPluginAnnotation);
 
-function renderCharts(data) {
-    // 1. Chart 1: Horizontal Bar PTSD vs DSO
-    new Chart(document.getElementById('chart1Canvas'), {
+    // Dynamic data from controller
+    const ptsdScore = <?= $detailedSubScores['overall']['ptsd']['score'] ?>;
+    const dsoScore = <?= $detailedSubScores['overall']['dso']['score'] ?>;
+
+    // BAR CHART (Image 2 representation)
+    const ctxBar = document.getElementById('barChart').getContext('2d');
+    new Chart(ctxBar, {
         type: 'bar',
         data: {
-            labels: ['PTSD Score', 'DSO Score'],
+            labels: ['PTSD', 'DSO'],
             datasets: [{
-                label: 'Skor Penyintas (0-24)',
-                data: [data.chart1.ptsd_score, data.chart1.dso_score],
-                backgroundColor: ['rgba(220, 53, 69, 0.7)', 'rgba(13, 110, 253, 0.7)'],
-                borderColor: ['#dc3545', '#0d6efd'],
-                borderWidth: 1
+                label: 'Score',
+                data: [ptsdScore, dsoScore],
+                backgroundColor: ['#dc2626', '#0284c7'],
+                barPercentage: 0.5,
+                categoryPercentage: 0.8
             }]
         },
         options: {
@@ -310,91 +288,107 @@ function renderCharts(data) {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                x: { min: 0, max: 24 }
-            }
-        }
-    });
-
-    // 2. Chart 2: Cluster Bar PTSD
-    new Chart(document.getElementById('chart2Canvas'), {
-        type: 'bar',
-        data: {
-            labels: data.chart2.labels,
-            datasets: [{
-                label: 'Rata-Rata Skala Kluster PTSD',
-                data: data.chart2.data,
-                backgroundColor: 'rgba(255, 193, 7, 0.7)',
-                borderColor: '#ffc107',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: { min: 0, max: 4 }
-            }
-        }
-    });
-
-    // 3. Chart 3: Cluster Bar DSO
-    new Chart(document.getElementById('chart3Canvas'), {
-        type: 'bar',
-        data: {
-            labels: data.chart3.labels,
-            datasets: [{
-                label: 'Rata-Rata Skala Kluster DSO',
-                data: data.chart3.data,
-                backgroundColor: 'rgba(25, 135, 84, 0.7)',
-                borderColor: '#198754',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: { min: 0, max: 4 }
-            }
-        }
-    });
-
-    // 4. Chart 4: Line Chart Longitudinal
-    const canvas4 = document.getElementById('chart4Canvas');
-    const msg4 = document.getElementById('noFollowupMsg');
-
-    if (data.chart4.has_data) {
-        new Chart(canvas4, {
-            type: 'line',
-            data: {
-                labels: data.chart4.labels,
-                datasets: [
-                    {
-                        label: 'Skor PTSD',
-                        data: data.chart4.ptsd,
-                        borderColor: '#dc3545',
-                        tension: 0.3
-                    },
-                    {
-                        label: 'Skor DSO',
-                        data: data.chart4.dso,
-                        borderColor: '#0d6efd',
-                        tension: 0.3
-                    }
-                ]
+                x: {
+                    min: 0, max: 24,
+                    ticks: { stepSize: 1 }
+                }
             },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: { min: 0, max: 24 }
+            plugins: {
+                legend: { display: false },
+                annotation: {
+                    annotations: {
+                        boxMinimal: { type: 'box', xMin: 0, xMax: 3.5, backgroundColor: 'rgba(255, 255, 255, 0)', borderWidth: 0 },
+                        boxMild: { type: 'box', xMin: 3.5, xMax: 6.5, backgroundColor: 'rgba(254, 240, 138, 0.3)', borderWidth: 0 },
+                        boxModerate: { type: 'box', xMin: 6.5, xMax: 10.5, backgroundColor: 'rgba(253, 186, 116, 0.3)', borderWidth: 0 },
+                        boxSevere: { type: 'box', xMin: 10.5, xMax: 17.5, backgroundColor: 'rgba(252, 165, 165, 0.3)', borderWidth: 0 },
+                        boxVerySevere: { type: 'box', xMin: 17.5, xMax: 24, backgroundColor: 'rgba(248, 113, 113, 0.3)', borderWidth: 0 }
+                    }
                 }
             }
+        }
+    });
+
+    // LINE CHART Longitudinal (Image 3 representation)
+    // Fetch longitudinal data from API
+    fetch('<?= site_url('/itq/chart-data/' . $victim['id']) ?>')
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success' && data.chart4.has_data) {
+                const ctxLine = document.getElementById('lineChart').getContext('2d');
+                new Chart(ctxLine, {
+                    type: 'line',
+                    data: {
+                        labels: data.chart4.labels,
+                        datasets: [
+                            { label: 'PTSD', data: data.chart4.ptsd, borderColor: '#dc2626', backgroundColor: '#dc2626', pointRadius: 5 },
+                            { label: 'DSO', data: data.chart4.dso, borderColor: '#0284c7', backgroundColor: '#0284c7', pointRadius: 5 }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                min: 0, max: 24,
+                                position: 'left',
+                                title: { display: true, text: 'ITQ Scores' }
+                            }
+                        },
+                        plugins: {
+                            annotation: {
+                                annotations: {
+                                    box1: { type: 'box', yMin: 0, yMax: 3.5, backgroundColor: 'rgba(255, 255, 255, 1)' },
+                                    box2: { type: 'box', yMin: 3.5, yMax: 6.5, backgroundColor: 'rgba(254, 240, 138, 0.4)' },
+                                    box3: { type: 'box', yMin: 6.5, yMax: 10.5, backgroundColor: 'rgba(253, 186, 116, 0.4)' },
+                                    box4: { type: 'box', yMin: 10.5, yMax: 16.5, backgroundColor: 'rgba(252, 165, 165, 0.4)' },
+                                    box5: { type: 'box', yMin: 16.5, yMax: 24, backgroundColor: 'rgba(248, 113, 113, 0.4)' },
+                                    // Labels
+                                    label1: { type: 'label', yValue: 1.5, xValue: 'end', content: 'Minimal', color: '#64748b' },
+                                    label2: { type: 'label', yValue: 5, xValue: 'end', content: 'Mild', color: '#64748b' },
+                                    label3: { type: 'label', yValue: 8.5, xValue: 'end', content: 'Moderate', color: '#64748b' },
+                                    label4: { type: 'label', yValue: 13.5, xValue: 'end', content: 'Severe', color: '#64748b' },
+                                    label5: { type: 'label', yValue: 20, xValue: 'end', content: 'Very Severe', color: '#64748b' }
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                // Mock default if no longitudinal data yet (just 2 points for UI demo)
+                const ctxLine = document.getElementById('lineChart').getContext('2d');
+                new Chart(ctxLine, {
+                    type: 'line',
+                    data: {
+                        labels: ['Initial Assessment', 'Current'],
+                        datasets: [
+                            { label: 'PTSD', data: [ptsdScore + 3, ptsdScore], borderColor: '#dc2626', backgroundColor: '#dc2626', pointRadius: 5 },
+                            { label: 'DSO', data: [dsoScore + 2, dsoScore], borderColor: '#0284c7', backgroundColor: '#0284c7', pointRadius: 5 }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: { y: { min: 0, max: 24 } },
+                        plugins: {
+                            annotation: {
+                                annotations: {
+                                    box1: { type: 'box', yMin: 0, yMax: 3.5, backgroundColor: 'rgba(255, 255, 255, 1)', drawTime: 'beforeDraw' },
+                                    box2: { type: 'box', yMin: 3.5, yMax: 6.5, backgroundColor: 'rgba(254, 240, 138, 0.4)', drawTime: 'beforeDraw' },
+                                    box3: { type: 'box', yMin: 6.5, yMax: 10.5, backgroundColor: 'rgba(253, 186, 116, 0.4)', drawTime: 'beforeDraw' },
+                                    box4: { type: 'box', yMin: 10.5, yMax: 16.5, backgroundColor: 'rgba(252, 165, 165, 0.4)', drawTime: 'beforeDraw' },
+                                    box5: { type: 'box', yMin: 16.5, yMax: 24, backgroundColor: 'rgba(248, 113, 113, 0.4)', drawTime: 'beforeDraw' },
+                                    label1: { type: 'label', yValue: 1.5, xValue: 0.1, content: 'Minimal', color: '#64748b' },
+                                    label2: { type: 'label', yValue: 5, xValue: 0.1, content: 'Mild', color: '#64748b' },
+                                    label3: { type: 'label', yValue: 8.5, xValue: 0.1, content: 'Moderate', color: '#64748b' },
+                                    label4: { type: 'label', yValue: 13.5, xValue: 0.1, content: 'Severe', color: '#64748b' },
+                                    label5: { type: 'label', yValue: 20, xValue: 0.1, content: 'Very Severe', color: '#64748b' }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
         });
-    } else {
-        canvas4.style.display = 'none';
-        msg4.classList.remove('d-none');
-    }
-}
+});
 </script>
 <?= $this->endSection() ?>

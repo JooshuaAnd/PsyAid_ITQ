@@ -739,6 +739,12 @@ if (session()->get('logged_in')) {
                             <i class="nav-icon bi bi-file-earmark-medical-fill text-success"></i>
                             <span class="sidebar-label">Assessment Penyintas</span>
                         </a>
+                        <a href="<?= site_url('/psikolog/monitoring') ?>"
+                            class="sidebar-nav-item <?= url_is('psikolog/monitoring*') ? 'active' : '' ?>"
+                            title="Monitoring & Follow-Up">
+                            <i class="nav-icon bi bi-heart-pulse-fill text-danger"></i>
+                            <span class="sidebar-label">Monitoring & Follow-Up</span>
+                        </a>
                     <?php endif; ?>
 
                 <?php else: ?>

@@ -85,6 +85,11 @@ $routes->post('/itq/store/(:num)', 'Psikolog\ItqController::store/$1', ['filter'
 $routes->get('/itq/result/(:num)', 'Psikolog\ItqController::result/$1', ['filter' => ['auth', 'role:psikolog']]);
 $routes->get('/itq/chart-data/(:num)', 'Psikolog\ItqController::getChartData/$1', ['filter' => ['auth']]);
 
+// Monitoring & Follow-Up routes (Psikolog namespace)
+$routes->get('/psikolog/monitoring', 'Psikolog\MonitoringController::index', ['filter' => ['auth', 'role:psikolog']]);
+$routes->get('/psikolog/monitoring/detail/(:num)', 'Psikolog\MonitoringController::detail/$1', ['filter' => ['auth', 'role:psikolog']]);
+$routes->get('/psikolog/monitoring/generate-ai-summary/(:num)', 'Psikolog\MonitoringController::generateAiSummary/$1', ['filter' => ['auth', 'role:psikolog']]);
+
 // Clinical Action route (Psikolog namespace)
 $routes->post('/clinical-action/save/(:num)', 'Psikolog\ClinicalActionController::save/$1', ['filter' => ['auth', 'role:psikolog']]);
 

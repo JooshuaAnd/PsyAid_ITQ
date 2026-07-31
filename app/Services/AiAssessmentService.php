@@ -520,8 +520,106 @@ PROMPT;
             'risiko_ptsd_berkembang'   => $risikoPtsd,
             'evidence_sources'        => $evidenceText,
             'ai_summary'              => $aiSummary,
-            'status'                  => 'ai_generated',
             'generated_at'            => date('Y-m-d H:i:s'),
         ];
+    }
+
+    public function generateFollowUpSummary(int $victimId): ?string
+    {
+        $db = \Config\Database::connect();
+        
+        $victim = $db->table('victims')->where('id', $victimId)->get()->getRowArray();
+        $followups = $db->table('longitudinal_followup')->where('victim_id', $victimId)->orderBy('hari', 'ASC')->get()->getResultArray();
+        $itqResult = $db->table('itq_result')->where('victim_id', $victimId)->get()->getRowArray();
+
+        if (!$victim || empty($followups)) {
+            return null;
+        }
+
+        // Build context for Gemini
+        $context = [
+            'victim_nama' => $victim['nama'],
+            'initial_itq' => [
+                'ptsd_score' => $itqResult['ptsd_score'] ?? 0,
+                'dso_score' => $itqResult['dso_score'] ?? 0,
+                'diagnosis' => $itqResult['final_diagnosis'] ?? 'Unknown'
+            ],
+            'followups' => []
+        ];
+
+        foreach ($followups as $f) {
+            $context['followups'][] = [
+                'hari_ke' => $f['hari'],
+                'ptsd_score' => $f['ptsd_score'],
+                'dso_score' => $f['dso_score'],
+                'catatan_psikolog' => $f['catatan_psikolog']
+            ];
+        }
+
+        $jsonContext = json_encode($context, JSON_PRETTY_PRINT);
+        
+        $prompt = <<<PROMPT
+Anda adalah AI Clinical Assistant. Tugas Anda adalah memberikan ringkasan (summary) perkembangan klinis pasien berdasarkan data longitudinal follow-up (pemantauan berkala) terkait gejala PTSD dan DSO (Complex PTSD).
+
+Data:
+$jsonContext
+
+Instruksi:
+1. Buat ringkasan maksimal 3 paragraf.
+2. Analisis tren pergerakan skor PTSD dan DSO dari asesmen awal ke setiap follow up.
+3. Apakah ada perbaikan atau perburukan gejala?
+4. Berikan rekomendasi singkat untuk psikolog.
+PROMPT;
+
+        $apiKey = env('GEMINI_API_KEY', getenv('GEMINI_API_KEY') ?: '');
+        if (empty($apiKey)) {
+            // Fallback rule-based summary
+            return $this->generateRuleBasedFollowUpSummary($context);
+        }
+
+        $modelName = env('GEMINI_MODEL', getenv('GEMINI_MODEL') ?: 'gemini-1.5-flash');
+        $url       = 'https://generativelanguage.googleapis.com/v1beta/models/' . $modelName . ':generateContent?key=' . $apiKey;
+
+        $payload = [
+            'contents' => [['role' => 'user', 'parts' => [['text' => $prompt]]]],
+            'generationConfig' => ['temperature' => 0.3]
+        ];
+
+        try {
+            $client = Services::curlrequest(['timeout' => 15, 'http_errors' => false]);
+            $response = $client->post($url, [
+                'headers' => ['Content-Type' => 'application/json'],
+                'json' => $payload,
+            ]);
+
+            if ($response->getStatusCode() === 200) {
+                $result = json_decode($response->getBody(), true);
+                $rawText = $result['candidates'][0]['content']['parts'][0]['text'] ?? '';
+                if (!empty($rawText)) {
+                    return trim($rawText);
+                }
+            }
+        } catch (\Exception $e) {
+            // Fallback
+        }
+
+        return $this->generateRuleBasedFollowUpSummary($context);
+    }
+
+    private function generateRuleBasedFollowUpSummary(array $context): string
+    {
+        $nama = $context['victim_nama'];
+        $initialPtsd = $context['initial_itq']['ptsd_score'];
+        $initialDso = $context['initial_itq']['dso_score'];
+        $latest = end($context['followups']);
+        
+        $ptsdTrend = $latest['ptsd_score'] < $initialPtsd ? 'menurun' : 'meningkat/stabil';
+        $dsoTrend = $latest['dso_score'] < $initialDso ? 'menurun' : 'meningkat/stabil';
+
+        $summary = "Berdasarkan data monitoring, penyintas atas nama $nama menunjukkan tren skor PTSD yang $ptsdTrend dan skor DSO yang $dsoTrend dibandingkan skor awal. ";
+        $summary .= "Pada follow-up terakhir (hari ke-{$latest['hari_ke']}), skor PTSD adalah {$latest['ptsd_score']} dan DSO adalah {$latest['dso_score']}. ";
+        $summary .= "Disarankan untuk melanjutkan intervensi saat ini dan terus memantau efektivitasnya.";
+        
+        return $summary;
     }
 }

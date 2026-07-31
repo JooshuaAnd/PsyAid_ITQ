@@ -185,11 +185,30 @@ class ItqController extends Controller
         $clinicalModel  = new ClinicalActionModel();
         $clinicalAction = $clinicalModel->getByVictimId((int) $victimId);
 
+        // Fetch Detailed Sub Scores for Tables
+        $detailedSubScores = $scoringService->getDetailedSubScores((int) $victimId);
+
+        // Fetch Volunteer Screening
+        $screeningModel = new \App\Models\VolunteerScreeningModel();
+        $volunteerScreening = $screeningModel->getByVictimId((int) $victimId);
+
+        // Fetch AI Assessment
+        $aiModel = new \App\Models\AiAssessmentModel();
+        $aiAssessment = $aiModel->where('victim_id', $victimId)->first();
+
+        // Fetch Psychologist Review
+        $db = \Config\Database::connect();
+        $psychologistReview = $db->table('psychologist_review')->where('victim_id', $victimId)->get()->getRowArray();
+
         $data = [
-            'title'          => 'Hasil ITQ Assessment & Grafik — ' . $victim['nama'],
-            'victim'         => $victim,
-            'itqResult'      => $itqResult,
-            'clinicalAction' => $clinicalAction,
+            'title'              => 'Hasil ITQ Assessment & Grafik — ' . $victim['nama'],
+            'victim'             => $victim,
+            'itqResult'          => $itqResult,
+            'detailedSubScores'  => $detailedSubScores,
+            'clinicalAction'     => $clinicalAction,
+            'volunteerScreening' => $volunteerScreening,
+            'aiAssessment'       => $aiAssessment,
+            'psychologistReview' => $psychologistReview,
         ];
 
         return view('psikolog/ItqResult', $data);
