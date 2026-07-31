@@ -181,29 +181,24 @@ function getCriteriaClass($met) {
                 <div class="p-3 h-100" style="background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 8px;">
                     <h6 class="fw-bold text-primary mb-3"><i class="bi bi-person-badge"></i> Review Screening Relawan</h6>
                     <?php if($volunteerScreening): ?>
-                        <div class="mb-2"><span class="text-muted small">Skala Distress:</span> <strong><?= $volunteerScreening['skala_distress'] ?>/10</strong></div>
                         <div class="mb-2"><span class="text-muted small">Kondisi Observasi:</span><br>
                             <?php 
                                 $observations = [];
-                                if($volunteerScreening['mampu_sebut_nama']) $observations[] = '<span class="badge bg-success">Mampu Sebut Nama</span>';
-                                if($volunteerScreening['tahu_waktu_tempat']) $observations[] = '<span class="badge bg-success">Orientasi Baik</span>';
-                                if($volunteerScreening['disorientasi']) $observations[] = '<span class="badge bg-danger">Disorientasi</span>';
-                                if($volunteerScreening['menangis_terus']) $observations[] = '<span class="badge bg-danger">Menangis Terus</span>';
-                                if($volunteerScreening['tampak_panik']) $observations[] = '<span class="badge bg-warning text-dark">Tampak Panik</span>';
-                                if($volunteerScreening['gemetar']) $observations[] = '<span class="badge bg-warning text-dark">Gemetar</span>';
-                                if($volunteerScreening['tatapan_kosong']) $observations[] = '<span class="badge bg-secondary">Tatapan Kosong</span>';
-                                if($volunteerScreening['teriak_histeris']) $observations[] = '<span class="badge bg-danger">Teriak Histeris</span>';
-                                if($volunteerScreening['cenderung_diam']) $observations[] = '<span class="badge bg-secondary">Cenderung Diam</span>';
-                                if($volunteerScreening['sulit_tidur']) $observations[] = '<span class="badge bg-warning text-dark">Sulit Tidur</span>';
-                                if($volunteerScreening['sulit_makan']) $observations[] = '<span class="badge bg-warning text-dark">Sulit Makan</span>';
-                                if($volunteerScreening['keluhan_fisik']) $observations[] = '<span class="badge bg-danger">Keluhan Fisik (Luka/Sakit)</span>';
-                                if($volunteerScreening['konflik_keluarga']) $observations[] = '<span class="badge bg-warning text-dark">Konflik Keluarga</span>';
-                                if($volunteerScreening['terpisah_keluarga']) $observations[] = '<span class="badge bg-danger">Terpisah Keluarga</span>';
-                                if($volunteerScreening['kehilangan_anggota']) $observations[] = '<span class="badge bg-danger">Kehilangan Anggota</span>';
-                                if($volunteerScreening['kehilangan_harta']) $observations[] = '<span class="badge bg-warning text-dark">Kehilangan Harta</span>';
-                                if($volunteerScreening['menyebut_ingin_mati']) $observations[] = '<span class="badge bg-dark text-white">Menyebut Ingin Mati</span>';
-                                if($volunteerScreening['melukai_diri']) $observations[] = '<span class="badge bg-dark text-white">Melukai Diri</span>';
-                                if($volunteerScreening['perlu_rujukan_medis']) $observations[] = '<span class="badge bg-danger">Perlu Rujukan Medis</span>';
+                                if(!empty($volunteerScreening['mampu_sebut_nama'])) $observations[] = '<span class="badge bg-success">Mampu Sebut Nama</span>';
+                                if(!empty($volunteerScreening['mampu_sebut_lokasi']) && !empty($volunteerScreening['mampu_sebut_tanggal'])) $observations[] = '<span class="badge bg-success">Orientasi Baik</span>';
+                                if(empty($volunteerScreening['mampu_sebut_nama']) || empty($volunteerScreening['mampu_sebut_lokasi'])) $observations[] = '<span class="badge bg-danger">Disorientasi</span>';
+                                if(!empty($volunteerScreening['menangis_terus'])) $observations[] = '<span class="badge bg-danger">Menangis Terus</span>';
+                                if(!empty($volunteerScreening['tampak_panik'])) $observations[] = '<span class="badge bg-warning text-dark">Tampak Panik</span>';
+                                if(!empty($volunteerScreening['gemetar'])) $observations[] = '<span class="badge bg-warning text-dark">Gemetar</span>';
+                                if(!empty($volunteerScreening['diam_total'])) $observations[] = '<span class="badge bg-secondary">Cenderung Diam/Stupor</span>';
+                                if(!empty($volunteerScreening['berteriak_histeris'])) $observations[] = '<span class="badge bg-danger">Teriak Histeris</span>';
+                                if(!empty($volunteerScreening['sulit_tidur'])) $observations[] = '<span class="badge bg-warning text-dark">Sulit Tidur</span>';
+                                if(!empty($volunteerScreening['tidak_mau_makan'])) $observations[] = '<span class="badge bg-warning text-dark">Sulit Makan</span>';
+                                if(!empty($volunteerScreening['mencari_keluarga'])) $observations[] = '<span class="badge bg-danger">Mencari/Terpisah Keluarga</span>';
+                                if(!empty($volunteerScreening['menyebut_ingin_mati'])) $observations[] = '<span class="badge bg-dark text-white">Menyebut Ingin Mati</span>';
+                                if(!empty($volunteerScreening['melukai_diri'])) $observations[] = '<span class="badge bg-dark text-white">Melukai Diri</span>';
+                                if(!empty($volunteerScreening['mengancam_bunuh_diri'])) $observations[] = '<span class="badge bg-dark text-white">Mengancam Bunuh Diri</span>';
+                                if(!empty($volunteerScreening['agresif'])) $observations[] = '<span class="badge bg-danger">Agresif</span>';
 
                                 echo empty($observations) ? '<span class="text-muted small">Tidak ada</span>' : implode(' ', $observations);
                             ?>
@@ -233,6 +228,35 @@ function getCriteriaClass($met) {
                         </div>
                     <?php else: ?>
                         <p class="text-muted small">Tidak ada analisis AI.</p>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <!-- Review Klinis Psikolog (MSE) -->
+            <div class="col-12">
+                <div class="p-3 h-100" style="background: #fdf2f8; border: 1.5px solid #fbcfe8; border-radius: 8px;">
+                    <h6 class="fw-bold mb-3" style="color: #be185d;"><i class="bi bi-stethoscope"></i> Evaluasi Mental Status (MSE) Psikolog</h6>
+                    <?php if(isset($psychologistReview) && $psychologistReview): ?>
+                        <div class="mb-2"><span class="text-muted small">Chief Complaint:</span><br/>
+                            <strong><?= esc($psychologistReview['chief_complaint']) ?></strong>
+                        </div>
+                        <hr style="opacity: 0.15">
+                        <div class="row g-2">
+                            <div class="col-6 col-md-3"><span class="text-muted small">Appearance:</span><br/><strong><?= esc($psychologistReview['mse_appearance']) ?></strong></div>
+                            <div class="col-6 col-md-3"><span class="text-muted small">Behavior:</span><br/><strong><?= esc($psychologistReview['mse_behavior']) ?></strong></div>
+                            <div class="col-6 col-md-3"><span class="text-muted small">Speech:</span><br/><strong><?= esc($psychologistReview['mse_speech']) ?></strong></div>
+                            <div class="col-6 col-md-3"><span class="text-muted small">Mood:</span><br/><strong><?= esc($psychologistReview['mse_mood']) ?></strong></div>
+                            
+                            <div class="col-6 col-md-3 mt-2"><span class="text-muted small">Affect:</span><br/><strong><?= esc($psychologistReview['mse_affect']) ?></strong></div>
+                            <div class="col-6 col-md-3 mt-2"><span class="text-muted small">Thought:</span><br/><strong><?= esc($psychologistReview['mse_thought']) ?></strong></div>
+                            <div class="col-6 col-md-3 mt-2"><span class="text-muted small">Orientation:</span><br/><strong><?= esc($psychologistReview['mse_orientation']) ?></strong></div>
+                            <div class="col-6 col-md-3 mt-2"><span class="text-muted small">Insight:</span><br/><strong><?= esc($psychologistReview['mse_insight']) ?></strong></div>
+                            
+                            <div class="col-6 col-md-3 mt-2"><span class="text-muted small">Perception:</span><br/><strong><?= esc($psychologistReview['mse_perception'] ?? 'Normal') ?></strong></div>
+                            <div class="col-6 col-md-3 mt-2"><span class="text-muted small text-danger">Risk Assessment:</span><br/><strong class="text-danger"><?= esc($psychologistReview['risk_assessment'] ?? 'Aman') ?></strong></div>
+                        </div>
+                    <?php else: ?>
+                        <p class="text-muted small">Belum ada review MSE Psikolog yang disimpan.</p>
                     <?php endif; ?>
                 </div>
             </div>

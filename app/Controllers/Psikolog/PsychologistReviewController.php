@@ -85,6 +85,8 @@ class PsychologistReviewController extends Controller
             'mse_thought'     => 'required',
             'mse_orientation' => 'required',
             'mse_insight'     => 'required',
+            'mse_perception'  => 'required',
+            'risk_assessment' => 'required',
         ];
 
         if (! $this->validate($rules)) {
@@ -95,18 +97,30 @@ class PsychologistReviewController extends Controller
         $existing    = $reviewModel->getByVictimId((int) $victimId);
 
         $data = [
-            'victim_id'       => (int) $victimId,
-            'psikolog_id'     => session()->get('user_id') ?? 4,
-            'chief_complaint' => $this->request->getPost('chief_complaint'),
-            'mse_appearance'  => $this->request->getPost('mse_appearance'),
-            'mse_behavior'    => $this->request->getPost('mse_behavior'),
-            'mse_speech'      => $this->request->getPost('mse_speech'),
-            'mse_mood'        => $this->request->getPost('mse_mood'),
-            'mse_affect'      => $this->request->getPost('mse_affect'),
-            'mse_thought'     => $this->request->getPost('mse_thought'),
-            'mse_orientation' => $this->request->getPost('mse_orientation'),
-            'mse_insight'     => $this->request->getPost('mse_insight'),
-            'reviewed_at'     => date('Y-m-d H:i:s'),
+            'victim_id'            => (int) $victimId,
+            'psikolog_id'          => session()->get('user_id') ?? 4,
+            'chief_complaint'      => $this->request->getPost('chief_complaint'),
+            'mse_appearance'       => $this->request->getPost('mse_appearance'),
+            'mse_appearance_note'  => $this->request->getPost('mse_appearance_note'),
+            'mse_behavior'         => $this->request->getPost('mse_behavior'),
+            'mse_behavior_note'    => $this->request->getPost('mse_behavior_note'),
+            'mse_speech'           => $this->request->getPost('mse_speech'),
+            'mse_speech_note'      => $this->request->getPost('mse_speech_note'),
+            'mse_mood'             => $this->request->getPost('mse_mood'),
+            'mse_mood_note'        => $this->request->getPost('mse_mood_note'),
+            'mse_affect'           => $this->request->getPost('mse_affect'),
+            'mse_affect_note'      => $this->request->getPost('mse_affect_note'),
+            'mse_thought'          => $this->request->getPost('mse_thought'),
+            'mse_thought_note'     => $this->request->getPost('mse_thought_note'),
+            'mse_orientation'      => $this->request->getPost('mse_orientation'),
+            'mse_orientation_note' => $this->request->getPost('mse_orientation_note'),
+            'mse_insight'          => $this->request->getPost('mse_insight'),
+            'mse_insight_note'     => $this->request->getPost('mse_insight_note'),
+            'mse_perception'       => $this->request->getPost('mse_perception'),
+            'mse_perception_note'  => $this->request->getPost('mse_perception_note'),
+            'risk_assessment'      => $this->request->getPost('risk_assessment'),
+            'risk_assessment_note' => $this->request->getPost('risk_assessment_note'),
+            'reviewed_at'          => date('Y-m-d H:i:s'),
         ];
 
         if ($existing) {

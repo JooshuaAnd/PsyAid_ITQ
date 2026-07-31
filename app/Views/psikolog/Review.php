@@ -240,9 +240,6 @@
                     <div class="text-secondary fs-8 fw-bold text-uppercase" style="letter-spacing: 0.03em;">Skrining
                         Relawan</div>
                     <hr class="my-2 opacity-25" style="color: #059669;" />
-                    <div class="small text-muted mb-1">Skala Distress: <strong
-                            class="text-danger tabular-nums"><?= esc($screening['skala_distress'] ?? 0) ?>/10</strong>
-                    </div>
                     <div class="small text-muted mb-1">Kontak Mata:
                         <strong><?= esc($screening['kontak_mata'] ?? '-') ?></strong></div>
                     <div class="small text-muted">Bicara: <strong><?= esc($screening['bicara'] ?? '-') ?></strong></div>
@@ -318,191 +315,206 @@
                     <!-- 1. Appearance -->
                     <div class="col-12 col-md-6 col-lg-3">
                         <div class="card posko-item-card p-3 h-100">
-                            <label class="form-label small fw-bold d-block mb-2 pb-1 border-bottom"
-                                style="color: #064e3b;">1. Appearance (Penampilan)</label>
+                            <label class="form-label small fw-bold d-block mb-2 pb-1 border-bottom" style="color: #064e3b;">1. Appearance (Penampilan)</label>
                             <?php $app = old('mse_appearance', $review['mse_appearance'] ?? 'Normal'); ?>
                             <div class="form-check mb-1">
-                                <input class="form-check-input" type="radio" name="mse_appearance" id="app1"
-                                    value="Normal" <?= $app === 'Normal' ? 'checked' : '' ?>>
+                                <input class="form-check-input" type="radio" name="mse_appearance" id="app1" value="Normal" <?= $app === 'Normal' ? 'checked' : '' ?>>
                                 <label class="form-check-label small" for="app1">Normal / Rapi</label>
                             </div>
                             <div class="form-check mb-1">
-                                <input class="form-check-input" type="radio" name="mse_appearance" id="app2"
-                                    value="Kurang terawat" <?= $app === 'Kurang terawat' ? 'checked' : '' ?>>
+                                <input class="form-check-input" type="radio" name="mse_appearance" id="app2" value="Kurang terawat" <?= $app === 'Kurang terawat' ? 'checked' : '' ?>>
                                 <label class="form-check-label small text-warning" for="app2">Kurang terawat</label>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="mse_appearance" id="app3"
-                                    value="Cedera" <?= $app === 'Cedera' ? 'checked' : '' ?>>
-                                <label class="form-check-label small text-danger" for="app3">Cedera / Kotor
-                                    Bencana</label>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="mse_appearance" id="app3" value="Cedera" <?= $app === 'Cedera' ? 'checked' : '' ?>>
+                                <label class="form-check-label small text-danger" for="app3">Cedera / Kotor Bencana</label>
                             </div>
+                            <input type="text" class="form-control form-control-sm mt-auto" name="mse_appearance_note" placeholder="Catatan tambahan (opsional)..." value="<?= esc(old('mse_appearance_note', $review['mse_appearance_note'] ?? '')) ?>">
                         </div>
                     </div>
 
                     <!-- 2. Behavior -->
                     <div class="col-12 col-md-6 col-lg-3">
                         <div class="card posko-item-card p-3 h-100">
-                            <label class="form-label small fw-bold d-block mb-2 pb-1 border-bottom"
-                                style="color: #064e3b;">2. Behavior (Perilaku / Sikap)</label>
+                            <label class="form-label small fw-bold d-block mb-2 pb-1 border-bottom" style="color: #064e3b;">2. Behavior (Perilaku / Sikap)</label>
                             <?php $beh = old('mse_behavior', $review['mse_behavior'] ?? 'Kooperatif'); ?>
                             <div class="form-check mb-1">
-                                <input class="form-check-input" type="radio" name="mse_behavior" id="beh1"
-                                    value="Kooperatif" <?= $beh === 'Kooperatif' ? 'checked' : '' ?>>
+                                <input class="form-check-input" type="radio" name="mse_behavior" id="beh1" value="Kooperatif" <?= $beh === 'Kooperatif' ? 'checked' : '' ?>>
                                 <label class="form-check-label small" for="beh1">Kooperatif</label>
                             </div>
                             <div class="form-check mb-1">
-                                <input class="form-check-input" type="radio" name="mse_behavior" id="beh2"
-                                    value="Gelisah" <?= $beh === 'Gelisah' ? 'checked' : '' ?>>
+                                <input class="form-check-input" type="radio" name="mse_behavior" id="beh2" value="Gelisah" <?= $beh === 'Gelisah' ? 'checked' : '' ?>>
                                 <label class="form-check-label small text-warning" for="beh2">Gelisah / Agitasi</label>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="mse_behavior" id="beh3"
-                                    value="Agresif" <?= $beh === 'Agresif' ? 'checked' : '' ?>>
-                                <label class="form-check-label small text-danger" for="beh3">Agresif /
-                                    Unkooperatif</label>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="mse_behavior" id="beh3" value="Agresif" <?= $beh === 'Agresif' ? 'checked' : '' ?>>
+                                <label class="form-check-label small text-danger" for="beh3">Agresif / Unkooperatif</label>
                             </div>
+                            <input type="text" class="form-control form-control-sm mt-auto" name="mse_behavior_note" placeholder="Catatan tambahan (opsional)..." value="<?= esc(old('mse_behavior_note', $review['mse_behavior_note'] ?? '')) ?>">
                         </div>
                     </div>
 
                     <!-- 3. Speech -->
                     <div class="col-12 col-md-6 col-lg-3">
                         <div class="card posko-item-card p-3 h-100">
-                            <label class="form-label small fw-bold d-block mb-2 pb-1 border-bottom"
-                                style="color: #064e3b;">3. Speech (Bicara)</label>
+                            <label class="form-label small fw-bold d-block mb-2 pb-1 border-bottom" style="color: #064e3b;">3. Speech (Bicara)</label>
                             <?php $sp = old('mse_speech', $review['mse_speech'] ?? 'Normal'); ?>
                             <div class="form-check mb-1">
-                                <input class="form-check-input" type="radio" name="mse_speech" id="sp1" value="Normal"
-                                    <?= $sp === 'Normal' ? 'checked' : '' ?>>
+                                <input class="form-check-input" type="radio" name="mse_speech" id="sp1" value="Normal" <?= $sp === 'Normal' ? 'checked' : '' ?>>
                                 <label class="form-check-label small" for="sp1">Normal</label>
                             </div>
                             <div class="form-check mb-1">
-                                <input class="form-check-input" type="radio" name="mse_speech" id="sp2" value="Lambat"
-                                    <?= $sp === 'Lambat' ? 'checked' : '' ?>>
+                                <input class="form-check-input" type="radio" name="mse_speech" id="sp2" value="Lambat" <?= $sp === 'Lambat' ? 'checked' : '' ?>>
                                 <label class="form-check-label small text-warning" for="sp2">Lambat / Terbata</label>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="mse_speech" id="sp3" value="Cepat"
-                                    <?= $sp === 'Cepat' ? 'checked' : '' ?>>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="mse_speech" id="sp3" value="Cepat" <?= $sp === 'Cepat' ? 'checked' : '' ?>>
                                 <label class="form-check-label small text-danger" for="sp3">Cepat / Pressured</label>
                             </div>
+                            <input type="text" class="form-control form-control-sm mt-auto" name="mse_speech_note" placeholder="Catatan tambahan (opsional)..." value="<?= esc(old('mse_speech_note', $review['mse_speech_note'] ?? '')) ?>">
                         </div>
                     </div>
 
                     <!-- 4. Mood -->
                     <div class="col-12 col-md-6 col-lg-3">
                         <div class="card posko-item-card p-3 h-100">
-                            <label class="form-label small fw-bold d-block mb-2 pb-1 border-bottom"
-                                style="color: #064e3b;">4. Mood (Suasana Hati)</label>
+                            <label class="form-label small fw-bold d-block mb-2 pb-1 border-bottom" style="color: #064e3b;">4. Mood (Suasana Hati)</label>
                             <?php $mo = old('mse_mood', $review['mse_mood'] ?? 'Sedih'); ?>
                             <div class="form-check mb-1">
-                                <input class="form-check-input" type="radio" name="mse_mood" id="mo1" value="Sedih"
-                                    <?= $mo === 'Sedih' ? 'checked' : '' ?>>
+                                <input class="form-check-input" type="radio" name="mse_mood" id="mo1" value="Sedih" <?= $mo === 'Sedih' ? 'checked' : '' ?>>
                                 <label class="form-check-label small" for="mo1">Sedih / Depresif</label>
                             </div>
                             <div class="form-check mb-1">
-                                <input class="form-check-input" type="radio" name="mse_mood" id="mo2" value="Cemas"
-                                    <?= $mo === 'Cemas' ? 'checked' : '' ?>>
+                                <input class="form-check-input" type="radio" name="mse_mood" id="mo2" value="Cemas" <?= $mo === 'Cemas' ? 'checked' : '' ?>>
                                 <label class="form-check-label small text-warning" for="mo2">Cemas / Anxious</label>
                             </div>
                             <div class="form-check mb-1">
-                                <input class="form-check-input" type="radio" name="mse_mood" id="mo3" value="Marah"
-                                    <?= $mo === 'Marah' ? 'checked' : '' ?>>
+                                <input class="form-check-input" type="radio" name="mse_mood" id="mo3" value="Marah" <?= $mo === 'Marah' ? 'checked' : '' ?>>
                                 <label class="form-check-label small text-danger" for="mo3">Marah / Irritabel</label>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="mse_mood" id="mo4" value="Netral"
-                                    <?= $mo === 'Netral' ? 'checked' : '' ?>>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="mse_mood" id="mo4" value="Netral" <?= $mo === 'Netral' ? 'checked' : '' ?>>
                                 <label class="form-check-label small text-muted" for="mo4">Netral / Eutimik</label>
                             </div>
+                            <input type="text" class="form-control form-control-sm mt-auto" name="mse_mood_note" placeholder="Catatan tambahan (opsional)..." value="<?= esc(old('mse_mood_note', $review['mse_mood_note'] ?? '')) ?>">
                         </div>
                     </div>
 
                     <!-- 5. Affect -->
                     <div class="col-12 col-md-6 col-lg-3">
                         <div class="card posko-item-card p-3 h-100">
-                            <label class="form-label small fw-bold d-block mb-2 pb-1 border-bottom"
-                                style="color: #064e3b;">5. Affect (Afek)</label>
+                            <label class="form-label small fw-bold d-block mb-2 pb-1 border-bottom" style="color: #064e3b;">5. Affect (Afek)</label>
                             <?php $af = old('mse_affect', $review['mse_affect'] ?? 'Sesuai'); ?>
                             <div class="form-check mb-1">
-                                <input class="form-check-input" type="radio" name="mse_affect" id="af1" value="Sesuai"
-                                    <?= $af === 'Sesuai' ? 'checked' : '' ?>>
+                                <input class="form-check-input" type="radio" name="mse_affect" id="af1" value="Sesuai" <?= $af === 'Sesuai' ? 'checked' : '' ?>>
                                 <label class="form-check-label small" for="af1">Sesuai (Appropriate)</label>
                             </div>
                             <div class="form-check mb-1">
-                                <input class="form-check-input" type="radio" name="mse_affect" id="af2" value="Datar"
-                                    <?= $af === 'Datar' ? 'checked' : '' ?>>
-                                <label class="form-check-label small text-warning" for="af2">Datar / Tumpul
-                                    (Blunted)</label>
+                                <input class="form-check-input" type="radio" name="mse_affect" id="af2" value="Datar" <?= $af === 'Datar' ? 'checked' : '' ?>>
+                                <label class="form-check-label small text-warning" for="af2">Datar / Tumpul (Blunted)</label>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="mse_affect" id="af3" value="Labil"
-                                    <?= $af === 'Labil' ? 'checked' : '' ?>>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="mse_affect" id="af3" value="Labil" <?= $af === 'Labil' ? 'checked' : '' ?>>
                                 <label class="form-check-label small text-danger" for="af3">Labil (Labile)</label>
                             </div>
+                            <input type="text" class="form-control form-control-sm mt-auto" name="mse_affect_note" placeholder="Catatan tambahan (opsional)..." value="<?= esc(old('mse_affect_note', $review['mse_affect_note'] ?? '')) ?>">
                         </div>
                     </div>
 
                     <!-- 6. Thought -->
                     <div class="col-12 col-md-6 col-lg-3">
                         <div class="card posko-item-card p-3 h-100">
-                            <label class="form-label small fw-bold d-block mb-2 pb-1 border-bottom"
-                                style="color: #064e3b;">6. Thought (Proses/Isi Pikir)</label>
+                            <label class="form-label small fw-bold d-block mb-2 pb-1 border-bottom" style="color: #064e3b;">6. Thought (Proses/Isi Pikir)</label>
                             <?php $th = old('mse_thought', $review['mse_thought'] ?? 'Normal'); ?>
                             <div class="form-check mb-1">
-                                <input class="form-check-input" type="radio" name="mse_thought" id="th1" value="Normal"
-                                    <?= $th === 'Normal' ? 'checked' : '' ?>>
+                                <input class="form-check-input" type="radio" name="mse_thought" id="th1" value="Normal" <?= $th === 'Normal' ? 'checked' : '' ?>>
                                 <label class="form-check-label small" for="th1">Normal / Realistis</label>
                             </div>
                             <div class="form-check mb-1">
-                                <input class="form-check-input" type="radio" name="mse_thought" id="th2" value="Obsesi"
-                                    <?= $th === 'Obsesi' ? 'checked' : '' ?>>
+                                <input class="form-check-input" type="radio" name="mse_thought" id="th2" value="Obsesi" <?= $th === 'Obsesi' ? 'checked' : '' ?>>
                                 <label class="form-check-label small text-warning" for="th2">Obsesi / Ruminasi</label>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="mse_thought" id="th3" value="Delusi"
-                                    <?= $th === 'Delusi' ? 'checked' : '' ?>>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="mse_thought" id="th3" value="Delusi" <?= $th === 'Delusi' ? 'checked' : '' ?>>
                                 <label class="form-check-label small text-danger" for="th3">Delusi / Waham</label>
                             </div>
+                            <input type="text" class="form-control form-control-sm mt-auto" name="mse_thought_note" placeholder="Catatan tambahan (opsional)..." value="<?= esc(old('mse_thought_note', $review['mse_thought_note'] ?? '')) ?>">
                         </div>
                     </div>
 
                     <!-- 7. Orientation -->
                     <div class="col-12 col-md-6 col-lg-3">
                         <div class="card posko-item-card p-3 h-100">
-                            <label class="form-label small fw-bold d-block mb-2 pb-1 border-bottom"
-                                style="color: #064e3b;">7. Orientation (Orientasi)</label>
+                            <label class="form-label small fw-bold d-block mb-2 pb-1 border-bottom" style="color: #064e3b;">7. Orientation (Orientasi)</label>
                             <?php $or = old('mse_orientation', $review['mse_orientation'] ?? 'Baik'); ?>
                             <div class="form-check mb-1">
-                                <input class="form-check-input" type="radio" name="mse_orientation" id="or1"
-                                    value="Baik" <?= $or === 'Baik' ? 'checked' : '' ?>>
+                                <input class="form-check-input" type="radio" name="mse_orientation" id="or1" value="Baik" <?= $or === 'Baik' ? 'checked' : '' ?>>
                                 <label class="form-check-label small" for="or1">Baik (Orang/Tempat/Waktu)</label>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="mse_orientation" id="or2"
-                                    value="Kurang" <?= $or === 'Kurang' ? 'checked' : '' ?>>
-                                <label class="form-check-label small text-danger" for="or2">Kurang /
-                                    Disorientasi</label>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="mse_orientation" id="or2" value="Kurang" <?= $or === 'Kurang' ? 'checked' : '' ?>>
+                                <label class="form-check-label small text-danger" for="or2">Kurang / Disorientasi</label>
                             </div>
+                            <input type="text" class="form-control form-control-sm mt-auto" name="mse_orientation_note" placeholder="Catatan tambahan (opsional)..." value="<?= esc(old('mse_orientation_note', $review['mse_orientation_note'] ?? '')) ?>">
                         </div>
                     </div>
 
                     <!-- 8. Insight -->
                     <div class="col-12 col-md-6 col-lg-3">
                         <div class="card posko-item-card p-3 h-100">
-                            <label class="form-label small fw-bold d-block mb-2 pb-1 border-bottom"
-                                style="color: #064e3b;">8. Insight (Daya Nilai Diri)</label>
+                            <label class="form-label small fw-bold d-block mb-2 pb-1 border-bottom" style="color: #064e3b;">8. Insight (Daya Nilai Diri)</label>
                             <?php $in = old('mse_insight', $review['mse_insight'] ?? 'Baik'); ?>
                             <div class="form-check mb-1">
-                                <input class="form-check-input" type="radio" name="mse_insight" id="in1" value="Baik"
-                                    <?= $in === 'Baik' ? 'checked' : '' ?>>
+                                <input class="form-check-input" type="radio" name="mse_insight" id="in1" value="Baik" <?= $in === 'Baik' ? 'checked' : '' ?>>
                                 <label class="form-check-label small" for="in1">Baik (Menyadari Kondisi)</label>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="mse_insight" id="in2" value="Kurang"
-                                    <?= $in === 'Kurang' ? 'checked' : '' ?>>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="mse_insight" id="in2" value="Kurang" <?= $in === 'Kurang' ? 'checked' : '' ?>>
                                 <label class="form-check-label small text-danger" for="in2">Kurang / Denial</label>
                             </div>
+                            <input type="text" class="form-control form-control-sm mt-auto" name="mse_insight_note" placeholder="Catatan tambahan (opsional)..." value="<?= esc(old('mse_insight_note', $review['mse_insight_note'] ?? '')) ?>">
+                        </div>
+                    </div>
+
+                    <!-- 9. Perception -->
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card posko-item-card p-3 h-100">
+                            <label class="form-label small fw-bold d-block mb-2 pb-1 border-bottom" style="color: #064e3b;">9. Perception (Persepsi/Halusinasi)</label>
+                            <?php $per = old('mse_perception', $review['mse_perception'] ?? 'Normal'); ?>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input" type="radio" name="mse_perception" id="per1" value="Normal" <?= $per === 'Normal' ? 'checked' : '' ?>>
+                                <label class="form-check-label small" for="per1">Normal (Tidak ada kelainan)</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input" type="radio" name="mse_perception" id="per2" value="Ilusi" <?= $per === 'Ilusi' ? 'checked' : '' ?>>
+                                <label class="form-check-label small text-warning" for="per2">Ilusi / Miskonsepsi</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="mse_perception" id="per3" value="Halusinasi" <?= $per === 'Halusinasi' ? 'checked' : '' ?>>
+                                <label class="form-check-label small text-danger" for="per3">Halusinasi (Visual/Auditori)</label>
+                            </div>
+                            <input type="text" class="form-control form-control-sm mt-auto" name="mse_perception_note" placeholder="Catatan tambahan (opsional)..." value="<?= esc(old('mse_perception_note', $review['mse_perception_note'] ?? '')) ?>">
+                        </div>
+                    </div>
+
+                    <!-- 10. Risk Assessment -->
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <div class="card posko-item-card p-3 h-100 border-danger" style="border-width: 2px !important;">
+                            <label class="form-label small fw-bold d-block mb-2 pb-1 border-bottom text-danger">10. Risk Assessment (Risiko Kritis)</label>
+                            <?php $risk = old('risk_assessment', $review['risk_assessment'] ?? 'Aman'); ?>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input" type="radio" name="risk_assessment" id="risk1" value="Aman" <?= $risk === 'Aman' ? 'checked' : '' ?>>
+                                <label class="form-check-label small" for="risk1">Aman (Tidak berisiko)</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input" type="radio" name="risk_assessment" id="risk2" value="Self-Harm" <?= $risk === 'Self-Harm' ? 'checked' : '' ?>>
+                                <label class="form-check-label small text-warning" for="risk2">Potensi Self-Harm</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" name="risk_assessment" id="risk3" value="Suicide/Homicide" <?= $risk === 'Suicide/Homicide' ? 'checked' : '' ?>>
+                                <label class="form-check-label small text-danger fw-bold" for="risk3">Potensi Bunuh Diri/Kekerasan</label>
+                            </div>
+                            <input type="text" class="form-control form-control-sm mt-auto" name="risk_assessment_note" placeholder="Catatan tambahan (opsional)..." value="<?= esc(old('risk_assessment_note', $review['risk_assessment_note'] ?? '')) ?>">
                         </div>
                     </div>
                 </div>
