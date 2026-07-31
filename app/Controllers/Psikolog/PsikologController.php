@@ -16,7 +16,7 @@ class PsikologController extends Controller
         $builder->select('
             psychologist_assignment.assigned_at,
             psychologist_assignment.jumlah_kasus_saat_assign,
-            victims.id as victim_id, victims.nama as victim_nama, victims.nik, victims.umur, victims.jenis_kelamin,
+            victims.id as victim_id, victims.nama as victim_nama, victims.nik, victims.umur, victims.jenis_kelamin, victims.posko_id,
             posko.name as posko_name,
             ai_assessment.risk_level, ai_assessment.clinical_priority, ai_assessment.status as ai_status,
             psychologist_review.id as review_id, psychologist_review.reviewed_at,
@@ -40,9 +40,25 @@ class PsikologController extends Controller
 
         $assignedVictims = $builder->get()->getResultArray();
 
+        // Fetch active personnel for assigned poskos
+        $poskoIds = array_filter(array_unique(array_column($assignedVictims, 'posko_id')));
+        $userPoskoId = session()->get('posko_id');
+        if ($userPoskoId) {
+            $poskoIds[] = $userPoskoId;
+            $poskoIds = array_filter(array_unique($poskoIds));
+        }
+
+        $userModel = new \App\Models\UserModel();
+        if (!empty($poskoIds)) {
+            $personnel = $userModel->whereIn('posko_id', $poskoIds)->findAll();
+        } else {
+            $personnel = $userModel->findAll();
+        }
+
         $data = [
             'title'           => 'Dashboard Clinical Workspace Psikolog — PsyAid',
             'assignedVictims' => $assignedVictims,
+            'personnel'       => $personnel,
         ];
 
         return view('psikolog/Dashboard', $data);

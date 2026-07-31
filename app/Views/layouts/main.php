@@ -733,12 +733,6 @@ if (session()->get('logged_in')) {
                             <i class="nav-icon bi bi-person-badge-fill text-primary"></i>
                             <span class="sidebar-label">Clinical Workspace</span>
                         </a>
-                        <a href="<?= site_url('/psychologist-mapping') ?>"
-                            class="sidebar-nav-item <?= url_is('psychologist-mapping*') ? 'active' : '' ?>"
-                            title="Pemetaan Posko & Korban">
-                            <i class="nav-icon bi bi-diagram-3-fill text-info"></i>
-                            <span class="sidebar-label">Mapping Posko</span>
-                        </a>
                     <?php endif; ?>
 
                 <?php else: ?>
@@ -943,11 +937,6 @@ if (session()->get('logged_in')) {
                             class="sidebar-nav-item py-2 px-3 mb-1 <?= url_is('psikolog/dashboard*') ? 'active' : '' ?>">
                             <i class="nav-icon bi bi-person-badge-fill text-primary"></i>
                             <span class="sidebar-label">Clinical Workspace</span>
-                        </a>
-                        <a href="<?= site_url('/psychologist-mapping') ?>"
-                            class="sidebar-nav-item py-2 px-3 mb-1 <?= url_is('psychologist-mapping*') ? 'active' : '' ?>">
-                            <i class="nav-icon bi bi-diagram-3-fill text-info"></i>
-                            <span class="sidebar-label">Mapping Posko</span>
                         </a>
                     <?php endif; ?>
 

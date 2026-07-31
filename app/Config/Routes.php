@@ -70,8 +70,8 @@ $routes->get('/screening/reassess/(:num)', 'Relawan\ScreeningController::reasses
 $routes->post('/screening/reassess/(:num)', 'Relawan\ScreeningController::reassess/$1', ['filter' => ['auth', 'role:relawan,psikolog']]);
 
 // Psychologist Mapping & Clinical Workspaces
-$routes->get('/psychologist-mapping', 'Bpbd\PsychologistMappingController::index', ['filter' => ['auth']]);
-$routes->get('/bpbd/psychologist-mapping', 'Bpbd\PsychologistMappingController::index', ['filter' => ['auth']]);
+$routes->get('/psychologist-mapping', 'Bpbd\PsychologistMappingController::index', ['filter' => ['auth', 'role:bpbd_admin']]);
+$routes->get('/bpbd/psychologist-mapping', 'Bpbd\PsychologistMappingController::index', ['filter' => ['auth', 'role:bpbd_admin']]);
 $routes->post('/bpbd/psychologist-mapping/update/(:num)', 'Bpbd\PsychologistMappingController::updateMapping/$1', ['filter' => ['auth', 'role:bpbd_admin']]);
 $routes->get('/psikolog/dashboard', 'Psikolog\PsikologController::index', ['filter' => ['auth', 'role:psikolog']]);
 
