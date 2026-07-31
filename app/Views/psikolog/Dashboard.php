@@ -324,7 +324,7 @@
         </div>
 
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
+            <table class="table align-middle mb-0">
                 <thead style="background-color: #f8fafc;" class="text-secondary small text-uppercase">
                     <tr>
                         <th style="width: 8%;">No</th>

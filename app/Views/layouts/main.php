@@ -415,6 +415,9 @@
             box-shadow: 0 4px 15px rgba(6, 78, 59, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.8);
             border-radius: 6px;
             padding: 0.35rem 1rem;
+            max-width: min(64vw, 820px);
+            flex-wrap: wrap;
+            row-gap: 0.2rem;
         }
 
         .glass-breadcrumb .breadcrumb-item+.breadcrumb-item::before {
@@ -424,6 +427,23 @@
             font-weight: 700;
             line-height: 1;
             vertical-align: middle;
+        }
+
+        .glass-breadcrumb .breadcrumb-item a {
+            color: #047857 !important;
+            transition: color 0.18s ease;
+        }
+
+        .glass-breadcrumb .breadcrumb-item a:hover {
+            color: #064e3b !important;
+        }
+
+        .glass-breadcrumb .breadcrumb-item.active {
+            color: #0f172a !important;
+            max-width: 32ch;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         /* Top Header User Profile Styling (Name Only) */
@@ -799,20 +819,105 @@ if (session()->get('logged_in')) {
                     $currentUri = trim(uri_string(), '/');
                     $targetHome = trim($homeUrl, '/');
                     $isDashboardPage = ($currentUri === $targetHome) || url_is('bpbd/dashboard*') || url_is('psikolog/dashboard*');
+                    $rawBreadcrumbTitle = trim((string) ($title ?? ''));
+                    $titleParts = preg_split('/\s+(?:—|-)\s+/u', $rawBreadcrumbTitle, 2);
+                    $currentPageLabel = trim($titleParts[0] ?? $rawBreadcrumbTitle);
+                    $currentPageLabel = $currentPageLabel !== '' ? $currentPageLabel : 'Halaman';
+
+                    $breadcrumbItems = [
+                        [
+                            'label' => 'Beranda',
+                            'url' => $homeUrl,
+                            'icon' => 'bi bi-house-door-fill',
+                        ],
+                    ];
+
+                    if (! $isDashboardPage) {
+                        $parentBreadcrumb = null;
+
+                        if (url_is('psikolog/monitoring/detail*')) {
+                            $parentBreadcrumb = ['label' => 'Monitoring & Follow-Up', 'url' => '/psikolog/monitoring'];
+                            $currentPageLabel = 'Detail Monitoring';
+                        } elseif (url_is('psikolog/monitoring*')) {
+                            $currentPageLabel = 'Monitoring & Follow-Up';
+                        } elseif (url_is('psikolog/assessment-history/detail*')) {
+                            $parentBreadcrumb = ['label' => 'Assessment Penyintas', 'url' => '/psikolog/assessment-history'];
+                            $currentPageLabel = 'Detail Assessment';
+                        } elseif (url_is('psikolog/assessment-history*')) {
+                            $currentPageLabel = 'Assessment Penyintas';
+                        } elseif (url_is('psychologist-review*')) {
+                            $parentBreadcrumb = ['label' => 'Assessment Penyintas', 'url' => '/psikolog/assessment-history'];
+                            $currentPageLabel = 'Review Klinis Psikolog';
+                        } elseif (url_is('itq/form*')) {
+                            $parentBreadcrumb = ['label' => 'Assessment Penyintas', 'url' => '/psikolog/assessment-history'];
+                            $currentPageLabel = 'Form ITQ';
+                        } elseif (url_is('itq/result*')) {
+                            $parentBreadcrumb = ['label' => 'Assessment Penyintas', 'url' => '/psikolog/assessment-history'];
+                            $currentPageLabel = 'Hasil ITQ Assessment';
+                        } elseif (url_is('command-center*')) {
+                            $currentPageLabel = 'Command Center';
+                        } elseif (url_is('bpbd/manage-posko*')) {
+                            $currentPageLabel = 'Kelola Posko Bencana';
+                        } elseif (url_is('bpbd/earthquake-radar*')) {
+                            $currentPageLabel = 'Peta Radar Gempa';
+                        } elseif (url_is('psychologist-mapping*') || url_is('bpbd/psychologist-mapping*')) {
+                            $currentPageLabel = 'Pemetaan Psikolog';
+                        } elseif (url_is('bpbd/ticketing-laporan*')) {
+                            $currentPageLabel = 'Ticketing Laporan';
+                        } elseif (url_is('bpbd/register-relawan*')) {
+                            $parentBreadcrumb = ['label' => 'Registrasi Akun', 'url' => null];
+                            $currentPageLabel = 'Approval Akun Relawan';
+                        } elseif (url_is('bpbd/register-psikolog*')) {
+                            $parentBreadcrumb = ['label' => 'Registrasi Akun', 'url' => null];
+                            $currentPageLabel = 'Registrasi Psikolog';
+                        } elseif (url_is('register*')) {
+                            $parentBreadcrumb = ['label' => 'Registrasi Akun', 'url' => null];
+                            $currentPageLabel = 'Registrasi Admin BPBD';
+                        } elseif (url_is('relawan/manajemen-penyintas*')) {
+                            $currentPageLabel = 'Data Penyintas';
+                        } elseif (url_is('victim/create*')) {
+                            $parentBreadcrumb = ['label' => 'Data Penyintas', 'url' => session()->get('role') === 'relawan' ? '/relawan/manajemen-penyintas' : null];
+                            $currentPageLabel = 'Tambah Penyintas';
+                        } elseif (url_is('victim/detail*')) {
+                            $parentBreadcrumb = ['label' => 'Data Penyintas', 'url' => session()->get('role') === 'relawan' ? '/relawan/manajemen-penyintas' : null];
+                            $currentPageLabel = 'Detail Penyintas';
+                        }
+
+                        if ($parentBreadcrumb !== null) {
+                            $breadcrumbItems[] = $parentBreadcrumb;
+                        }
+
+                        $breadcrumbItems[] = [
+                            'label' => $currentPageLabel,
+                            'url' => null,
+                            'icon' => null,
+                        ];
+                    }
                     ?>
                     <nav aria-label="breadcrumb" class="d-none d-md-block">
                         <ol class="breadcrumb mb-0 glass-breadcrumb align-items-center">
-                            <li class="breadcrumb-item small fw-semibold <?= $isDashboardPage ? 'active fw-bold' : '' ?>" <?= $isDashboardPage ? 'aria-current="page"' : '' ?>>
-                                <a href="<?= site_url($homeUrl) ?>"
-                                    class="text-decoration-none text-success hover-emerald d-inline-flex align-items-center gap-1">
-                                    <i class="bi bi-house-door-fill text-success"></i> Beranda
-                                </a>
-                            </li>
-                            <?php if (!empty($title) && !$isDashboardPage): ?>
-                                <li class="breadcrumb-item active small fw-bold text-dark" aria-current="page">
-                                    <?= esc(explode(' — ', explode(' - ', $title)[0])[0]) ?>
+                            <?php foreach ($breadcrumbItems as $index => $item): ?>
+                                <?php $isLastBreadcrumb = $index === array_key_last($breadcrumbItems); ?>
+                                <li class="breadcrumb-item small <?= $isLastBreadcrumb ? 'active fw-bold' : 'fw-semibold' ?>"
+                                    <?= $isLastBreadcrumb ? 'aria-current="page"' : '' ?>>
+                                    <?php if (! $isLastBreadcrumb && ! empty($item['url'])): ?>
+                                        <a href="<?= site_url($item['url']) ?>"
+                                            class="text-decoration-none d-inline-flex align-items-center gap-1">
+                                            <?php if (! empty($item['icon'])): ?>
+                                                <i class="<?= esc($item['icon']) ?>"></i>
+                                            <?php endif; ?>
+                                            <?= esc($item['label']) ?>
+                                        </a>
+                                    <?php else: ?>
+                                        <span class="d-inline-flex align-items-center gap-1">
+                                            <?php if (! empty($item['icon'])): ?>
+                                                <i class="<?= esc($item['icon']) ?>"></i>
+                                            <?php endif; ?>
+                                            <?= esc($item['label']) ?>
+                                        </span>
+                                    <?php endif; ?>
                                 </li>
-                            <?php endif; ?>
+                            <?php endforeach; ?>
                         </ol>
                     </nav>
                 </div>
