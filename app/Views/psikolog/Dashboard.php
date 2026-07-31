@@ -419,12 +419,12 @@
                 <thead style="background-color: #f8fafc;" class="text-secondary small text-uppercase">
                     <tr>
                         <th style="width: 5%;">No</th>
-                        <th style="width: 25%;">Nama & NIK</th>
+                        <th style="width: 24%;">Nama & NIK</th>
                         <th style="width: 15%;">Posko</th>
-                        <th style="width: 15%;">AI Risk Level</th>
-                        <th style="width: 15%;">Clinical Priority</th>
+                        <th style="width: 14%;">AI Risk Level</th>
+                        <th style="width: 14%;">Clinical Priority</th>
                         <th style="width: 13%;">Status Review</th>
-                        <th style="width: 12%;" class="text-end">Aksi Klinis</th>
+                        <th style="width: 15%;" class="text-end">Aksi Klinis</th>
                     </tr>
                 </thead>
                 <tbody id="psychologist-tbody">
@@ -497,9 +497,9 @@
                                         </span>
                                     <?php endif; ?>
                                 </td>
-                                <td class="text-end">
+                                <td class="text-end text-nowrap">
                                     <a href="<?= site_url('/psychologist-review/' . $v['victim_id']) ?>"
-                                        class="frost-btn-primary fs-8">
+                                        class="frost-btn-primary fs-8 text-nowrap">
                                         <i class="bi bi-clipboard-pulse me-1"></i> Review MSE
                                     </a>
                                 </td>
