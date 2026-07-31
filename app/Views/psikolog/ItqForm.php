@@ -244,7 +244,8 @@
         </div>
     </div>
 
-    <form action="<?= site_url('/itq/store/' . $victim['id']) ?>" method="POST">
+    <?php $faseKe = isset($_GET['fase_ke']) ? (int)$_GET['fase_ke'] : 0; ?>
+    <form action="<?= site_url('/itq/store/' . $victim['id']) ?>?fase_ke=<?= $faseKe ?>" method="POST">
         <?= csrf_field() ?>
 
         <?php foreach ($itqQuestions as $secKey => $sec): ?>

@@ -17,12 +17,11 @@ class PsychologistReviewModel extends Model
         'mse_orientation', 'mse_insight', 'reviewed_at',
         'mse_appearance_note', 'mse_behavior_note', 'mse_speech_note', 
         'mse_mood_note', 'mse_affect_note', 'mse_thought_note', 
-        'mse_orientation_note', 'mse_insight_note', 'mse_perception', 
-        'mse_perception_note', 'risk_assessment', 'risk_assessment_note'
+        'mse_perception_note', 'risk_assessment', 'risk_assessment_note', 'fase_ke'
     ];
 
-    public function getByVictimId(int $victimId): ?array
+    public function getByVictimId(int $victimId, int $faseKe = 0): ?array
     {
-        return $this->where('victim_id', $victimId)->orderBy('reviewed_at', 'DESC')->first();
+        return $this->where('victim_id', $victimId)->where('fase_ke', $faseKe)->first();
     }
 }

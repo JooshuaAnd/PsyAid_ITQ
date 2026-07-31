@@ -13,6 +13,6 @@ class AiAssessmentModel extends Model
     protected $allowedFields    = [
         'victim_id', 'risk_level', 'confidence', 'clinical_priority',
         'kemungkinan_diagnosis', 'risiko_ptsd_berkembang', 'evidence_sources',
-        'ai_summary', 'status', 'generated_at'
+        'ai_summary', 'status', 'generated_at', 'fase_ke'
     ];
 }

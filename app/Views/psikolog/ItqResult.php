@@ -242,18 +242,48 @@ function getCriteriaClass($met) {
                         </div>
                         <hr style="opacity: 0.15">
                         <div class="row g-2">
-                            <div class="col-6 col-md-3"><span class="text-muted small">Appearance:</span><br/><strong><?= esc($psychologistReview['mse_appearance']) ?></strong></div>
-                            <div class="col-6 col-md-3"><span class="text-muted small">Behavior:</span><br/><strong><?= esc($psychologistReview['mse_behavior']) ?></strong></div>
-                            <div class="col-6 col-md-3"><span class="text-muted small">Speech:</span><br/><strong><?= esc($psychologistReview['mse_speech']) ?></strong></div>
-                            <div class="col-6 col-md-3"><span class="text-muted small">Mood:</span><br/><strong><?= esc($psychologistReview['mse_mood']) ?></strong></div>
+                            <div class="col-6 col-md-3"><span class="text-muted small">Appearance:</span><br/>
+                                <strong><?= esc($psychologistReview['mse_appearance']) ?></strong>
+                                <?php if(!empty($psychologistReview['mse_appearance_note'])): ?><br/><small class="text-muted fst-italic"><?= esc($psychologistReview['mse_appearance_note']) ?></small><?php endif; ?>
+                            </div>
+                            <div class="col-6 col-md-3"><span class="text-muted small">Behavior:</span><br/>
+                                <strong><?= esc($psychologistReview['mse_behavior']) ?></strong>
+                                <?php if(!empty($psychologistReview['mse_behavior_note'])): ?><br/><small class="text-muted fst-italic"><?= esc($psychologistReview['mse_behavior_note']) ?></small><?php endif; ?>
+                            </div>
+                            <div class="col-6 col-md-3"><span class="text-muted small">Speech:</span><br/>
+                                <strong><?= esc($psychologistReview['mse_speech']) ?></strong>
+                                <?php if(!empty($psychologistReview['mse_speech_note'])): ?><br/><small class="text-muted fst-italic"><?= esc($psychologistReview['mse_speech_note']) ?></small><?php endif; ?>
+                            </div>
+                            <div class="col-6 col-md-3"><span class="text-muted small">Mood:</span><br/>
+                                <strong><?= esc($psychologistReview['mse_mood']) ?></strong>
+                                <?php if(!empty($psychologistReview['mse_mood_note'])): ?><br/><small class="text-muted fst-italic"><?= esc($psychologistReview['mse_mood_note']) ?></small><?php endif; ?>
+                            </div>
                             
-                            <div class="col-6 col-md-3 mt-2"><span class="text-muted small">Affect:</span><br/><strong><?= esc($psychologistReview['mse_affect']) ?></strong></div>
-                            <div class="col-6 col-md-3 mt-2"><span class="text-muted small">Thought:</span><br/><strong><?= esc($psychologistReview['mse_thought']) ?></strong></div>
-                            <div class="col-6 col-md-3 mt-2"><span class="text-muted small">Orientation:</span><br/><strong><?= esc($psychologistReview['mse_orientation']) ?></strong></div>
-                            <div class="col-6 col-md-3 mt-2"><span class="text-muted small">Insight:</span><br/><strong><?= esc($psychologistReview['mse_insight']) ?></strong></div>
+                            <div class="col-6 col-md-3 mt-2"><span class="text-muted small">Affect:</span><br/>
+                                <strong><?= esc($psychologistReview['mse_affect']) ?></strong>
+                                <?php if(!empty($psychologistReview['mse_affect_note'])): ?><br/><small class="text-muted fst-italic"><?= esc($psychologistReview['mse_affect_note']) ?></small><?php endif; ?>
+                            </div>
+                            <div class="col-6 col-md-3 mt-2"><span class="text-muted small">Thought:</span><br/>
+                                <strong><?= esc($psychologistReview['mse_thought']) ?></strong>
+                                <?php if(!empty($psychologistReview['mse_thought_note'])): ?><br/><small class="text-muted fst-italic"><?= esc($psychologistReview['mse_thought_note']) ?></small><?php endif; ?>
+                            </div>
+                            <div class="col-6 col-md-3 mt-2"><span class="text-muted small">Orientation:</span><br/>
+                                <strong><?= esc($psychologistReview['mse_orientation']) ?></strong>
+                                <?php if(!empty($psychologistReview['mse_orientation_note'])): ?><br/><small class="text-muted fst-italic"><?= esc($psychologistReview['mse_orientation_note']) ?></small><?php endif; ?>
+                            </div>
+                            <div class="col-6 col-md-3 mt-2"><span class="text-muted small">Insight:</span><br/>
+                                <strong><?= esc($psychologistReview['mse_insight']) ?></strong>
+                                <?php if(!empty($psychologistReview['mse_insight_note'])): ?><br/><small class="text-muted fst-italic"><?= esc($psychologistReview['mse_insight_note']) ?></small><?php endif; ?>
+                            </div>
                             
-                            <div class="col-6 col-md-3 mt-2"><span class="text-muted small">Perception:</span><br/><strong><?= esc($psychologistReview['mse_perception'] ?? 'Normal') ?></strong></div>
-                            <div class="col-6 col-md-3 mt-2"><span class="text-muted small text-danger">Risk Assessment:</span><br/><strong class="text-danger"><?= esc($psychologistReview['risk_assessment'] ?? 'Aman') ?></strong></div>
+                            <div class="col-6 col-md-3 mt-2"><span class="text-muted small">Perception:</span><br/>
+                                <strong><?= esc($psychologistReview['mse_perception'] ?? 'Normal') ?></strong>
+                                <?php if(!empty($psychologistReview['mse_perception_note'])): ?><br/><small class="text-muted fst-italic"><?= esc($psychologistReview['mse_perception_note']) ?></small><?php endif; ?>
+                            </div>
+                            <div class="col-6 col-md-3 mt-2"><span class="text-muted small text-danger">Risk Assessment:</span><br/>
+                                <strong class="text-danger"><?= esc($psychologistReview['risk_assessment'] ?? 'Aman') ?></strong>
+                                <?php if(!empty($psychologistReview['risk_assessment_note'])): ?><br/><small class="text-danger fst-italic"><?= esc($psychologistReview['risk_assessment_note']) ?></small><?php endif; ?>
+                            </div>
                         </div>
                     <?php else: ?>
                         <p class="text-muted small">Belum ada review MSE Psikolog yang disimpan.</p>

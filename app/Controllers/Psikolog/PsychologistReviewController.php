@@ -18,6 +18,8 @@ class PsychologistReviewController extends Controller
      */
     public function show($victimId)
     {
+        $faseKe = (int) $this->request->getGet('fase_ke') ?: 0;
+
         $db      = \Config\Database::connect();
         $builder = $db->table('victims');
         $builder->select('
@@ -45,8 +47,8 @@ class PsychologistReviewController extends Controller
         $disaster     = $disasterModel->getByVictimId((int) $victimId);
         $psychHist    = $psychModel->getByVictimId((int) $victimId);
         $screening    = $screeningModel->getByVictimId((int) $victimId);
-        $aiAssessment = $aiModel->where('victim_id', $victimId)->first();
-        $review       = $reviewModel->getByVictimId((int) $victimId);
+        $aiAssessment = $aiModel->where('victim_id', $victimId)->where('fase_ke', $faseKe)->first();
+        $review       = $reviewModel->getByVictimId((int) $victimId, $faseKe);
 
         $savedDiagnoses = [];
         if (! empty($psychHist['diagnosis_sebelumnya'])) {
@@ -65,6 +67,7 @@ class PsychologistReviewController extends Controller
             'screening'      => $screening,
             'aiAssessment'   => $aiAssessment,
             'review'         => $review,
+            'fase_ke'        => $faseKe,
         ];
 
         return view('psikolog/Review', $data);
@@ -75,6 +78,8 @@ class PsychologistReviewController extends Controller
      */
     public function store($victimId)
     {
+        $faseKe = (int) $this->request->getGet('fase_ke') ?: 0;
+
         $rules = [
             'chief_complaint' => 'required|min_length[5]',
             'mse_appearance'  => 'required',
@@ -94,11 +99,12 @@ class PsychologistReviewController extends Controller
         }
 
         $reviewModel = new PsychologistReviewModel();
-        $existing    = $reviewModel->getByVictimId((int) $victimId);
+        $existing    = $reviewModel->getByVictimId((int) $victimId, $faseKe);
 
         $data = [
             'victim_id'            => (int) $victimId,
             'psikolog_id'          => session()->get('user_id') ?? 4,
+            'fase_ke'              => $faseKe,
             'chief_complaint'      => $this->request->getPost('chief_complaint'),
             'mse_appearance'       => $this->request->getPost('mse_appearance'),
             'mse_appearance_note'  => $this->request->getPost('mse_appearance_note'),
@@ -129,7 +135,7 @@ class PsychologistReviewController extends Controller
             $reviewModel->insert($data);
         }
 
-        return redirect()->to('/itq/form/' . $victimId)
+        return redirect()->to('/itq/form/' . $victimId . '?fase_ke=' . $faseKe)
             ->with('success', 'Hasil Review Chief Complaint & MSE berhasil disimpan. Silakan lanjutkan pengisian Instrumen ITQ.');
     }
 }

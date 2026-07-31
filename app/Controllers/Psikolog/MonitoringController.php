@@ -49,33 +49,41 @@ class MonitoringController extends Controller
         }
 
         $clinicalModel = new ClinicalActionModel();
-        $clinicalAction = $clinicalModel->getByVictimId((int) $victimId);
+        $clinicalActions = $clinicalModel->where('victim_id', $victimId)->findAll();
+        $caByFase = [];
+        foreach ($clinicalActions as $ca) $caByFase[$ca['fase_ke']] = $ca;
 
         $itqModel = new ItqResultModel();
-        $itqResult = $itqModel->getByVictimId((int) $victimId);
+        $itqResults = $itqModel->where('victim_id', $victimId)->findAll();
+        $itqByFase = [];
+        foreach ($itqResults as $ir) $itqByFase[$ir['fase_ke']] = $ir;
 
-        $followupModel = new LongitudinalFollowupModel();
-        $followups = $followupModel->getFollowupsByVictim((int) $victimId);
+        $aiModel = new \App\Models\AiAssessmentModel();
+        $aiAssessments = $aiModel->where('victim_id', $victimId)->findAll();
+        $aiByFase = [];
+        foreach ($aiAssessments as $ai) $aiByFase[$ai['fase_ke']] = $ai;
 
-        // Organize follow-ups by Follow up Ke (1, 2, 3)
-        $organizedFollowups = [
-            1 => null,
-            2 => null,
-            3 => null,
-        ];
+        $reviewModel = new \App\Models\PsychologistReviewModel();
+        $psychologistReviews = $reviewModel->where('victim_id', $victimId)->findAll();
+        $reviewByFase = [];
+        foreach ($psychologistReviews as $pr) $reviewByFase[$pr['fase_ke']] = $pr;
 
-        foreach ($followups as $f) {
-            if ($f['hari'] == 7) $organizedFollowups[1] = $f;
-            else if ($f['hari'] == 14) $organizedFollowups[2] = $f;
-            else if ($f['hari'] == 30) $organizedFollowups[3] = $f;
-        }
+        // Final decision (fase_ke = 99)
+        $finalDecision = $caByFase[99] ?? null;
+
+        // Fetch Volunteer Screening Data
+        $screeningModel = new \App\Models\VolunteerScreeningModel();
+        $volunteerScreening = $screeningModel->getByVictimId((int) $victimId);
 
         $data = [
             'title'              => 'Detail Monitoring & Follow-Up — ' . $victim['nama'],
             'victim'             => $victim,
-            'clinicalAction'     => $clinicalAction,
-            'itqResult'          => $itqResult,
-            'organizedFollowups' => $organizedFollowups,
+            'caByFase'           => $caByFase,
+            'itqByFase'          => $itqByFase,
+            'aiByFase'           => $aiByFase,
+            'reviewByFase'       => $reviewByFase,
+            'finalDecision'      => $finalDecision,
+            'volunteerScreening' => $volunteerScreening,
         ];
 
         return view('psikolog/MonitoringDetail', $data);
@@ -93,32 +101,27 @@ class MonitoringController extends Controller
         return $this->response->setJSON(['status' => 'error', 'message' => 'Gagal menghasilkan summary AI.']);
     }
 
-    public function storeFollowUp($victimId)
+    public function storeFinalDecision($victimId)
     {
-        $hari = (int) $this->request->getPost('hari');
-        $ptsd = (int) $this->request->getPost('ptsd_score');
-        $dso = (int) $this->request->getPost('dso_score');
-        $catatan = $this->request->getPost('catatan_psikolog');
+        $statusAkhir = $this->request->getPost('status_akhir');
+        $catatanAkhir = $this->request->getPost('catatan_akhir');
+
+        $clinicalModel = new ClinicalActionModel();
+        $existing = $clinicalModel->where('victim_id', $victimId)->where('fase_ke', 99)->first();
 
         $data = [
             'victim_id' => $victimId,
-            'hari' => $hari,
-            'ptsd_score' => $ptsd,
-            'dso_score' => $dso,
-            'catatan_psikolog' => $catatan,
-            'recorded_at' => date('Y-m-d H:i:s'),
+            'fase_ke' => 99,
+            'status_akhir' => $statusAkhir,
+            'catatan_akhir' => $catatanAkhir,
         ];
 
-        $followupModel = new LongitudinalFollowupModel();
-        // Check if exists
-        $existing = $followupModel->where('victim_id', $victimId)->where('hari', $hari)->first();
-
         if ($existing) {
-            $followupModel->update($existing['id'], $data);
+            $clinicalModel->update($existing['id'], $data);
         } else {
-            $followupModel->insert($data);
+            $clinicalModel->insert($data);
         }
 
-        return redirect()->back()->with('success', 'Data follow-up ke-' . $hari . ' berhasil disimpan.');
+        return redirect()->back()->with('success', 'Keputusan akhir berhasil disimpan.');
     }
 }

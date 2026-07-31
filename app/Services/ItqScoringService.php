@@ -44,10 +44,10 @@ class ItqScoringService
         24 => ['severity' => 'Very Severe', 'percentile' => 99.90],
     ];
 
-    public function generate(int $victimId): ?array
+    public function generate(int $victimId, int $faseKe = 0): ?array
     {
         $itqModel = new ItqAnswersModel();
-        $answers  = $itqModel->getByVictimId($victimId);
+        $answers  = $itqModel->getByVictimId($victimId, $faseKe);
 
         if (! $answers) {
             return null; // No ITQ answers recorded yet
@@ -95,7 +95,7 @@ class ItqScoringService
 
         // 7. Save/Update record in itq_result
         $resultModel = new ItqResultModel();
-        $existing    = $resultModel->getByVictimId($victimId);
+        $existing    = $resultModel->getByVictimId($victimId, $faseKe);
 
         $resultData = [
             'victim_id'         => $victimId,
@@ -110,6 +110,7 @@ class ItqScoringService
             'final_diagnosis'   => $finalDiagnosis,
             'reviewed_by'       => session()->get('user_id') ?? 4,
             'reviewed_at'       => date('Y-m-d H:i:s'),
+            'fase_ke'           => $faseKe,
         ];
 
         if ($existing) {
@@ -127,11 +128,11 @@ class ItqScoringService
      * Calculates detailed subscale scores, percentiles, descriptors, and criteria
      * for displaying the 3 tables (Overall, PTSD Symptoms, DSO Symptoms).
      */
-    public function getDetailedSubScores(int $victimId): ?array
+    public function getDetailedSubScores(int $victimId, int $faseKe = 0): ?array
     {
         $itqModel = new ItqAnswersModel();
-        // Get the latest answer
-        $answers = $itqModel->where('victim_id', $victimId)->orderBy('created_at', 'DESC')->first();
+        // Get the specific answer
+        $answers = $itqModel->where('victim_id', $victimId)->where('fase_ke', $faseKe)->first();
         if (!$answers) return null;
 
         // Subscale raw scores

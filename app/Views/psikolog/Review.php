@@ -293,7 +293,8 @@
             </div>
         </div>
 
-        <form action="<?= site_url('/psychologist-review/store/' . $victim['id']) ?>" method="POST">
+        <?php $faseKe = isset($_GET['fase_ke']) ? (int)$_GET['fase_ke'] : 0; ?>
+        <form action="<?= site_url('/psychologist-review/store/' . $victim['id']) ?>?fase_ke=<?= $faseKe ?>" method="POST">
             <?= csrf_field() ?>
 
             <!-- Chief Complaint -->

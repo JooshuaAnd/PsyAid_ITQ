@@ -13,11 +13,12 @@ class ClinicalActionModel extends Model
     protected $allowedFields    = [
         'victim_id', 'psikolog_id', 'ai_recommendation_approved',
         'priority_override', 'diagnosis_sementara', 'intervensi',
-        'catatan_klinis', 'jadwal_followup', 'status'
+        'catatan_klinis', 'jadwal_followup', 'status',
+        'fase_ke', 'status_akhir', 'catatan_akhir'
     ];
 
-    public function getByVictimId(int $victimId): ?array
+    public function getByVictimId(int $victimId, int $faseKe = 0): ?array
     {
-        return $this->where('victim_id', $victimId)->first();
+        return $this->where('victim_id', $victimId)->where('fase_ke', $faseKe)->first();
     }
 }

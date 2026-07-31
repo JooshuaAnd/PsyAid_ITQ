@@ -19,7 +19,7 @@ use Config\Services;
  */
 class AiAssessmentService
 {
-    public function calculateRisk(int $victimId): array
+    public function calculateRisk(int $victimId, int $faseKe = 0): array
     {
         // 1. Load victim records
         $victimModel    = new VictimModel();
@@ -32,7 +32,7 @@ class AiAssessmentService
         $screening = $screeningModel->getByVictimId($victimId) ?? [];
         $disaster  = $disasterModel->getByVictimId($victimId) ?? [];
         $psych     = $psychModel->getByVictimId($victimId) ?? [];
-        $itqResult = $itqResultModel->getByVictimId($victimId) ?? [];
+        $itqResult = $itqResultModel->getByVictimId($victimId, $faseKe) ?? [];
 
         // 2. Perform RAG Knowledge Base Retrieval
         $ragService   = new ClinicalRagKnowledgeService();
@@ -59,9 +59,11 @@ class AiAssessmentService
             $assessmentData['victim_id'] = $victimId;
         }
 
+        $assessmentData['fase_ke'] = $faseKe;
+
         // 4. Save/Update record in ai_assessment table
         $aiModel  = new AiAssessmentModel();
-        $existing = $aiModel->where('victim_id', $victimId)->first();
+        $existing = $aiModel->where('victim_id', $victimId)->where('fase_ke', $faseKe)->first();
 
         if ($existing) {
             $aiModel->update($existing['id'], $assessmentData);

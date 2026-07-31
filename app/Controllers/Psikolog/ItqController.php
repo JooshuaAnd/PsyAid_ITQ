@@ -18,6 +18,8 @@ class ItqController extends Controller
      */
     public function form($victimId)
     {
+        $faseKe = (int) $this->request->getGet('fase_ke') ?: 0;
+
         $victimModel = new VictimModel();
         $victim      = $victimModel->find($victimId);
 
@@ -26,7 +28,7 @@ class ItqController extends Controller
         }
 
         $itqModel  = new ItqAnswersModel();
-        $existing  = $itqModel->getByVictimId((int) $victimId);
+        $existing  = $itqModel->getByVictimId((int) $victimId, $faseKe);
 
         // Official ITQ Questions (Exact wording)
         $itqQuestions = [
@@ -101,9 +103,10 @@ class ItqController extends Controller
         ];
 
         $data = [
-            'title'        => 'Form ITQ (International Trauma Questionnaire) — ' . $victim['nama'],
+            'title'        => 'Form ITQ ' . ($faseKe > 0 ? '(Follow-Up ' . $faseKe . ') ' : '') . '— ' . $victim['nama'],
             'victim'       => $victim,
             'existing'     => $existing,
+            'fase_ke'      => $faseKe,
             'itqQuestions' => $itqQuestions,
         ];
 
@@ -115,6 +118,8 @@ class ItqController extends Controller
      */
     public function store($victimId)
     {
+        $faseKe = (int) $this->request->getGet('fase_ke') ?: 0;
+        
         $rules = [];
         for ($i = 1; $i <= 18; $i++) {
             $rules['item_' . $i] = [
@@ -130,11 +135,12 @@ class ItqController extends Controller
         }
 
         $itqModel = new ItqAnswersModel();
-        $existing = $itqModel->getByVictimId((int) $victimId);
+        $existing = $itqModel->getByVictimId((int) $victimId, $faseKe);
 
         $data = [
             'victim_id'   => (int) $victimId,
             'psikolog_id' => session()->get('user_id') ?? 4,
+            'fase_ke'     => $faseKe,
             'created_at'  => date('Y-m-d H:i:s'),
         ];
 
@@ -150,9 +156,9 @@ class ItqController extends Controller
 
         // Trigger Scoring Engine (SEGMEN 13) and redirect to ITQ Result Page
         $service = new ItqScoringService();
-        $service->generate((int) $victimId);
+        $service->generate((int) $victimId, $faseKe);
 
-        return redirect()->to('/itq/result/' . $victimId)
+        return redirect()->to('/itq/result/' . $victimId . '?fase_ke=' . $faseKe)
             ->with('success', 'Instrumen ITQ berhasil disimpan dan dihitung secara otomatis.');
     }
 
@@ -161,6 +167,8 @@ class ItqController extends Controller
      */
     public function result($victimId)
     {
+        $faseKe = (int) $this->request->getGet('fase_ke') ?: 0;
+
         $victimModel = new VictimModel();
         $victim      = $victimModel->find($victimId);
 
@@ -170,7 +178,7 @@ class ItqController extends Controller
 
         // Ensure ITQ score is calculated
         $scoringService = new ItqScoringService();
-        $itqResult      = $scoringService->generate((int) $victimId);
+        $itqResult      = $scoringService->generate((int) $victimId, $faseKe);
 
         if (! $itqResult) {
             return redirect()->to('/itq/form/' . $victimId)->with('error', 'Silakan isi form ITQ terlebih dahulu.');
@@ -183,10 +191,10 @@ class ItqController extends Controller
 
         // Fetch existing Clinical Action if any
         $clinicalModel  = new ClinicalActionModel();
-        $clinicalAction = $clinicalModel->getByVictimId((int) $victimId);
+        $clinicalAction = $clinicalModel->getByVictimId((int) $victimId, $faseKe);
 
         // Fetch Detailed Sub Scores for Tables
-        $detailedSubScores = $scoringService->getDetailedSubScores((int) $victimId);
+        $detailedSubScores = $scoringService->getDetailedSubScores((int) $victimId, $faseKe);
 
         // Fetch Volunteer Screening
         $screeningModel = new \App\Models\VolunteerScreeningModel();
@@ -194,15 +202,16 @@ class ItqController extends Controller
 
         // Fetch AI Assessment
         $aiModel = new \App\Models\AiAssessmentModel();
-        $aiAssessment = $aiModel->where('victim_id', $victimId)->first();
+        $aiAssessment = $aiModel->where('victim_id', $victimId)->where('fase_ke', $faseKe)->first();
 
         // Fetch Psychologist Review
         $db = \Config\Database::connect();
-        $psychologistReview = $db->table('psychologist_review')->where('victim_id', $victimId)->get()->getRowArray();
+        $psychologistReview = $db->table('psychologist_review')->where('victim_id', $victimId)->where('fase_ke', $faseKe)->get()->getRowArray();
 
         $data = [
-            'title'              => 'Hasil ITQ Assessment & Grafik — ' . $victim['nama'],
+            'title'              => 'Hasil ITQ Assessment ' . ($faseKe > 0 ? '(Follow-Up ' . $faseKe . ')' : '') . ' — ' . $victim['nama'],
             'victim'             => $victim,
+            'fase_ke'            => $faseKe,
             'itqResult'          => $itqResult,
             'detailedSubScores'  => $detailedSubScores,
             'clinicalAction'     => $clinicalAction,
