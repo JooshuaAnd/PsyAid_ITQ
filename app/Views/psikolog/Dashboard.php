@@ -289,9 +289,9 @@
                 <div class="text-secondary fs-8 fw-bold text-uppercase" style="letter-spacing: 0.03em;">Total Ditugaskan
                     Kepada Anda</div>
                 <hr class="my-2 opacity-25" style="color: #059669;" />
-                <div class="fs-3 fw-bold mb-1 tabular-nums" style="color: #064e3b;"><?= count($assignedVictims) ?>
+                <div class="fs-3 fw-bold mb-1 tabular-nums" style="color: #064e3b;"><?= $activeAssignmentCount ?? 0 ?>
                     Penyintas</div>
-                <div class="fs-9 text-muted fw-semibold">Penugasan Active</div>
+                <div class="fs-9 text-muted fw-semibold">Penugasan Aktif</div>
             </div>
         </div>
 
@@ -305,7 +305,7 @@
                     return !empty($v['review_id']);
                 }));
                 ?>
-                <div class="fs-3 fw-bold mb-1 tabular-nums text-success"><?= $reviewedCount ?> Penyintas</div>
+                <div class="fs-3 fw-bold mb-1 tabular-nums text-success"><?= $reviewedCount ?> Kasus</div>
                 <div class="fs-9 text-muted fw-semibold">Status MSE Selesai</div>
             </div>
         </div>
@@ -403,89 +403,96 @@
 
     <!-- Manajemen Assessment (Categorized Card Layout) -->
     <?php
-        $aiReviewVictims = array_filter($assignedVictims, fn($v) => empty($v['review_id']));
-        $psychReviewVictims = array_filter($assignedVictims, fn($v) => !empty($v['review_id']) && empty($v['clinical_action_id']));
-        $followUpVictims = array_filter($assignedVictims, fn($v) => !empty($v['clinical_action_id']));
-        
-        $categories = [
-            ['title' => 'AI Review (Menunggu Review MSE)', 'data' => $aiReviewVictims, 'icon' => 'bi-robot text-danger', 'badge' => 'AI Generated', 'badge_class' => 'bg-danger-subtle text-danger'],
-            ['title' => 'Review by Psikolog (Menunggu Tindakan)', 'data' => $psychReviewVictims, 'icon' => 'bi-clipboard-pulse text-warning', 'badge' => 'Reviewed', 'badge_class' => 'bg-warning-subtle text-warning-emphasis'],
-            ['title' => 'Follow Up (Dalam Pantauan)', 'data' => $followUpVictims, 'icon' => 'bi-heart-pulse text-success', 'badge' => 'Follow Up', 'badge_class' => 'bg-success-subtle text-success']
-        ];
+    $aiReviewVictims = array_filter($assignedVictims, fn($v) => empty($v['review_id']));
+    $psychReviewVictims = array_filter($assignedVictims, fn($v) => !empty($v['review_id']) && empty($v['clinical_action_id']));
+    $followUpVictims = array_filter($assignedVictims, fn($v) => !empty($v['clinical_action_id']));
+
+    $categories = [
+        ['title' => 'AI Review (Menunggu Review MSE)', 'data' => $aiReviewVictims, 'icon' => 'bi-robot text-danger', 'badge' => 'AI Generated', 'badge_class' => 'bg-danger-subtle text-danger'],
+        ['title' => 'Review by Psikolog (Menunggu Tindakan)', 'data' => $psychReviewVictims, 'icon' => 'bi-clipboard-pulse text-warning', 'badge' => 'Reviewed', 'badge_class' => 'bg-warning-subtle text-warning-emphasis'],
+        ['title' => 'Follow Up (Dalam Pantauan)', 'data' => $followUpVictims, 'icon' => 'bi-heart-pulse text-success', 'badge' => 'Follow Up', 'badge_class' => 'bg-success-subtle text-success']
+    ];
     ?>
 
-    <?php foreach($categories as $idx => $cat): ?>
-    <div class="card posko-item-card p-4 mb-4">
-        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3 border-bottom pb-3">
-            <h5 class="fw-bold mb-0 d-flex align-items-center" style="color: #064e3b;">
-                <i class="bi <?= $cat['icon'] ?> me-2 fs-5"></i> Kategori: <?= $cat['title'] ?>
-            </h5>
-            <span class="badge px-3 py-1.5 fs-8"
-                style="background-color: rgba(6, 95, 70, 0.08); color: #047857; border: 1px solid rgba(6, 95, 70, 0.18);">
-                <?= count($cat['data']) ?> Penyintas
-            </span>
-        </div>
+    <?php foreach ($categories as $idx => $cat): ?>
+        <div class="card posko-item-card p-4 mb-4">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3 border-bottom pb-3">
+                <h5 class="fw-bold mb-0 d-flex align-items-center" style="color: #064e3b;">
+                    <i class="bi <?= $cat['icon'] ?> me-2 fs-5"></i> Kategori: <?= $cat['title'] ?>
+                </h5>
+                <span class="badge px-3 py-1.5 fs-8"
+                    style="background-color: rgba(6, 95, 70, 0.08); color: #047857; border: 1px solid rgba(6, 95, 70, 0.18);">
+                    <?= count($cat['data']) ?> Kasus
+                </span>
+            </div>
 
-        <div class="row g-4" id="category-card-container-<?= $idx ?>">
-            <?php if (empty($cat['data'])): ?>
-                <div class="col-12 empty-state">
-                    <div class="text-center py-4 text-muted border rounded" style="background-color: #f8fafc;">
-                        <i class="bi bi-inbox fs-3 d-block mb-1 text-emerald-600"></i>
-                        Tidak ada penyintas pada kategori ini.
-                    </div>
-                </div>
-            <?php else: ?>
-                <?php foreach ($cat['data'] as $v): ?>
-                    <div class="col-12 col-md-6 col-lg-4 category-card-item-<?= $idx ?>">
-                        <div class="p-3 h-100 d-flex flex-column" style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 8px !important; box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <div>
-                                    <h6 class="fw-bold mb-1" style="color: #064e3b;"><?= esc($v['victim_nama']) ?></h6>
-                                    <div class="fs-8 text-muted">
-                                        <?= esc($v['jenis_kelamin']) ?> • <?= esc($v['umur']) ?> Thn • NIK: <?= esc($v['nik'] ?? '-') ?>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="small text-muted mb-3 fs-8">
-                                <i class="bi bi-geo-alt me-1 text-emerald-600"></i> <?= esc($v['posko_name']) ?>
-                            </div>
-
-                            <div class="mb-3 mt-auto">
-                                <?php if ($v['risk_level'] === 'high'): ?>
-                                    <span class="badge bg-danger-subtle text-danger border border-danger-subtle fs-8 px-2.5 py-1 fw-bold">
-                                        <i class="bi bi-exclamation-triangle-fill me-1"></i> HIGH RISK
-                                    </span>
-                                <?php elseif ($v['risk_level'] === 'medium'): ?>
-                                    <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle fs-8 px-2.5 py-1 fw-bold">
-                                        <i class="bi bi-dash-circle-fill me-1"></i> MEDIUM RISK
-                                    </span>
-                                <?php else: ?>
-                                    <span class="badge bg-success-subtle text-success border border-success-subtle fs-8 px-2.5 py-1 fw-bold">
-                                        <i class="bi bi-check-circle-fill me-1"></i> LOW RISK
-                                    </span>
-                                <?php endif; ?>
-                            </div>
-                            
-                            <div class="d-flex align-items-center justify-content-between mt-3 border-top pt-3">
-                                <div>
-                                    <span class="badge <?= $cat['badge_class'] ?> border fs-8 px-2.5 py-1">
-                                        <i class="bi <?= str_replace('text-', '', explode(' ', $cat['icon'])[0]) ?> me-1"></i> <?= $cat['badge'] ?>
-                                    </span>
-                                </div>
-                                <a href="<?= site_url('/psikolog/assessment-history/detail/' . $v['victim_id']) ?>" class="frost-btn-primary fs-8 text-nowrap">
-                                    Detail <i class="bi bi-arrow-right ms-1"></i>
-                                </a>
-                            </div>
+            <div class="row g-4" id="category-card-container-<?= $idx ?>">
+                <?php if (empty($cat['data'])): ?>
+                    <div class="col-12 empty-state">
+                        <div class="text-center py-4 text-muted border rounded" style="background-color: #f8fafc;">
+                            <i class="bi bi-inbox fs-3 d-block mb-1 text-emerald-600"></i>
+                            Tidak ada penyintas pada kategori ini.
                         </div>
                     </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </div>
+                <?php else: ?>
+                    <?php foreach ($cat['data'] as $v): ?>
+                        <div class="col-12 col-md-6 col-lg-4 category-card-item-<?= $idx ?>">
+                            <div class="p-3 h-100 d-flex flex-column"
+                                style="background: #ffffff; border: 1.5px solid #e2e8f0; border-radius: 8px !important; box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <div>
+                                        <h6 class="fw-bold mb-1" style="color: #064e3b;"><?= esc($v['victim_nama']) ?></h6>
+                                        <div class="fs-8 text-muted">
+                                            <?= esc($v['jenis_kelamin']) ?> • <?= esc($v['umur']) ?> Thn • NIK:
+                                            <?= esc($v['nik'] ?? '-') ?>
+                                        </div>
+                                    </div>
+                                </div>
 
-        <!-- Pagination -->
-        <div id="category-pagination-container-<?= $idx ?>" class="frost-pagination-wrapper d-none"></div>
-    </div>
+                                <div class="small text-muted mb-3 fs-8">
+                                    <i class="bi bi-geo-alt me-1 text-emerald-600"></i> <?= esc($v['posko_name']) ?>
+                                </div>
+
+                                <div class="mb-3 mt-auto">
+                                    <?php if ($v['risk_level'] === 'high'): ?>
+                                        <span
+                                            class="badge bg-danger-subtle text-danger border border-danger-subtle fs-8 px-2.5 py-1 fw-bold">
+                                            <i class="bi bi-exclamation-triangle-fill me-1"></i> HIGH RISK
+                                        </span>
+                                    <?php elseif ($v['risk_level'] === 'medium'): ?>
+                                        <span
+                                            class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle fs-8 px-2.5 py-1 fw-bold">
+                                            <i class="bi bi-dash-circle-fill me-1"></i> MEDIUM RISK
+                                        </span>
+                                    <?php else: ?>
+                                        <span
+                                            class="badge bg-success-subtle text-success border border-success-subtle fs-8 px-2.5 py-1 fw-bold">
+                                            <i class="bi bi-check-circle-fill me-1"></i> LOW RISK
+                                        </span>
+                                    <?php endif; ?>
+                                </div>
+
+                                <div class="d-flex align-items-center justify-content-between mt-3 border-top pt-3">
+                                    <div>
+                                        <span class="badge <?= $cat['badge_class'] ?> border fs-8 px-2.5 py-1">
+                                            <i class="bi <?= str_replace('text-', '', explode(' ', $cat['icon'])[0]) ?> me-1"></i>
+                                            <?= $cat['badge'] ?>
+                                        </span>
+                                    </div>
+                                    <a href="<?= site_url('/psikolog/assessment-history/detail/' . $v['victim_id']) ?>"
+                                        class="frost-btn-primary fs-8 text-nowrap">
+                                        Detail <i class="bi bi-arrow-right ms-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </div>
+
+            <!-- Pagination -->
+            <div id="category-pagination-container-<?= $idx ?>" class="frost-pagination-wrapper d-none"></div>
+        </div>
     <?php endforeach; ?>
 
 </div>
@@ -568,8 +575,8 @@
         }
 
         initClientPagination('personnel-tbody', 'personnel-pagination-container', 10, 'tr');
-        <?php foreach($categories as $idx => $cat): ?>
-        initClientPagination('category-card-container-<?= $idx ?>', 'category-pagination-container-<?= $idx ?>', 6, '.category-card-item-<?= $idx ?>');
+        <?php foreach ($categories as $idx => $cat): ?>
+            initClientPagination('category-card-container-<?= $idx ?>', 'category-pagination-container-<?= $idx ?>', 6, '.category-card-item-<?= $idx ?>');
         <?php endforeach; ?>
     });
 </script>

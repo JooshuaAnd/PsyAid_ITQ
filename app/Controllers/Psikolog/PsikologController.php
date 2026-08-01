@@ -36,6 +36,21 @@ class PsikologController extends Controller
 
         $assignedVictims = $builder->get()->getResultArray();
 
+        // psychologist_assignment menyimpan mapping penugasan yang sedang berlaku.
+        // Hitung penyintas langsung dari mapping tersebut agar record progres pada
+        // tabel assessment tidak menggandakan total penugasan.
+        $activeAssignment = $db->table('psychologist_assignment pa')
+            ->select("COUNT(DISTINCT COALESCE(
+                NULLIF(TRIM(victims.nik), ''),
+                CONCAT('__victim_', victims.id)
+            )) AS total", false)
+            ->join('victims', 'victims.id = pa.victim_id')
+            ->where('pa.psikolog_id', $psychId)
+            ->get()
+            ->getRowArray();
+
+        $activeAssignmentCount = (int) ($activeAssignment['total'] ?? 0);
+
         // Fetch active personnel for assigned poskos
         $poskoIds = array_filter(array_unique(array_column($assignedVictims, 'posko_id')));
         $userPoskoId = session()->get('posko_id');
@@ -53,8 +68,9 @@ class PsikologController extends Controller
 
         $data = [
             'title'           => 'Dashboard Clinical Workspace Psikolog — PsyAid',
-            'assignedVictims' => $assignedVictims,
-            'personnel'       => $personnel,
+            'assignedVictims'       => $assignedVictims,
+            'activeAssignmentCount' => $activeAssignmentCount,
+            'personnel'             => $personnel,
         ];
 
         return view('psikolog/Dashboard', $data);
