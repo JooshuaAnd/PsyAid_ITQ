@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#064e3b">
+  <title>PsyAid sedang offline</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --forest: #064e3b;
+      --emerald: #059669;
+      --mint: #d1fae5;
+      --mist: #f4fbf7;
+      --ink: #0f172a;
+      --muted: #526173;
+      --amber: #d97706;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 1.25rem;
+      font-family: "Plus Jakarta Sans", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 18%, rgba(16, 185, 129, 0.15), transparent 28rem),
+        linear-gradient(145deg, #f8fffb 0%, var(--mist) 52%, #e7f7ef 100%);
+    }
+
+    .offline-shell {
+      width: min(100%, 40rem);
+      overflow: hidden;
+      border: 1px solid rgba(5, 150, 105, 0.18);
+      border-radius: 1.5rem;
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 24px 70px rgba(6, 78, 59, 0.14);
+    }
+
+    .signal-band {
+      height: 0.5rem;
+      background: linear-gradient(90deg, var(--forest), var(--emerald) 48%, #6ee7b7);
+    }
+
+    .content { padding: clamp(1.5rem, 6vw, 3.25rem); }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--forest);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .brand img {
+      width: 2.75rem;
+      height: 2.75rem;
+      border-radius: 50%;
+    }
+
+    .status-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 2.25rem;
+      padding: 0.45rem 0.7rem;
+      border-radius: 999px;
+      background: #fffbeb;
+      color: #92400e;
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .status-label::before {
+      content: '';
+      width: 0.52rem;
+      height: 0.52rem;
+      border-radius: 50%;
+      background: var(--amber);
+      box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.13);
+    }
+
+    h1 {
+      max-width: 12ch;
+      margin: 1rem 0 0.85rem;
+      color: var(--forest);
+      font-size: clamp(2rem, 8vw, 3.45rem);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+    }
+
+    .lead {
+      max-width: 52ch;
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(0.95rem, 2.5vw, 1.08rem);
+      line-height: 1.75;
+    }
+
+    .privacy-note {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.8rem;
+      margin: 1.6rem 0;
+      padding: 1rem;
+      border: 1px solid rgba(5, 150, 105, 0.18);
+      border-radius: 1rem;
+      background: var(--mist);
+    }
+
+    .privacy-note svg {
+      width: 1.4rem;
+      color: var(--emerald);
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .privacy-note strong {
+      display: block;
+      margin-bottom: 0.2rem;
+      color: var(--forest);
+      font-size: 0.9rem;
+    }
+
+    .privacy-note span {
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    button {
+      width: 100%;
+      min-height: 3.2rem;
+      border: 0;
+      border-radius: 0.9rem;
+      background: linear-gradient(135deg, var(--forest), #047857);
+      color: #fff;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 12px 25px rgba(6, 78, 59, 0.2);
+    }
+
+    button:hover { filter: brightness(1.06); }
+    button:focus-visible { outline: 3px solid #6ee7b7; outline-offset: 3px; }
+
+    .connection-hint {
+      margin: 0.8rem 0 0;
+      color: #64748b;
+      font-size: 0.75rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <main class="offline-shell">
+    <div class="signal-band" aria-hidden="true"></div>
+    <div class="content">
+      <div class="brand">
+        <img src="/icons/pwa-192x192.png" alt="">
+        <span>PsyAid</span>
+      </div>
+
+      <div class="status-label">Koneksi terputus</div>
+      <h1>Perangkat sedang offline.</h1>
+      <p class="lead">Sambungkan perangkat ke internet untuk memuat informasi operasional dan data penyintas terbaru.</p>
+
+      <div class="privacy-note">
+        <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.6 2.8 8.2 7 10 4.2-1.8 7-5.4 7-10V6l-7-3Z"/><path d="m9.5 12 1.7 1.7 3.6-4"/></svg>
+        <div>
+          <strong>Data klinis tetap aman</strong>
+          <span>PsyAid tidak menyimpan halaman pasien, respons API, atau formulir klinis di cache perangkat.</span>
+        </div>
+      </div>
+
+      <button type="button" onclick="window.location.reload()">Coba hubungkan kembali</button>
+      <p class="connection-hint" id="connection-hint">Halaman akan dimuat dari server setelah koneksi tersedia.</p>
+    </div>
+  </main>
+
+  <script>
+    window.addEventListener('online', function () {
+      document.getElementById('connection-hint').textContent = 'Koneksi pulih. Memuat PsyAid…';
+      window.location.reload();
+    });
+  </script>
+</body>
+</html>

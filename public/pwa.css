@@ -1,0 +1,188 @@
+.pwa-control-cluster {
+  --pwa-forest: #064e3b;
+  --pwa-emerald: #059669;
+  --pwa-mist: #ecfdf5;
+  --pwa-ink: #0f172a;
+  --pwa-amber: #d97706;
+  position: fixed;
+  right: 1.125rem;
+  bottom: 1.125rem;
+  z-index: 2000;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.625rem;
+  font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
+  pointer-events: none;
+}
+
+.pwa-public-landing .pwa-control-cluster {
+  right: auto;
+  left: 1.125rem;
+  align-items: flex-start;
+}
+
+.pwa-install-button,
+.pwa-network-status {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.78rem;
+  font-weight: 750;
+  letter-spacing: -0.01em;
+  box-shadow: 0 10px 26px rgba(6, 78, 59, 0.16);
+  backdrop-filter: blur(14px) saturate(145%);
+  -webkit-backdrop-filter: blur(14px) saturate(145%);
+  pointer-events: auto;
+}
+
+.pwa-install-button {
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 2.75rem;
+  border: 1px solid rgba(167, 243, 208, 0.72);
+  border-radius: 0.875rem;
+  padding: 0;
+  background: linear-gradient(145deg, var(--pwa-emerald), var(--pwa-forest));
+  color: #fff;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease, opacity 180ms ease;
+}
+
+.pwa-install-button:hover {
+  transform: translateY(-2px);
+  filter: saturate(112%);
+  box-shadow: 0 14px 32px rgba(6, 78, 59, 0.27);
+}
+
+.pwa-install-button:active {
+  transform: translateY(0) scale(0.96);
+}
+
+.pwa-install-button:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.pwa-install-button[hidden] {
+  display: none;
+}
+
+.pwa-install-button:focus-visible {
+  outline: 3px solid rgba(52, 211, 153, 0.58);
+  outline-offset: 3px;
+}
+
+.pwa-install-button.is-pending svg {
+  animation: pwa-install-pulse 700ms ease-in-out infinite alternate;
+}
+
+.pwa-network-status {
+  min-height: 2.375rem;
+  gap: 0.55rem;
+  border: 1px solid rgba(5, 150, 105, 0.24);
+  border-radius: 999px;
+  padding: 0.5rem 0.78rem;
+  background: rgba(236, 253, 245, 0.92);
+  color: #065f46;
+}
+
+.pwa-install-button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pwa-network-status::before {
+  content: '';
+  width: 0.48rem;
+  height: 0.48rem;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.12);
+}
+
+.pwa-network-status.is-offline {
+  border-color: rgba(217, 119, 6, 0.3);
+  background: rgba(255, 251, 235, 0.95);
+  color: #92400e;
+}
+
+.pwa-network-status.is-offline::before {
+  background: var(--pwa-amber);
+  box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.13);
+}
+
+.pwa-install-help {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 0.7rem);
+  width: min(17rem, calc(100vw - 1.5rem));
+  border: 1px solid rgba(5, 150, 105, 0.2);
+  border-radius: 0.875rem;
+  padding: 0.75rem 0.875rem;
+  background: rgba(255, 255, 255, 0.96);
+  color: var(--pwa-ink);
+  box-shadow: 0 14px 36px rgba(6, 78, 59, 0.18);
+  font-size: 0.76rem;
+  font-weight: 650;
+  line-height: 1.5;
+  pointer-events: auto;
+}
+
+.pwa-public-landing .pwa-install-help {
+  right: auto;
+  left: 0;
+}
+
+.pwa-install-help[hidden] {
+  display: none;
+}
+
+@keyframes pwa-install-pulse {
+  from {
+    opacity: 0.5;
+    transform: translateY(-1px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(1px);
+  }
+}
+
+@media (max-width: 575.98px) {
+  .pwa-control-cluster {
+    right: 0.75rem;
+    bottom: max(0.75rem, env(safe-area-inset-bottom));
+  }
+
+  .pwa-public-landing .pwa-control-cluster {
+    left: 0.75rem;
+    top: max(4.75rem, calc(4.25rem + env(safe-area-inset-top)));
+    bottom: auto;
+    position: absolute;
+  }
+
+  .pwa-install-button,
+  .pwa-network-status {
+    font-size: 0.74rem;
+  }
+
+  .pwa-public-landing .pwa-install-help {
+    top: calc(100% + 0.7rem);
+    bottom: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pwa-install-button,
+  .pwa-install-button.is-pending svg {
+    animation: none;
+    transition: none;
+  }
+}

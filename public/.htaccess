@@ -1,6 +1,15 @@
 # Disable directory browsing
 Options -Indexes
 
+# Progressive Web App manifest MIME type
+AddType application/manifest+json .webmanifest
+
+<IfModule mod_headers.c>
+	<Files "service-worker.js">
+		Header set Cache-Control "no-cache, no-store, must-revalidate"
+	</Files>
+</IfModule>
+
 # ----------------------------------------------------------------------
 # Rewrite engine
 # ----------------------------------------------------------------------

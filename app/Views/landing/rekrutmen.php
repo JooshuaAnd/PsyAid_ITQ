@@ -7,6 +7,7 @@
     <title><?= esc($title ?? 'Rekrutmen Relawan Posko Bencana - PsyAid') ?></title>
     <link rel="shortcut icon" type="image/png" href="<?= base_url('images/Logo_PsyAid.png') ?>">
     <link rel="icon" type="image/png" href="<?= base_url('images/Logo_PsyAid.png') ?>">
+    <?= view('components/pwa_head') ?>
 
     <!-- Fonts: Plus Jakarta Sans & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />

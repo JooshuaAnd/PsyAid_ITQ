@@ -1,6 +1,6 @@
 # Arsitektur Backend PsyAid
 
-Dokumen ini menjelaskan arsitektur backend PsyAid berdasarkan implementasi pada kode sumber per 1 Agustus 2026. Fokus dokumen adalah kondisi sistem saat ini (*as-is*), bukan rancangan ideal yang belum diimplementasikan.
+Dokumen ini menjelaskan arsitektur backend PsyAid berdasarkan implementasi pada kode sumber per 2 Agustus 2026. Fokus dokumen adalah kondisi sistem saat ini (*as-is*), bukan rancangan ideal yang belum diimplementasikan.
 
 ## 1. Ringkasan sistem
 
@@ -27,6 +27,7 @@ Karakteristik teknis utama:
 | Cache | File cache; data kabupaten/kota juga dapat dibaca dari JSON statis |
 | Penyimpanan berkas | `writable/uploads` pada filesystem lokal/volume |
 | Deployment utama | Container Apache + PHP; mendukung Railway/Supabase |
+| Progressive Web App | Manifest + service worker dengan fallback offline tanpa cache data klinis |
 
 ## 2. Konteks dan komponen utama
 
