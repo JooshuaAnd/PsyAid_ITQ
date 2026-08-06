@@ -1056,6 +1056,16 @@ if (session()->get('logged_in')) {
                             <i class="nav-icon bi bi-person-badge-fill text-primary"></i>
                             <span class="sidebar-label">Clinical Workspace</span>
                         </a>
+                        <a href="<?= site_url('/psikolog/assessment-history') ?>"
+                            class="sidebar-nav-item py-2 px-3 mb-1 <?= url_is('psikolog/assessment-history*') ? 'active' : '' ?>">
+                            <i class="nav-icon bi bi-file-earmark-medical-fill text-success"></i>
+                            <span class="sidebar-label">Assessment Penyintas</span>
+                        </a>
+                        <a href="<?= site_url('/psikolog/monitoring') ?>"
+                            class="sidebar-nav-item py-2 px-3 mb-1 <?= url_is('psikolog/monitoring*') ? 'active' : '' ?>">
+                            <i class="nav-icon bi bi-heart-pulse-fill text-danger"></i>
+                            <span class="sidebar-label">Monitoring &amp; Follow-Up</span>
+                        </a>
                     <?php endif; ?>
 
                     <hr class="my-3 text-muted">

@@ -69,7 +69,7 @@ class MonitoringController extends Controller
             ->getResultArray();
 
         $data = [
-            'title'            => 'Monitoring & Follow-Up Penyintas — PsyAid',
+            'title' => 'Monitoring & Follow-Up Penyintas - PsyAid',
             'monitoredVictims' => $monitoredVictims,
         ];
 
@@ -81,29 +81,33 @@ class MonitoringController extends Controller
         $db = \Config\Database::connect();
         $victim = $db->table('victims')->where('id', $victimId)->get()->getRowArray();
 
-        if (! $victim) {
+        if (!$victim) {
             return redirect()->to('/psikolog/monitoring')->with('error', 'Penyintas tidak ditemukan.');
         }
 
         $clinicalModel = new ClinicalActionModel();
         $clinicalActions = $clinicalModel->where('victim_id', $victimId)->findAll();
         $caByFase = [];
-        foreach ($clinicalActions as $ca) $caByFase[$ca['fase_ke']] = $ca;
+        foreach ($clinicalActions as $ca)
+            $caByFase[$ca['fase_ke']] = $ca;
 
         $itqModel = new ItqResultModel();
         $itqResults = $itqModel->where('victim_id', $victimId)->findAll();
         $itqByFase = [];
-        foreach ($itqResults as $ir) $itqByFase[$ir['fase_ke']] = $ir;
+        foreach ($itqResults as $ir)
+            $itqByFase[$ir['fase_ke']] = $ir;
 
         $aiModel = new \App\Models\AiAssessmentModel();
         $aiAssessments = $aiModel->where('victim_id', $victimId)->findAll();
         $aiByFase = [];
-        foreach ($aiAssessments as $ai) $aiByFase[$ai['fase_ke']] = $ai;
+        foreach ($aiAssessments as $ai)
+            $aiByFase[$ai['fase_ke']] = $ai;
 
         $reviewModel = new \App\Models\PsychologistReviewModel();
         $psychologistReviews = $reviewModel->where('victim_id', $victimId)->findAll();
         $reviewByFase = [];
-        foreach ($psychologistReviews as $pr) $reviewByFase[$pr['fase_ke']] = $pr;
+        foreach ($psychologistReviews as $pr)
+            $reviewByFase[$pr['fase_ke']] = $pr;
 
         // Final decision (fase_ke = 99)
         $finalDecision = $caByFase[99] ?? null;
@@ -113,13 +117,13 @@ class MonitoringController extends Controller
         $volunteerScreening = $screeningModel->getByVictimId((int) $victimId);
 
         $data = [
-            'title'              => 'Detail Monitoring & Follow-Up — ' . $victim['nama'],
-            'victim'             => $victim,
-            'caByFase'           => $caByFase,
-            'itqByFase'          => $itqByFase,
-            'aiByFase'           => $aiByFase,
-            'reviewByFase'       => $reviewByFase,
-            'finalDecision'      => $finalDecision,
+            'title' => 'Detail Monitoring & Follow-Up - ' . $victim['nama'],
+            'victim' => $victim,
+            'caByFase' => $caByFase,
+            'itqByFase' => $itqByFase,
+            'aiByFase' => $aiByFase,
+            'reviewByFase' => $reviewByFase,
+            'finalDecision' => $finalDecision,
             'volunteerScreening' => $volunteerScreening,
         ];
 
@@ -134,7 +138,7 @@ class MonitoringController extends Controller
         if ($result) {
             return $this->response->setJSON(['status' => 'success', 'summary' => $result]);
         }
-        
+
         return $this->response->setJSON(['status' => 'error', 'message' => 'Gagal menghasilkan summary AI.']);
     }
 

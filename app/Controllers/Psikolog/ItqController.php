@@ -21,14 +21,14 @@ class ItqController extends Controller
         $faseKe = (int) $this->request->getGet('fase_ke') ?: 0;
 
         $victimModel = new VictimModel();
-        $victim      = $victimModel->find($victimId);
+        $victim = $victimModel->find($victimId);
 
-        if (! $victim) {
+        if (!$victim) {
             return redirect()->to('/psikolog/dashboard')->with('error', 'Penyintas tidak ditemukan.');
         }
 
-        $itqModel  = new ItqAnswersModel();
-        $existing  = $itqModel->getByVictimId((int) $victimId, $faseKe);
+        $itqModel = new ItqAnswersModel();
+        $existing = $itqModel->getByVictimId((int) $victimId, $faseKe);
 
         // Official ITQ Questions (Exact wording)
         $itqQuestions = [
@@ -103,10 +103,10 @@ class ItqController extends Controller
         ];
 
         $data = [
-            'title'        => 'Form ITQ ' . ($faseKe > 0 ? '(Follow-Up ' . $faseKe . ') ' : '') . '— ' . $victim['nama'],
-            'victim'       => $victim,
-            'existing'     => $existing,
-            'fase_ke'      => $faseKe,
+            'title' => 'Form ITQ ' . ($faseKe > 0 ? '(Follow-Up ' . $faseKe . ') ' : '') . '- ' . $victim['nama'],
+            'victim' => $victim,
+            'existing' => $existing,
+            'fase_ke' => $faseKe,
             'itqQuestions' => $itqQuestions,
         ];
 
@@ -119,18 +119,18 @@ class ItqController extends Controller
     public function store($victimId)
     {
         $faseKe = (int) $this->request->getGet('fase_ke') ?: 0;
-        
+
         $rules = [];
         for ($i = 1; $i <= 18; $i++) {
             $rules['item_' . $i] = [
-                'rules'  => 'required|integer|greater_than_equal_to[0]|less_than_equal_to[4]',
+                'rules' => 'required|integer|greater_than_equal_to[0]|less_than_equal_to[4]',
                 'errors' => [
                     'required' => 'Pertanyaan nomor ' . $i . ' wajib dijawab.',
                 ]
             ];
         }
 
-        if (! $this->validate($rules)) {
+        if (!$this->validate($rules)) {
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
@@ -138,10 +138,10 @@ class ItqController extends Controller
         $existing = $itqModel->getByVictimId((int) $victimId, $faseKe);
 
         $data = [
-            'victim_id'   => (int) $victimId,
+            'victim_id' => (int) $victimId,
             'psikolog_id' => session()->get('user_id') ?? 4,
-            'fase_ke'     => $faseKe,
-            'created_at'  => date('Y-m-d H:i:s'),
+            'fase_ke' => $faseKe,
+            'created_at' => date('Y-m-d H:i:s'),
         ];
 
         for ($i = 1; $i <= 18; $i++) {
@@ -170,17 +170,17 @@ class ItqController extends Controller
         $faseKe = (int) $this->request->getGet('fase_ke') ?: 0;
 
         $victimModel = new VictimModel();
-        $victim      = $victimModel->find($victimId);
+        $victim = $victimModel->find($victimId);
 
-        if (! $victim) {
+        if (!$victim) {
             return redirect()->to('/psikolog/dashboard')->with('error', 'Penyintas tidak ditemukan.');
         }
 
         // Ensure ITQ score is calculated
         $scoringService = new ItqScoringService();
-        $itqResult      = $scoringService->generate((int) $victimId, $faseKe);
+        $itqResult = $scoringService->generate((int) $victimId, $faseKe);
 
-        if (! $itqResult) {
+        if (!$itqResult) {
             return redirect()->to('/itq/form/' . $victimId)->with('error', 'Silakan isi form ITQ terlebih dahulu.');
         }
 
@@ -190,7 +190,7 @@ class ItqController extends Controller
         $itqResult['reviewed_by_name'] = $reviewer['name'] ?? session()->get('user_name') ?? 'Psikolog Jaga';
 
         // Fetch existing Clinical Action if any
-        $clinicalModel  = new ClinicalActionModel();
+        $clinicalModel = new ClinicalActionModel();
         $clinicalAction = $clinicalModel->getByVictimId((int) $victimId, $faseKe);
 
         // Fetch Detailed Sub Scores for Tables
@@ -209,14 +209,14 @@ class ItqController extends Controller
         $psychologistReview = $db->table('psychologist_review')->where('victim_id', $victimId)->where('fase_ke', $faseKe)->get()->getRowArray();
 
         $data = [
-            'title'              => 'Hasil ITQ Assessment ' . ($faseKe > 0 ? '(Follow-Up ' . $faseKe . ')' : '') . ' — ' . $victim['nama'],
-            'victim'             => $victim,
-            'fase_ke'            => $faseKe,
-            'itqResult'          => $itqResult,
-            'detailedSubScores'  => $detailedSubScores,
-            'clinicalAction'     => $clinicalAction,
+            'title' => 'Hasil ITQ Assessment ' . ($faseKe > 0 ? '(Follow-Up ' . $faseKe . ')' : '') . ' - ' . $victim['nama'],
+            'victim' => $victim,
+            'fase_ke' => $faseKe,
+            'itqResult' => $itqResult,
+            'detailedSubScores' => $detailedSubScores,
+            'clinicalAction' => $clinicalAction,
             'volunteerScreening' => $volunteerScreening,
-            'aiAssessment'       => $aiAssessment,
+            'aiAssessment' => $aiAssessment,
             'psychologistReview' => $psychologistReview,
         ];
 
@@ -229,52 +229,52 @@ class ItqController extends Controller
     public function getChartData($victimId)
     {
         $itqModel = new ItqAnswersModel();
-        $answers  = $itqModel->getByVictimId((int) $victimId);
+        $answers = $itqModel->getByVictimId((int) $victimId);
 
         $resultModel = new ItqResultModel();
-        $result      = $resultModel->getByVictimId((int) $victimId);
+        $result = $resultModel->getByVictimId((int) $victimId);
 
-        if (! $answers || ! $result) {
+        if (!$answers || !$result) {
             return $this->response->setJSON(['status' => 'error', 'message' => 'Data ITQ belum lengkap.']);
         }
 
         // Chart 1: PTSD vs DSO Scores
         $chart1 = [
             'ptsd_score' => (int) $result['ptsd_score'],
-            'dso_score'  => (int) $result['dso_score'],
+            'dso_score' => (int) $result['dso_score'],
         ];
 
         // Chart 2: PTSD Clusters Average Scores
-        $reexpAvg   = round(((int)$answers['item_1'] + (int)$answers['item_2']) / 2, 2);
-        $avoidAvg   = round(((int)$answers['item_3'] + (int)$answers['item_4']) / 2, 2);
-        $threatAvg  = round(((int)$answers['item_5'] + (int)$answers['item_6']) / 2, 2);
-        $impairPtsd = round(((int)$answers['item_7'] + (int)$answers['item_8'] + (int)$answers['item_9']) / 3, 2);
+        $reexpAvg = round(((int) $answers['item_1'] + (int) $answers['item_2']) / 2, 2);
+        $avoidAvg = round(((int) $answers['item_3'] + (int) $answers['item_4']) / 2, 2);
+        $threatAvg = round(((int) $answers['item_5'] + (int) $answers['item_6']) / 2, 2);
+        $impairPtsd = round(((int) $answers['item_7'] + (int) $answers['item_8'] + (int) $answers['item_9']) / 3, 2);
 
         $chart2 = [
             'labels' => ['Re-experiencing', 'Avoidance', 'Sense of Threat', 'Functional Impairment'],
-            'data'   => [$reexpAvg, $avoidAvg, $threatAvg, $impairPtsd],
+            'data' => [$reexpAvg, $avoidAvg, $threatAvg, $impairPtsd],
         ];
 
         // Chart 3: DSO Clusters Average Scores
-        $affectAvg  = round(((int)$answers['item_10'] + (int)$answers['item_11']) / 2, 2);
-        $selfAvg    = round(((int)$answers['item_12'] + (int)$answers['item_13']) / 2, 2);
-        $relAvg     = round(((int)$answers['item_14'] + (int)$answers['item_15']) / 2, 2);
-        $impairDso  = round(((int)$answers['item_16'] + (int)$answers['item_17'] + (int)$answers['item_18']) / 3, 2);
+        $affectAvg = round(((int) $answers['item_10'] + (int) $answers['item_11']) / 2, 2);
+        $selfAvg = round(((int) $answers['item_12'] + (int) $answers['item_13']) / 2, 2);
+        $relAvg = round(((int) $answers['item_14'] + (int) $answers['item_15']) / 2, 2);
+        $impairDso = round(((int) $answers['item_16'] + (int) $answers['item_17'] + (int) $answers['item_18']) / 3, 2);
 
         $chart3 = [
             'labels' => ['Affective Dysregulation', 'Negative Self-Concept', 'Relationships Disturbance', 'Functional Impairment'],
-            'data'   => [$affectAvg, $selfAvg, $relAvg, $impairDso],
+            'data' => [$affectAvg, $selfAvg, $relAvg, $impairDso],
         ];
 
         // Chart 4: Longitudinal Line Chart
         $followupModel = new LongitudinalFollowupModel();
-        $followups     = $followupModel->getFollowupsByVictim((int) $victimId);
+        $followups = $followupModel->getFollowupsByVictim((int) $victimId);
 
         $chart4 = [
-            'has_data' => ! empty($followups),
-            'labels'   => array_column($followups, 'hari'),
-            'ptsd'     => array_column($followups, 'ptsd_score'),
-            'dso'      => array_column($followups, 'dso_score'),
+            'has_data' => !empty($followups),
+            'labels' => array_column($followups, 'hari'),
+            'ptsd' => array_column($followups, 'ptsd_score'),
+            'dso' => array_column($followups, 'dso_score'),
         ];
 
         return $this->response->setJSON([

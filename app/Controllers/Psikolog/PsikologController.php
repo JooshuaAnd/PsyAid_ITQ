@@ -11,7 +11,7 @@ class PsikologController extends Controller
     {
         $psychId = (int) session()->get('user_id');
 
-        $db      = \Config\Database::connect();
+        $db = \Config\Database::connect();
         $builder = $db->table('psychologist_assignment');
         $builder->select('
             psychologist_assignment.assigned_at,
@@ -67,10 +67,10 @@ class PsikologController extends Controller
         }
 
         $data = [
-            'title'           => 'Dashboard Clinical Workspace Psikolog — PsyAid',
-            'assignedVictims'       => $assignedVictims,
+            'title' => 'Dashboard Clinical Workspace Psikolog - PsyAid',
+            'assignedVictims' => $assignedVictims,
             'activeAssignmentCount' => $activeAssignmentCount,
-            'personnel'             => $personnel,
+            'personnel' => $personnel,
         ];
 
         return view('psikolog/Dashboard', $data);

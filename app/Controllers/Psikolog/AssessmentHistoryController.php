@@ -15,7 +15,7 @@ class AssessmentHistoryController extends Controller
     {
         $psychId = (int) session()->get('user_id');
 
-        $db      = \Config\Database::connect();
+        $db = \Config\Database::connect();
         $builder = $db->table('psychologist_assignment');
         $builder->select('
             psychologist_assignment.assigned_at,
@@ -39,7 +39,7 @@ class AssessmentHistoryController extends Controller
         $assignedVictims = $builder->get()->getResultArray();
 
         $data = [
-            'title'           => 'Detail Data Assessment Penyintas — PsyAid',
+            'title' => 'Detail Data Assessment Penyintas - PsyAid',
             'assignedVictims' => $assignedVictims,
         ];
 
@@ -48,7 +48,7 @@ class AssessmentHistoryController extends Controller
 
     public function detail($victimId)
     {
-        $db      = \Config\Database::connect();
+        $db = \Config\Database::connect();
         $builder = $db->table('victims');
         $builder->select('
             victims.*,
@@ -61,40 +61,40 @@ class AssessmentHistoryController extends Controller
         $builder->where('victims.id', $victimId);
         $victim = $builder->get()->getRowArray();
 
-        if (! $victim) {
+        if (!$victim) {
             return redirect()->to('/psikolog/assessment-history')->with('error', 'Penyintas tidak ditemukan.');
         }
 
-        $disasterModel  = new DisasterInfoModel();
-        $psychModel     = new PsychologicalHistoryModel();
+        $disasterModel = new DisasterInfoModel();
+        $psychModel = new PsychologicalHistoryModel();
         $screeningModel = new VolunteerScreeningModel();
-        $aiModel        = new AiAssessmentModel();
+        $aiModel = new AiAssessmentModel();
 
-        $disaster     = $disasterModel->getByVictimId((int) $victimId);
-        $psychHist    = $psychModel->getByVictimId((int) $victimId);
-        $screening    = $screeningModel->getByVictimId((int) $victimId);
+        $disaster = $disasterModel->getByVictimId((int) $victimId);
+        $psychHist = $psychModel->getByVictimId((int) $victimId);
+        $screening = $screeningModel->getByVictimId((int) $victimId);
         $aiAssessment = $aiModel->where('victim_id', $victimId)->first();
 
         $savedDiagnoses = [];
-        if (! empty($psychHist['diagnosis_sebelumnya'])) {
+        if (!empty($psychHist['diagnosis_sebelumnya'])) {
             $decoded = json_decode($psychHist['diagnosis_sebelumnya'], true);
             if (is_array($decoded)) {
                 $savedDiagnoses = $decoded;
             }
         }
-        
+
         // Add ITQ results if any
         $itqAnswers = $db->table('itq_answers')->where('victim_id', $victimId)->get()->getRowArray();
-        
+
         $data = [
-            'title'          => 'Assessment History — ' . $victim['nama'],
-            'victim'         => $victim,
-            'disaster'       => $disaster,
-            'psychHist'      => $psychHist,
+            'title' => 'Assessment History - ' . $victim['nama'],
+            'victim' => $victim,
+            'disaster' => $disaster,
+            'psychHist' => $psychHist,
             'savedDiagnoses' => $savedDiagnoses,
-            'screening'      => $screening,
-            'aiAssessment'   => $aiAssessment,
-            'itqAnswers'     => $itqAnswers
+            'screening' => $screening,
+            'aiAssessment' => $aiAssessment,
+            'itqAnswers' => $itqAnswers
         ];
 
         return view('psikolog/AssessmentDetail', $data);

@@ -20,7 +20,7 @@ class PsychologistReviewController extends Controller
     {
         $faseKe = (int) $this->request->getGet('fase_ke') ?: 0;
 
-        $db      = \Config\Database::connect();
+        $db = \Config\Database::connect();
         $builder = $db->table('victims');
         $builder->select('
             victims.*,
@@ -33,25 +33,25 @@ class PsychologistReviewController extends Controller
         $builder->where('victims.id', $victimId);
         $victim = $builder->get()->getRowArray();
 
-        if (! $victim) {
+        if (!$victim) {
             return redirect()->to('/psikolog/dashboard')->with('error', 'Penyintas tidak ditemukan.');
         }
 
         // Fetch all read-only summary data
-        $disasterModel  = new DisasterInfoModel();
-        $psychModel     = new PsychologicalHistoryModel();
+        $disasterModel = new DisasterInfoModel();
+        $psychModel = new PsychologicalHistoryModel();
         $screeningModel = new VolunteerScreeningModel();
-        $aiModel        = new AiAssessmentModel();
-        $reviewModel    = new PsychologistReviewModel();
+        $aiModel = new AiAssessmentModel();
+        $reviewModel = new PsychologistReviewModel();
 
-        $disaster     = $disasterModel->getByVictimId((int) $victimId);
-        $psychHist    = $psychModel->getByVictimId((int) $victimId);
-        $screening    = $screeningModel->getByVictimId((int) $victimId);
+        $disaster = $disasterModel->getByVictimId((int) $victimId);
+        $psychHist = $psychModel->getByVictimId((int) $victimId);
+        $screening = $screeningModel->getByVictimId((int) $victimId);
         $aiAssessment = $aiModel->where('victim_id', $victimId)->where('fase_ke', $faseKe)->first();
-        $review       = $reviewModel->getByVictimId((int) $victimId, $faseKe);
+        $review = $reviewModel->getByVictimId((int) $victimId, $faseKe);
 
         $savedDiagnoses = [];
-        if (! empty($psychHist['diagnosis_sebelumnya'])) {
+        if (!empty($psychHist['diagnosis_sebelumnya'])) {
             $decoded = json_decode($psychHist['diagnosis_sebelumnya'], true);
             if (is_array($decoded)) {
                 $savedDiagnoses = $decoded;
@@ -59,15 +59,15 @@ class PsychologistReviewController extends Controller
         }
 
         $data = [
-            'title'          => 'Review Klinis Psikolog — ' . $victim['nama'],
-            'victim'         => $victim,
-            'disaster'       => $disaster,
-            'psychHist'      => $psychHist,
+            'title' => 'Review Klinis Psikolog - ' . $victim['nama'],
+            'victim' => $victim,
+            'disaster' => $disaster,
+            'psychHist' => $psychHist,
             'savedDiagnoses' => $savedDiagnoses,
-            'screening'      => $screening,
-            'aiAssessment'   => $aiAssessment,
-            'review'         => $review,
-            'fase_ke'        => $faseKe,
+            'screening' => $screening,
+            'aiAssessment' => $aiAssessment,
+            'review' => $review,
+            'fase_ke' => $faseKe,
         ];
 
         return view('psikolog/Review', $data);
@@ -82,51 +82,51 @@ class PsychologistReviewController extends Controller
 
         $rules = [
             'chief_complaint' => 'required|min_length[5]',
-            'mse_appearance'  => 'required',
-            'mse_behavior'    => 'required',
-            'mse_speech'      => 'required',
-            'mse_mood'        => 'required',
-            'mse_affect'      => 'required',
-            'mse_thought'     => 'required',
+            'mse_appearance' => 'required',
+            'mse_behavior' => 'required',
+            'mse_speech' => 'required',
+            'mse_mood' => 'required',
+            'mse_affect' => 'required',
+            'mse_thought' => 'required',
             'mse_orientation' => 'required',
-            'mse_insight'     => 'required',
-            'mse_perception'  => 'required',
+            'mse_insight' => 'required',
+            'mse_perception' => 'required',
             'risk_assessment' => 'required',
         ];
 
-        if (! $this->validate($rules)) {
+        if (!$this->validate($rules)) {
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
         $reviewModel = new PsychologistReviewModel();
-        $existing    = $reviewModel->getByVictimId((int) $victimId, $faseKe);
+        $existing = $reviewModel->getByVictimId((int) $victimId, $faseKe);
 
         $data = [
-            'victim_id'            => (int) $victimId,
-            'psikolog_id'          => session()->get('user_id') ?? 4,
-            'fase_ke'              => $faseKe,
-            'chief_complaint'      => $this->request->getPost('chief_complaint'),
-            'mse_appearance'       => $this->request->getPost('mse_appearance'),
-            'mse_appearance_note'  => $this->request->getPost('mse_appearance_note'),
-            'mse_behavior'         => $this->request->getPost('mse_behavior'),
-            'mse_behavior_note'    => $this->request->getPost('mse_behavior_note'),
-            'mse_speech'           => $this->request->getPost('mse_speech'),
-            'mse_speech_note'      => $this->request->getPost('mse_speech_note'),
-            'mse_mood'             => $this->request->getPost('mse_mood'),
-            'mse_mood_note'        => $this->request->getPost('mse_mood_note'),
-            'mse_affect'           => $this->request->getPost('mse_affect'),
-            'mse_affect_note'      => $this->request->getPost('mse_affect_note'),
-            'mse_thought'          => $this->request->getPost('mse_thought'),
-            'mse_thought_note'     => $this->request->getPost('mse_thought_note'),
-            'mse_orientation'      => $this->request->getPost('mse_orientation'),
+            'victim_id' => (int) $victimId,
+            'psikolog_id' => session()->get('user_id') ?? 4,
+            'fase_ke' => $faseKe,
+            'chief_complaint' => $this->request->getPost('chief_complaint'),
+            'mse_appearance' => $this->request->getPost('mse_appearance'),
+            'mse_appearance_note' => $this->request->getPost('mse_appearance_note'),
+            'mse_behavior' => $this->request->getPost('mse_behavior'),
+            'mse_behavior_note' => $this->request->getPost('mse_behavior_note'),
+            'mse_speech' => $this->request->getPost('mse_speech'),
+            'mse_speech_note' => $this->request->getPost('mse_speech_note'),
+            'mse_mood' => $this->request->getPost('mse_mood'),
+            'mse_mood_note' => $this->request->getPost('mse_mood_note'),
+            'mse_affect' => $this->request->getPost('mse_affect'),
+            'mse_affect_note' => $this->request->getPost('mse_affect_note'),
+            'mse_thought' => $this->request->getPost('mse_thought'),
+            'mse_thought_note' => $this->request->getPost('mse_thought_note'),
+            'mse_orientation' => $this->request->getPost('mse_orientation'),
             'mse_orientation_note' => $this->request->getPost('mse_orientation_note'),
-            'mse_insight'          => $this->request->getPost('mse_insight'),
-            'mse_insight_note'     => $this->request->getPost('mse_insight_note'),
-            'mse_perception'       => $this->request->getPost('mse_perception'),
-            'mse_perception_note'  => $this->request->getPost('mse_perception_note'),
-            'risk_assessment'      => $this->request->getPost('risk_assessment'),
+            'mse_insight' => $this->request->getPost('mse_insight'),
+            'mse_insight_note' => $this->request->getPost('mse_insight_note'),
+            'mse_perception' => $this->request->getPost('mse_perception'),
+            'mse_perception_note' => $this->request->getPost('mse_perception_note'),
+            'risk_assessment' => $this->request->getPost('risk_assessment'),
             'risk_assessment_note' => $this->request->getPost('risk_assessment_note'),
-            'reviewed_at'          => date('Y-m-d H:i:s'),
+            'reviewed_at' => date('Y-m-d H:i:s'),
         ];
 
         if ($existing) {
