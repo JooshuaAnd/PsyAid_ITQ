@@ -176,9 +176,14 @@ class ItqController extends Controller
             return redirect()->to('/psikolog/dashboard')->with('error', 'Penyintas tidak ditemukan.');
         }
 
-        // Ensure ITQ score is calculated
+        // GET result must stay read-only so the offline snapshot warmer does
+        // not rewrite reviewed_at every time it retrieves the latest data.
+        $resultModel = new ItqResultModel();
+        $itqResult = $resultModel->getByVictimId((int) $victimId, $faseKe);
         $scoringService = new ItqScoringService();
-        $itqResult = $scoringService->generate((int) $victimId, $faseKe);
+        if (! $itqResult) {
+            $itqResult = $scoringService->generate((int) $victimId, $faseKe);
+        }
 
         if (!$itqResult) {
             return redirect()->to('/itq/form/' . $victimId)->with('error', 'Silakan isi form ITQ terlebih dahulu.');

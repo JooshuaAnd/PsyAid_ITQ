@@ -33,6 +33,8 @@ final class PwaAssetsTest extends TestCase
         $declaredSizes = array_column($manifest['icons'], 'sizes');
         $this->assertContains('192x192', $declaredSizes);
         $this->assertContains('512x512', $declaredSizes);
+        $this->assertStringContainsString('?v=', $manifest['icons'][0]['src']);
+        $this->assertStringContainsString('?v=', $manifest['icons'][1]['src']);
     }
 
     /**
@@ -60,21 +62,23 @@ final class PwaAssetsTest extends TestCase
         ];
     }
 
-    public function testServiceWorkerUsesPrivacyFirstCachePolicy(): void
+    public function testServiceWorkerSupportsScopedSnapshotsAndMutationQueue(): void
     {
         $serviceWorkerPath = $this->publicPath . 'service-worker.js';
         $this->assertFileExists($serviceWorkerPath);
 
         $serviceWorker = (string) file_get_contents($serviceWorkerPath);
 
-        $this->assertStringContainsString("request.method !== 'GET'", $serviceWorker);
-        $this->assertStringContainsString("request.mode === 'navigate'", $serviceWorker);
-        $this->assertStringContainsString("cache: 'no-store'", $serviceWorker);
-        $this->assertStringContainsString("'/api/'", $serviceWorker);
-        $this->assertStringContainsString("'/victim/'", $serviceWorker);
-        $this->assertStringContainsString("'/psikolog/'", $serviceWorker);
-        $this->assertStringContainsString("caches.match(OFFLINE_URL)", $serviceWorker);
-        $this->assertStringContainsString('static-v4', $serviceWorker);
+        $this->assertStringContainsString("const DB_NAME = 'psyaid-offline'", $serviceWorker);
+        $this->assertStringContainsString("const SYNC_TAG = 'psyaid-sync-mutations'", $serviceWorker);
+        $this->assertStringContainsString('networkFirstPage(request)', $serviceWorker);
+        $this->assertStringContainsString('networkOrQueue(request)', $serviceWorker);
+        $this->assertStringContainsString('replayMutations', $serviceWorker);
+        $this->assertStringContainsString('X-PsyAid-Mutation-Id', $serviceWorker);
+        $this->assertStringContainsString("message.type === 'WARM_URLS'", $serviceWorker);
+        $this->assertStringContainsString('PAGE_CACHE_PREFIX', $serviceWorker);
+        $this->assertStringContainsString("const VERSION = 'v6'", $serviceWorker);
+        $this->assertStringContainsString('static-${VERSION}', $serviceWorker);
     }
 
     public function testPwaControlsUseCompactAccessibleLabels(): void
@@ -83,8 +87,28 @@ final class PwaAssetsTest extends TestCase
 
         $this->assertStringContainsString("innerHTML = iconMarkup('install')", $pwaScript);
         $this->assertStringContainsString("'Pasang aplikasi PsyAid'", $pwaScript);
-        $this->assertStringContainsString("online ? 'Online' : 'Offline'", $pwaScript);
+        $this->assertStringContainsString("label = online ? 'Online' : 'Offline'", $pwaScript);
         $this->assertStringContainsString('Tambahkan ke Layar Utama', $pwaScript);
+        $this->assertStringContainsString("type: 'SYNC_MUTATIONS'", $pwaScript);
+        $this->assertStringContainsString("type: 'WARM_URLS'", $pwaScript);
+        $this->assertStringContainsString('Logout ditunda', $pwaScript);
+    }
+
+    public function testOfflineBackendComponentsAreRegistered(): void
+    {
+        $routes = (string) file_get_contents(APPPATH . 'Config/Routes.php');
+        $filters = (string) file_get_contents(APPPATH . 'Config/Filters.php');
+        $head = (string) file_get_contents(APPPATH . 'Views/components/pwa_head.php');
+
+        $this->assertStringContainsString("'/offline/bootstrap'", $routes);
+        $this->assertStringContainsString('OfflineController::bootstrap', $routes);
+        $this->assertStringContainsString('OfflineMutationFilter::class', $filters);
+        $this->assertStringContainsString('psyaid-user-scope', $head);
+        $this->assertStringContainsString('msapplication-TileImage', $head);
+        $this->assertStringContainsString('sizes="192x192"', $head);
+        $this->assertFileExists(APPPATH . 'Controllers/OfflineController.php');
+        $this->assertFileExists(APPPATH . 'Filters/OfflineMutationFilter.php');
+        $this->assertFileExists(APPPATH . 'Database/Migrations/2026-08-07-000001_CreateOfflineMutationReceiptsTable.php');
     }
 
     public function testAllPrimaryDocumentTemplatesIncludePwaMetadata(): void

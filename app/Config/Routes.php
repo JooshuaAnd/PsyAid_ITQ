@@ -22,6 +22,10 @@ $routes->post('/register', 'Auth\AuthController::attemptRegister');
 $routes->get('/logout', 'Auth\AuthController::logout');
 $routes->get('/forbidden', 'Auth\AuthController::forbidden');
 
+// Authenticated offline snapshot. It only enumerates resources the active
+// session is already allowed to retrieve through the normal routes below.
+$routes->get('/offline/bootstrap', 'OfflineController::bootstrap', ['filter' => ['auth']]);
+
 // Role-based protected routes: BPBD Admin Command Center (Bpbd namespace)
 $routes->get('/bpbd/dashboard', 'Bpbd\DashboardBPBDController::index', ['filter' => ['auth', 'role:bpbd_admin']]);
 $routes->get('/command-center', 'Bpbd\CommandCenterController::index', ['filter' => ['auth', 'role:bpbd_admin']]);

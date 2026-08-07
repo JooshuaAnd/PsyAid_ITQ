@@ -36,6 +36,7 @@ class Filters extends BaseFilters
         'performance'   => PerformanceMetrics::class,
         'auth'          => \App\Filters\AuthFilter::class,
         'role'          => \App\Filters\RoleFilter::class,
+        'offlineMutation' => \App\Filters\OfflineMutationFilter::class,
     ];
 
     /**
@@ -74,11 +75,13 @@ class Filters extends BaseFilters
      */
     public array $globals = [
         'before' => [
+            'offlineMutation',
             // 'honeypot',
             // 'csrf',
             // 'invalidchars',
         ],
         'after' => [
+            'offlineMutation',
             // 'honeypot',
             // 'secureheaders',
         ],

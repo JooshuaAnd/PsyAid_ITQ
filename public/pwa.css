@@ -23,6 +23,7 @@
 }
 
 .pwa-install-button,
+.pwa-sync-button,
 .pwa-network-status {
   display: inline-flex;
   align-items: center;
@@ -47,6 +48,44 @@
   color: #fff;
   cursor: pointer;
   transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease, opacity 180ms ease;
+}
+
+.pwa-sync-button {
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  flex: 0 0 2.6rem;
+  border: 1px solid rgba(5, 150, 105, 0.3);
+  border-radius: 0.875rem;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--pwa-forest);
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
+}
+
+.pwa-sync-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(6, 78, 59, 0.2);
+}
+
+.pwa-sync-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.pwa-sync-button svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pwa-sync-button.is-pending svg {
+  animation: pwa-sync-spin 850ms linear infinite;
 }
 
 .pwa-install-button:hover {
@@ -117,6 +156,37 @@
   box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.13);
 }
 
+.pwa-network-status.has-queue {
+  border-color: rgba(217, 119, 6, 0.35);
+}
+
+.pwa-notice {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 0.7rem);
+  width: min(22rem, calc(100vw - 1.5rem));
+  border: 1px solid rgba(5, 150, 105, 0.22);
+  border-radius: 0.875rem;
+  padding: 0.78rem 0.9rem;
+  background: rgba(255, 255, 255, 0.97);
+  color: var(--pwa-ink);
+  box-shadow: 0 14px 36px rgba(6, 78, 59, 0.18);
+  font-size: 0.78rem;
+  font-weight: 650;
+  line-height: 1.5;
+  pointer-events: auto;
+}
+
+.pwa-notice.is-success { border-color: rgba(5, 150, 105, 0.4); }
+.pwa-notice.is-warning { border-color: rgba(217, 119, 6, 0.45); background: rgba(255, 251, 235, 0.98); }
+.pwa-notice.is-danger { border-color: rgba(220, 38, 38, 0.4); background: rgba(254, 242, 242, 0.98); }
+.pwa-notice[hidden] { display: none; }
+
+.pwa-public-landing .pwa-notice {
+  right: auto;
+  left: 0;
+}
+
 .pwa-install-help {
   position: absolute;
   right: 0;
@@ -155,6 +225,10 @@
   }
 }
 
+@keyframes pwa-sync-spin {
+  to { transform: rotate(360deg); }
+}
+
 @media (max-width: 575.98px) {
   .pwa-control-cluster {
     right: 0.75rem;
@@ -169,6 +243,7 @@
   }
 
   .pwa-install-button,
+  .pwa-sync-button,
   .pwa-network-status {
     font-size: 0.74rem;
   }
@@ -177,11 +252,18 @@
     top: calc(100% + 0.7rem);
     bottom: auto;
   }
+
+  .pwa-public-landing .pwa-notice {
+    top: calc(100% + 0.7rem);
+    bottom: auto;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .pwa-install-button,
-  .pwa-install-button.is-pending svg {
+  .pwa-install-button.is-pending svg,
+  .pwa-sync-button,
+  .pwa-sync-button.is-pending svg {
     animation: none;
     transition: none;
   }

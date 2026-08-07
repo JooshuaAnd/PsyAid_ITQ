@@ -173,18 +173,18 @@
 
       <div class="status-label">Koneksi terputus</div>
       <h1>Perangkat sedang offline.</h1>
-      <p class="lead">Sambungkan perangkat ke internet untuk memuat informasi operasional dan data penyintas terbaru.</p>
+      <p class="lead">Halaman ini belum masuk snapshot perangkat. Kembali ke halaman yang pernah disinkronkan, atau sambungkan internet untuk memperbarui seluruh data.</p>
 
       <div class="privacy-note">
         <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.6 2.8 8.2 7 10 4.2-1.8 7-5.4 7-10V6l-7-3Z"/><path d="m9.5 12 1.7 1.7 3.6-4"/></svg>
         <div>
-          <strong>Data klinis tetap aman</strong>
-          <span>PsyAid tidak menyimpan halaman pasien, respons API, atau formulir klinis di cache perangkat.</span>
+          <strong>Snapshot lokal per akun</strong>
+          <span>Data offline dipisahkan berdasarkan akun dan peran. Perubahan formulir disimpan ke antrean IndexedDB sampai koneksi kembali tersedia.</span>
         </div>
       </div>
 
       <button type="button" onclick="window.location.reload()">Coba hubungkan kembali</button>
-      <p class="connection-hint" id="connection-hint">Halaman akan dimuat dari server setelah koneksi tersedia.</p>
+      <p class="connection-hint" id="connection-hint">Gunakan tombol Kembali pada browser untuk membuka snapshot terakhir.</p>
     </div>
   </main>
 

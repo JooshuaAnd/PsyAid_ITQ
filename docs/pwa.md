@@ -1,77 +1,89 @@
-# Progressive Web App PsyAid
+# Progressive Web App dan Mode Offline PsyAid
 
-PsyAid dapat dipasang sebagai Progressive Web App (PWA) pada browser yang mendukung. Implementasinya bersifat *privacy-first*: aplikasi tetap installable dan mempunyai pengalaman offline, tetapi data penyintas dan halaman klinis tidak disimpan ke Cache Storage perangkat.
+PsyAid dapat dipasang sebagai PWA dan digunakan tanpa jaringan setelah pengguna melakukan sinkronisasi awal dalam keadaan online. Snapshot dipisahkan berdasarkan ID pengguna dan peran agar cache BPBD, relawan, dan psikolog tidak saling tertukar.
 
-## Kemampuan
+## Alur penggunaan
 
-- manifest dengan nama, warna, shortcut, dan ikon aplikasi;
-- ikon 192×192, 512×512, Apple Touch, dan ikon maskable;
-- mode tampilan `standalone` setelah dipasang;
-- tombol instalasi berbentuk ikon download saat browser mengirim event `beforeinstallprompt`;
-- panduan `Tambahkan ke Layar Utama` saat tombol instalasi dibuka melalui iPhone/iPad;
-- badge koneksi `Online`/`Offline` pada seluruh halaman utama;
-- halaman fallback offline yang mandiri;
-- service worker dengan pembaruan cache berversi;
-- shortcut menuju laporan bencana, rekrutmen relawan, dan login.
+1. Pengguna login menggunakan internet.
+2. Browser mengambil `/offline/bootstrap`. Endpoint ini menyusun daftar halaman dan data yang boleh diakses sesi aktif.
+3. Service worker mengunduh daftar tersebut ke Cache Storage dan menyimpan waktu snapshot di IndexedDB.
+   Aset yang dirujuk HTML (stylesheet, script, font, gambar, audio, dan video) ikut ditemukan dan dipanaskan.
+4. Saat offline, navigasi dan GET API menggunakan snapshot akun tersebut.
+5. POST, PUT, PATCH, dan DELETE yang gagal karena jaringan disimpan berurutan di IndexedDB.
+6. Ketika koneksi pulih, Background Sync atau event `online` mengirim antrean ke endpoint aslinya dengan cookie sesi aktif.
+7. Setelah antrean selesai, snapshot diambil ulang sehingga data lokal mencerminkan database cloud.
 
-PWA harus disajikan melalui HTTPS di produksi. `localhost` dan `127.0.0.1` dapat digunakan untuk pengembangan lokal.
+Tombol sinkronisasi di kanan bawah dapat dipakai untuk menjalankan langkah 5–7 secara manual. Badge menampilkan kondisi koneksi, proses snapshot, dan jumlah antrean.
 
-## Kebijakan cache
+## Cakupan snapshot per peran
 
-| Jenis request | Strategi | Alasan |
-|---|---|---|
-| Shell PWA, ikon, logo, dan helper publik | Cache-first, cache berversi | Aset tidak memuat data pengguna dan diperlukan untuk pengalaman offline. |
-| Navigasi HTML | Network-only, fallback ke `offline.html` | Mencegah halaman dengan session atau data klinis tertinggal pada perangkat. |
-| API, health check, halaman internal, login, dan register | Network-only dengan `cache: no-store` | Respons dapat sensitif atau harus selalu terbaru. |
-| POST/PUT/PATCH/DELETE | Tidak diintersep | Mutasi tidak boleh dimasukkan ke cache atau diantrikan tanpa rancangan konflik yang eksplisit. |
-| Resource lintas origin | Tidak diintersep | CDN dan integrasi eksternal tetap mengikuti kebijakan browser/upstream. |
-
-Konsekuensinya, mode offline tidak mengizinkan membaca atau mengubah data klinis. Pengguna mendapat penjelasan yang aman dan dapat mencoba kembali setelah koneksi pulih. Offline mutation queue/background sync sengaja tidak diaktifkan karena memerlukan enkripsi lokal, resolusi konflik, audit trail, dan kebijakan retensi data kesehatan yang belum tersedia.
-
-## Struktur file
-
-| File | Tanggung jawab |
+| Peran | Data yang dipanaskan saat online |
 |---|---|
-| `public/manifest.webmanifest` | Identitas dan metadata instalasi PWA. |
-| `public/service-worker.js` | Precache shell, penghapusan cache lama, dan routing request. |
-| `public/offline.html` | Fallback navigasi ketika jaringan gagal. |
-| `public/pwa.js` | Registrasi service worker, prompt/panduan instalasi, dan label status koneksi. |
-| `public/pwa.css` | Tampilan tombol ikon instalasi, badge status, dan panduan instalasi iOS. |
-| `public/icons/` | Ikon regular, Apple Touch, dan maskable. |
-| `app/Views/components/pwa_head.php` | Metadata PWA yang digunakan seluruh dokumen HTML utama. |
-| `tests/unit/PwaAssetsTest.php` | Validasi manifest, ikon, cache policy, dan integrasi template. |
+| BPBD | Dashboard, command center, posko, pemetaan psikolog, tiket, registrasi, seluruh detail posko/penyintas, statistik, dan data gempa terakhir. |
+| Relawan | Dashboard posko sendiri, manajemen penyintas, form tambah penyintas, dan detail/JSON penyintas pada posko sendiri. |
+| Psikolog | Clinical workspace, assessment, monitoring, serta detail/review/ITQ/chart penyintas yang ditugaskan. |
 
-## Siklus pembaruan
+Daftar URL dibuat oleh `app/Controllers/OfflineController.php`. Semua URL tetap melewati filter autentikasi dan role yang sama seperti akses online.
 
-Nama cache berada pada konstanta `STATIC_CACHE` di `public/service-worker.js` dan saat ini menggunakan `psyaid-static-v4`. Saat daftar atau isi aset precache berubah, naikkan versinya, misalnya menjadi `psyaid-static-v5`. Service worker baru akan memasang cache baru dan menghapus cache PsyAid lama saat aktivasi.
+## Penyimpanan dan strategi request
 
-Jangan menambahkan route penyintas, response API, HTML dashboard, atau upload klinis ke `PRECACHE_URLS` maupun `SAFE_STATIC_PATHS`.
+| Jenis request | Penyimpanan | Strategi |
+|---|---|---|
+| App shell, ikon, gambar publik, helper | Cache Storage `psyaid-static-v6` | Cache-first. |
+| Bootstrap/Bootstrap Icons, font, Swiper, Leaflet, Chart.js, Tailwind, Lucide, Motion | Cache Storage `psyaid-external-v6` | Cache-first setelah pemanasan/runtime, maksimal 250 entri. |
+| Halaman HTML dan GET/JSON | `psyaid-pages-{user-id}-{role}-v6` | Network-first; fallback ke snapshot dengan query lalu URL dasar. |
+| Mutasi offline | IndexedDB `psyaid-offline`, store `mutations` | Network-first; bila fetch gagal, simpan body, header, URL, metode, scope, dan ID mutasi. |
+| Metadata snapshot/konteks | IndexedDB `psyaid-offline`, store `meta` | Menyimpan scope aktif dan waktu snapshot terakhir. |
+| Login, register, logout, health, bootstrap manifest | Tidak dicache/diantrekan | Selalu membutuhkan server. |
 
-## Verifikasi lokal
+File upload dari `multipart/form-data` ikut disimpan sebagai body request di IndexedDB. Kuota penyimpanan tetap mengikuti kebijakan browser/perangkat.
 
-Jalankan aplikasi:
+## Konsistensi dan keamanan replay
+
+Setiap item antrean memiliki `X-PsyAid-Mutation-Id`. Filter `OfflineMutationFilter` mencatat ID tersebut pada tabel `offline_mutation_receipts`. Mutasi yang responsnya telah sukses tidak dieksekusi ulang apabila Background Sync melakukan retry akibat koneksi terputus pada saat respons kembali ke perangkat.
+
+Header `X-PsyAid-User-Scope` juga dibandingkan dengan sesi aktif. Antrean akun lain tidak dapat dikirim menggunakan sesi yang sedang login. Jika sesi kedaluwarsa, antrean dipertahankan dan UI meminta pengguna login kembali.
+
+Logout ditunda ketika masih ada antrean dan perangkat offline. Saat online, PsyAid mencoba mengosongkan antrean sebelum membersihkan cache akun. Jika server menolak item secara permanen, pengguna harus mengonfirmasi secara eksplisit sebelum logout menghapus antrean tersebut.
+
+> Cache Storage dan IndexedDB adalah penyimpanan aplikasi pada profil browser, bukan media terenkripsi khusus. Perangkat operasional harus memakai screen lock, akun OS terpisah, dan kebijakan penghapusan data yang sesuai untuk data kesehatan.
+
+## Deployment
+
+Jalankan migrasi sebelum atau bersamaan dengan deployment aplikasi:
 
 ```bash
-php spark serve --host 127.0.0.1 --port 8080
+php spark migrate
 ```
 
-Kemudian buka `http://127.0.0.1:8080` dan periksa:
+Tabel baru:
 
-1. `manifest.webmanifest` berhasil dimuat dan memiliki ikon 192 serta 512 piksel.
-2. `service-worker.js` aktif dengan scope `/`.
-3. Tombol ikon download muncul bila browser memenuhi kriteria dan aplikasi belum terpasang; pada iOS tombol menampilkan panduan pemasangan manual.
-4. Badge berubah dari `Online` menjadi `Offline` ketika koneksi dinonaktifkan.
-5. Navigasi saat offline membuka `offline.html`, bukan salinan halaman klinis.
-6. Cache Storage hanya berisi cache bernama `psyaid-static-*` dengan aset publik yang diizinkan.
+- `offline_mutation_receipts`: receipt idempoten tanpa menyimpan ulang isi klinis request/response. Pada PostgreSQL, migrasi mengaktifkan RLS dan mencabut akses role Data API `anon`/`authenticated`; tabel hanya dipakai koneksi backend langsung.
 
-Jalankan test otomatis dengan:
+PWA harus disajikan melalui HTTPS. `localhost` dan `127.0.0.1` dapat dipakai untuk pengembangan.
+
+## Verifikasi
+
+1. Login online dan tunggu notifikasi “Mode offline siap”.
+2. Periksa Cache Storage: ada cache `psyaid-pages-user-{id}-{role}-v6`.
+3. Nonaktifkan jaringan lalu buka beberapa menu dan detail yang termasuk cakupan role.
+4. Kirim form. URL kembali memuat parameter sementara `offline_queued`, badge menampilkan jumlah antrean, dan record muncul di IndexedDB store `mutations`.
+5. Aktifkan jaringan. Pastikan antrean menjadi nol, perubahan muncul setelah snapshot diperbarui, dan receipt tersedia di database.
+6. Ulangi dengan ID mutasi yang sama dan pastikan server membalas `208` tanpa menjalankan CRUD dua kali.
+7. Jalankan test:
 
 ```bash
 composer test
 ```
 
-## Referensi standar
+## File utama
 
-- [MDN: Making PWAs installable](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Making_PWAs_installable)
-- [MDN: Offline and background operation](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Offline_and_background_operation)
-- [MDN: PWA caching](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/Caching)
+- `public/service-worker.js`: routing cache, IndexedDB queue, Background Sync, dan snapshot warmer.
+- `public/pwa.js`: registrasi, konteks akun, UI status, sinkronisasi manual, dan logout guard.
+- `app/Controllers/OfflineController.php`: manifest snapshot berbasis role.
+- `app/Filters/OfflineMutationFilter.php`: idempotensi dan validasi scope replay.
+- `app/Database/Migrations/2026-08-07-000001_CreateOfflineMutationReceiptsTable.php`: receipt replay database.
+
+## Pembaruan ikon aplikasi
+
+URL manifest dan ikon memakai versi (`?v=20260807-2`) agar browser tidak mempertahankan ikon instalasi lama, sedangkan service worker memakai cache `v6`. Setelah deployment, tutup dan buka kembali PWA agar browser memeriksa manifest terbaru. Bila launcher OS masih menampilkan monogram lama, sinkronkan seluruh antrean terlebih dahulu, uninstall instalasi lama, lalu install PsyAid kembali dari browser.
