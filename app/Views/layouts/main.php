@@ -740,7 +740,7 @@ if (session()->get('logged_in')) {
                         </a>
                         <a href="<?= site_url('/victim/create/' . $poskoId) ?>"
                             class="sidebar-nav-item <?= url_is('victim/create*') ? 'active' : '' ?>" title="Tambah Penyintas Baru">
-                            <i class="nav-icon bi bi-person-plus-fill text-emerald-600"></i>
+                            <i class="nav-icon bi bi-person-plus-fill text-success"></i>
                             <span class="sidebar-label">Tambah Korban</span>
                         </a>
 
@@ -1044,7 +1044,7 @@ if (session()->get('logged_in')) {
                         </a>
                         <a href="<?= site_url('/victim/create/' . $poskoId) ?>"
                             class="sidebar-nav-item py-2 px-3 mb-1 <?= url_is('victim/create*') ? 'active' : '' ?>">
-                            <i class="nav-icon bi bi-person-plus-fill text-emerald-600"></i>
+                            <i class="nav-icon bi bi-person-plus-fill text-success"></i>
                             <span class="sidebar-label">Tambah Korban</span>
                         </a>
 
