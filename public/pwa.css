@@ -1,82 +1,183 @@
 .pwa-control-cluster {
   --pwa-forest: #064e3b;
   --pwa-emerald: #059669;
-  --pwa-mist: #ecfdf5;
-  --pwa-ink: #0f172a;
+  --pwa-surface: #eaf5ef;
+  --pwa-surface-light: #f8fffb;
+  --pwa-ink: #12352b;
+  --pwa-muted: #5f776f;
   --pwa-amber: #d97706;
   position: fixed;
-  right: 1.125rem;
-  bottom: 1.125rem;
+  right: 1rem;
+  bottom: max(1rem, env(safe-area-inset-bottom));
   z-index: 2000;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.625rem;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.55rem;
   font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
   pointer-events: none;
 }
 
 .pwa-public-landing .pwa-control-cluster {
+  position: fixed;
+  top: auto;
   right: auto;
-  left: 1.125rem;
+  bottom: max(1rem, calc(env(safe-area-inset-bottom) + 0.5rem));
+  left: max(1rem, calc(env(safe-area-inset-left) + 0.25rem));
   align-items: flex-start;
 }
 
-.pwa-install-button,
-.pwa-sync-button,
-.pwa-network-status {
-  display: inline-flex;
-  align-items: center;
-  font-size: 0.78rem;
-  font-weight: 750;
-  letter-spacing: -0.01em;
-  box-shadow: 0 10px 26px rgba(6, 78, 59, 0.16);
-  backdrop-filter: blur(14px) saturate(145%);
-  -webkit-backdrop-filter: blur(14px) saturate(145%);
+.pwa-control-toggle,
+.pwa-control-panel,
+.pwa-notice {
   pointer-events: auto;
 }
 
-.pwa-install-button {
-  justify-content: center;
+.pwa-control-toggle {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
   width: 2.75rem;
   height: 2.75rem;
   flex: 0 0 2.75rem;
-  border: 1px solid rgba(167, 243, 208, 0.72);
-  border-radius: 0.875rem;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 0.95rem;
   padding: 0;
-  background: linear-gradient(145deg, var(--pwa-emerald), var(--pwa-forest));
-  color: #fff;
-  cursor: pointer;
-  transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease, opacity 180ms ease;
-}
-
-.pwa-sync-button {
-  justify-content: center;
-  width: 2.6rem;
-  height: 2.6rem;
-  flex: 0 0 2.6rem;
-  border: 1px solid rgba(5, 150, 105, 0.3);
-  border-radius: 0.875rem;
-  padding: 0;
-  background: rgba(255, 255, 255, 0.94);
+  background: var(--pwa-surface);
   color: var(--pwa-forest);
+  box-shadow:
+    7px 7px 16px rgba(20, 78, 59, 0.2),
+    -6px -6px 14px rgba(255, 255, 255, 0.92),
+    inset 0 0 0 rgba(20, 78, 59, 0);
   cursor: pointer;
-  transition: transform 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
+  transition: transform 170ms ease, box-shadow 170ms ease, color 170ms ease;
 }
 
-.pwa-sync-button:hover:not(:disabled) {
+.pwa-control-toggle:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 30px rgba(6, 78, 59, 0.2);
+  color: var(--pwa-emerald);
 }
 
-.pwa-sync-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.58;
+.pwa-control-toggle:active,
+.pwa-control-toggle.is-open {
+  transform: translateY(0);
+  box-shadow:
+    2px 2px 7px rgba(20, 78, 59, 0.18),
+    -2px -2px 7px rgba(255, 255, 255, 0.85),
+    inset 3px 3px 7px rgba(20, 78, 59, 0.13),
+    inset -3px -3px 7px rgba(255, 255, 255, 0.8);
 }
 
-.pwa-sync-button svg {
+.pwa-control-toggle:focus-visible,
+.pwa-panel-button:focus-visible {
+  outline: 3px solid rgba(16, 185, 129, 0.42);
+  outline-offset: 3px;
+}
+
+.pwa-control-toggle svg {
   width: 1.2rem;
   height: 1.2rem;
+  fill: var(--pwa-surface);
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pwa-toggle-indicator {
+  position: absolute;
+  top: 0.36rem;
+  right: 0.36rem;
+  width: 0.46rem;
+  height: 0.46rem;
+  border: 2px solid var(--pwa-surface);
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.13);
+}
+
+.pwa-control-toggle.is-offline .pwa-toggle-indicator,
+.pwa-control-toggle.has-queue .pwa-toggle-indicator {
+  background: var(--pwa-amber);
+  box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.14);
+}
+
+.pwa-control-panel {
+  display: flex;
+  width: 10.8rem;
+  flex-direction: column;
+  gap: 0.42rem;
+  border: 1px solid rgba(255, 255, 255, 0.74);
+  border-radius: 1rem;
+  padding: 0.55rem;
+  background: var(--pwa-surface);
+  box-shadow:
+    10px 10px 24px rgba(20, 78, 59, 0.2),
+    -7px -7px 19px rgba(255, 255, 255, 0.88);
+  transform-origin: right bottom;
+}
+
+.pwa-public-landing .pwa-control-panel {
+  transform-origin: left bottom;
+}
+
+.pwa-control-panel.is-open {
+  animation: pwa-panel-rise 160ms ease-out both;
+}
+
+.pwa-control-panel[hidden],
+.pwa-panel-button[hidden],
+.pwa-notice[hidden] {
+  display: none;
+}
+
+.pwa-panel-button,
+.pwa-network-status {
+  display: flex;
+  width: 100%;
+  min-height: 2.35rem;
+  align-items: center;
+  gap: 0.55rem;
+  border-radius: 0.72rem;
+  padding: 0.48rem 0.62rem;
+  font-size: 0.72rem;
+  font-weight: 760;
+  letter-spacing: -0.01em;
+}
+
+.pwa-panel-button {
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: var(--pwa-surface);
+  color: var(--pwa-forest);
+  box-shadow:
+    4px 4px 9px rgba(20, 78, 59, 0.16),
+    -4px -4px 9px rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  transition: color 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+}
+
+.pwa-panel-button:hover:not(:disabled) {
+  color: var(--pwa-emerald);
+  transform: translateY(-1px);
+}
+
+.pwa-panel-button:active:not(:disabled) {
+  transform: none;
+  box-shadow:
+    inset 3px 3px 7px rgba(20, 78, 59, 0.13),
+    inset -3px -3px 7px rgba(255, 255, 255, 0.82);
+}
+
+.pwa-panel-button:disabled {
+  cursor: not-allowed;
+  color: var(--pwa-muted);
+  opacity: 0.62;
+}
+
+.pwa-panel-button svg {
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 1rem;
   fill: none;
   stroke: currentColor;
   stroke-width: 2;
@@ -84,145 +185,87 @@
   stroke-linejoin: round;
 }
 
-.pwa-sync-button.is-pending svg {
-  animation: pwa-sync-spin 850ms linear infinite;
-}
-
-.pwa-install-button:hover {
-  transform: translateY(-2px);
-  filter: saturate(112%);
-  box-shadow: 0 14px 32px rgba(6, 78, 59, 0.27);
-}
-
-.pwa-install-button:active {
-  transform: translateY(0) scale(0.96);
-}
-
-.pwa-install-button:disabled {
-  cursor: wait;
-  opacity: 0.72;
-}
-
-.pwa-install-button[hidden] {
-  display: none;
-}
-
-.pwa-install-button:focus-visible {
-  outline: 3px solid rgba(52, 211, 153, 0.58);
-  outline-offset: 3px;
-}
-
 .pwa-install-button.is-pending svg {
   animation: pwa-install-pulse 700ms ease-in-out infinite alternate;
 }
 
-.pwa-network-status {
-  min-height: 2.375rem;
-  gap: 0.55rem;
-  border: 1px solid rgba(5, 150, 105, 0.24);
-  border-radius: 999px;
-  padding: 0.5rem 0.78rem;
-  background: rgba(236, 253, 245, 0.92);
-  color: #065f46;
+.pwa-sync-button.is-pending svg {
+  animation: pwa-sync-spin 850ms linear infinite;
 }
 
-.pwa-install-button svg {
-  width: 1.25rem;
-  height: 1.25rem;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2.1;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.pwa-network-status {
+  position: relative;
+  min-height: 2.2rem;
+  color: #086045;
+  background: rgba(248, 255, 251, 0.55);
+  box-shadow:
+    inset 3px 3px 7px rgba(20, 78, 59, 0.11),
+    inset -3px -3px 7px rgba(255, 255, 255, 0.82);
 }
 
 .pwa-network-status::before {
   content: '';
   width: 0.48rem;
   height: 0.48rem;
+  flex: 0 0 0.48rem;
   border-radius: 50%;
   background: #10b981;
-  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.12);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12);
 }
 
 .pwa-network-status.is-offline {
-  border-color: rgba(217, 119, 6, 0.3);
-  background: rgba(255, 251, 235, 0.95);
   color: #92400e;
 }
 
 .pwa-network-status.is-offline::before {
   background: var(--pwa-amber);
-  box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.13);
+  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.13);
 }
 
 .pwa-network-status.has-queue {
-  border-color: rgba(217, 119, 6, 0.35);
+  color: #92400e;
 }
 
 .pwa-notice {
   position: absolute;
   right: 0;
   bottom: calc(100% + 0.7rem);
-  width: min(22rem, calc(100vw - 1.5rem));
-  border: 1px solid rgba(5, 150, 105, 0.22);
-  border-radius: 0.875rem;
-  padding: 0.78rem 0.9rem;
-  background: rgba(255, 255, 255, 0.97);
+  width: min(20rem, calc(100vw - 1.5rem));
+  border: 1px solid rgba(5, 150, 105, 0.18);
+  border-radius: 0.9rem;
+  padding: 0.72rem 0.82rem;
+  background: rgba(248, 255, 251, 0.97);
   color: var(--pwa-ink);
-  box-shadow: 0 14px 36px rgba(6, 78, 59, 0.18);
-  font-size: 0.78rem;
+  box-shadow: 8px 8px 22px rgba(20, 78, 59, 0.18);
+  font-size: 0.75rem;
   font-weight: 650;
-  line-height: 1.5;
-  pointer-events: auto;
+  line-height: 1.45;
 }
 
 .pwa-notice.is-success { border-color: rgba(5, 150, 105, 0.4); }
-.pwa-notice.is-warning { border-color: rgba(217, 119, 6, 0.45); background: rgba(255, 251, 235, 0.98); }
-.pwa-notice.is-danger { border-color: rgba(220, 38, 38, 0.4); background: rgba(254, 242, 242, 0.98); }
-.pwa-notice[hidden] { display: none; }
+.pwa-notice.is-warning { border-color: rgba(217, 119, 6, 0.42); background: rgba(255, 251, 235, 0.98); }
+.pwa-notice.is-danger { border-color: rgba(220, 38, 38, 0.38); background: rgba(254, 242, 242, 0.98); }
 
 .pwa-public-landing .pwa-notice {
   right: auto;
   left: 0;
 }
 
-.pwa-install-help {
-  position: absolute;
-  right: 0;
-  bottom: calc(100% + 0.7rem);
-  width: min(17rem, calc(100vw - 1.5rem));
-  border: 1px solid rgba(5, 150, 105, 0.2);
-  border-radius: 0.875rem;
-  padding: 0.75rem 0.875rem;
-  background: rgba(255, 255, 255, 0.96);
-  color: var(--pwa-ink);
-  box-shadow: 0 14px 36px rgba(6, 78, 59, 0.18);
-  font-size: 0.76rem;
-  font-weight: 650;
-  line-height: 1.5;
-  pointer-events: auto;
-}
-
-.pwa-public-landing .pwa-install-help {
-  right: auto;
-  left: 0;
-}
-
-.pwa-install-help[hidden] {
-  display: none;
-}
-
-@keyframes pwa-install-pulse {
+@keyframes pwa-panel-rise {
   from {
-    opacity: 0.5;
-    transform: translateY(-1px);
+    opacity: 0;
+    transform: translateY(0.45rem) scale(0.96);
   }
 
   to {
     opacity: 1;
-    transform: translateY(1px);
+    transform: translateY(0) scale(1);
   }
+}
+
+@keyframes pwa-install-pulse {
+  from { opacity: 0.5; transform: translateY(-1px); }
+  to { opacity: 1; transform: translateY(1px); }
 }
 
 @keyframes pwa-sync-spin {
@@ -236,33 +279,33 @@
   }
 
   .pwa-public-landing .pwa-control-cluster {
-    left: 0.75rem;
-    top: max(4.75rem, calc(4.25rem + env(safe-area-inset-top)));
-    bottom: auto;
-    position: absolute;
+    position: fixed;
+    top: auto;
+    right: auto;
+    bottom: max(0.75rem, calc(env(safe-area-inset-bottom) + 0.5rem));
+    left: max(0.75rem, calc(env(safe-area-inset-left) + 0.25rem));
   }
 
-  .pwa-install-button,
-  .pwa-sync-button,
-  .pwa-network-status {
-    font-size: 0.74rem;
+  .pwa-control-panel {
+    width: 10.25rem;
   }
+}
 
-  .pwa-public-landing .pwa-install-help {
-    top: calc(100% + 0.7rem);
-    bottom: auto;
-  }
-
-  .pwa-public-landing .pwa-notice {
-    top: calc(100% + 0.7rem);
-    bottom: auto;
+@supports (-webkit-touch-callout: none) {
+  .pwa-public-landing .pwa-control-cluster {
+    position: fixed;
+    top: auto;
+    right: auto;
+    bottom: calc(0.75rem + env(safe-area-inset-bottom));
+    left: calc(0.75rem + env(safe-area-inset-left));
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pwa-install-button,
+  .pwa-control-toggle,
+  .pwa-panel-button,
+  .pwa-control-panel.is-open,
   .pwa-install-button.is-pending svg,
-  .pwa-sync-button,
   .pwa-sync-button.is-pending svg {
     animation: none;
     transition: none;

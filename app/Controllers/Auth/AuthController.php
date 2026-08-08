@@ -155,8 +155,13 @@ class AuthController extends BaseController
             case 'bpbd_admin':
                 return redirect()->to('/bpbd/dashboard');
             case 'relawan':
-                $targetPosko = $poskoId ?? 1;
-                return redirect()->to('/relawan/posko/' . $targetPosko);
+                if (($poskoId ?? 0) <= 0) {
+                    return redirect()->to('/relawan/posko-tidak-tersedia');
+                }
+                // The assigned-posko guard also runs in PoskoController. Go
+                // straight to the dashboard so login does not traverse two
+                // consecutive redirects while the PWA changes user scope.
+                return redirect()->to('/posko/' . $poskoId);
             case 'psikolog':
                 return redirect()->to('/psikolog/dashboard');
             default:

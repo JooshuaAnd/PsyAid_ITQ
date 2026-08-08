@@ -84,7 +84,7 @@ class OfflineController extends BaseController
     private function relawanUrls(int $poskoId): array
     {
         if ($poskoId <= 0) {
-            return [];
+            return ['/relawan/posko-tidak-tersedia'];
         }
 
         $db = \Config\Database::connect();
@@ -94,6 +94,7 @@ class OfflineController extends BaseController
         );
 
         $urls = [
+            '/relawan/posko-tidak-tersedia',
             '/relawan/posko/' . $poskoId,
             '/posko/' . $poskoId,
             '/relawan/manajemen-penyintas',

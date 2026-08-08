@@ -3,10 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title><?= esc($title ?? 'PsyAid Disaster Assistant — Laporan Bencana Masyarakat') ?></title>
-    <link rel="shortcut icon" type="image/png" href="<?= base_url('images/Logo_PsyAid.png') ?>">
-    <link rel="icon" type="image/png" href="<?= base_url('images/Logo_PsyAid.png') ?>">
     <?= view('components/pwa_head') ?>
 
     <!-- Fonts: Plus Jakarta Sans & Inter -->

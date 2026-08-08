@@ -9,7 +9,7 @@
 
 'use strict';
 
-const VERSION = 'v6';
+const VERSION = 'v11';
 const CACHE_PREFIX = 'psyaid-';
 const STATIC_CACHE = `${CACHE_PREFIX}static-${VERSION}`;
 const EXTERNAL_CACHE = `${CACHE_PREFIX}external-${VERSION}`;
@@ -29,6 +29,7 @@ const PRECACHE_URLS = [
   '/helper/timeFormat.js',
   '/js/helper/timeFormat.js',
   '/favicon.ico',
+  '/icons/favicon-32x32.png',
   '/data/regencies_grouped.json',
   '/images/Logo_PsyAid.png',
   '/images/profile.svg',
@@ -60,7 +61,14 @@ const EXTERNAL_ASSETS = [
   'https://cdn.jsdelivr.net/npm/motion@10.16.2/dist/motion.js'
 ];
 
-const NEVER_CACHE_PATHS = ['/logout', '/offline/bootstrap', '/health/'];
+const NEVER_CACHE_PATHS = [
+  '/login',
+  '/logout',
+  '/register',
+  '/forbidden',
+  '/offline/bootstrap',
+  '/health/'
+];
 const NEVER_QUEUE_PATHS = [
   '/login',
   '/logout',
@@ -71,6 +79,8 @@ const NEVER_QUEUE_PATHS = [
 ];
 const STATIC_PATHS = new Set(PRECACHE_URLS);
 let activeScope = 'public';
+let snapshotRunSequence = 0;
+const snapshotRuns = new Map();
 
 function openDatabase() {
   return new Promise((resolve, reject) => {
@@ -119,6 +129,10 @@ async function setMeta(key, value) {
   await withStore(META_STORE, 'readwrite', (store) => store.put({ key, value }));
 }
 
+async function deleteMeta(key) {
+  await withStore(META_STORE, 'readwrite', (store) => store.delete(key));
+}
+
 const contextReady = getMeta('activeScope', 'public')
   .then((scope) => {
     activeScope = sanitizeScope(scope);
@@ -138,16 +152,31 @@ async function setActiveScope(scope) {
   return activeScope;
 }
 
+async function switchActiveScope(scope) {
+  const nextScope = sanitizeScope(scope);
+  for (const runningScope of snapshotRuns.keys()) {
+    if (runningScope !== nextScope) {
+      snapshotRuns.delete(runningScope);
+    }
+  }
+  return setActiveScope(nextScope);
+}
+
 function pageCacheName(scope = activeScope) {
   return `${PAGE_CACHE_PREFIX}${sanitizeScope(scope)}-${VERSION}`;
 }
 
 function isNeverCached(pathname) {
-  return NEVER_CACHE_PATHS.some((path) => pathname === path || pathname.startsWith(path));
+  return NEVER_CACHE_PATHS.some((path) => matchesConfiguredPath(pathname, path));
 }
 
 function isNeverQueued(pathname) {
-  return NEVER_QUEUE_PATHS.some((path) => pathname === path || pathname.startsWith(path));
+  return NEVER_QUEUE_PATHS.some((path) => matchesConfiguredPath(pathname, path));
+}
+
+function matchesConfiguredPath(pathname, configuredPath) {
+  const path = configuredPath.replace(/\/+$/, '') || '/';
+  return pathname === path || pathname.startsWith(`${path}/`);
 }
 
 function isStaticRequest(request, url) {
@@ -208,6 +237,18 @@ async function safeCachePut(cache, request, response) {
   }
 }
 
+async function networkOnly(request) {
+  try {
+    return await fetch(request, { cache: 'no-store' });
+  } catch (error) {
+    if (request.mode === 'navigate') {
+      return (await caches.match(OFFLINE_URL)) || Response.error();
+    }
+
+    throw error;
+  }
+}
+
 async function cacheFirstStatic(request) {
   const cache = await caches.open(STATIC_CACHE);
   const cached = await cache.match(request);
@@ -247,7 +288,7 @@ async function trimCache(cacheName, maxEntries) {
 
 async function matchPageCache(request, scope) {
   const cache = await caches.open(pageCacheName(scope));
-  let cached = await cache.match(request);
+  let cached = await cache.match(request, { ignoreVary: true });
   if (cached) {
     return cached;
   }
@@ -260,7 +301,7 @@ async function matchPageCache(request, scope) {
       cached = await cache.match(new Request(withoutQueueMarker.href, {
         method: 'GET',
         credentials: 'include'
-      }));
+      }), { ignoreVary: true });
       if (cached) {
         return cached;
       }
@@ -270,10 +311,31 @@ async function matchPageCache(request, scope) {
       method: 'GET',
       credentials: 'include'
     });
-    cached = await cache.match(withoutSearch);
+    cached = await cache.match(withoutSearch, { ignoreVary: true });
   }
 
   return cached;
+}
+
+function waitForNavigationRetry(milliseconds) {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+async function fetchPageWithTransientRetry(request) {
+  try {
+    return await fetch(request);
+  } catch (firstError) {
+    if (request.mode !== 'navigate') {
+      throw firstError;
+    }
+
+    // During login the session, worker scope, and destination page change at
+    // almost the same time. A single navigation fetch can be interrupted by
+    // that hand-off even though the server is reachable. Give the GET one
+    // bounded retry before showing the genuine offline fallback.
+    await waitForNavigationRetry(200);
+    return fetch(request.clone(), { cache: 'no-store' });
+  }
 }
 
 async function networkFirstPage(request, requestedScope = activeScope) {
@@ -281,12 +343,38 @@ async function networkFirstPage(request, requestedScope = activeScope) {
   let scope = sanitizeScope(requestedScope || activeScope);
 
   try {
-    const response = await fetch(request);
+    const response = await fetchPageWithTransientRetry(request);
     if (isUsableNetworkResponse(response)) {
       scope = await scopeForResponse(response, scope);
       const cache = await caches.open(pageCacheName(scope));
       await safeCachePut(cache, request, response);
+      return response;
     }
+
+    // Every real HTTP response proves that the network request completed.
+    // Auth redirects/4xx are returned unchanged. For 5xx, prefer an existing
+    // snapshot, but never mislabel a server error as an offline device.
+    if (response.status > 0) {
+      if (response.status >= 500) {
+        const cached = await matchPageCache(request, scope);
+        if (cached) {
+          return cached;
+        }
+      }
+      return response;
+    }
+
+    if (response.status === 0) {
+      const cached = await matchPageCache(request, scope);
+      if (cached) {
+        return cached;
+      }
+
+      if (request.mode === 'navigate') {
+        return (await caches.match(OFFLINE_URL)) || Response.error();
+      }
+    }
+
     return response;
   } catch (error) {
     const cached = await matchPageCache(request, scope);
@@ -361,11 +449,12 @@ async function broadcast(message) {
   windows.forEach((client) => client.postMessage(message));
 }
 
-async function reportQueueStatus(extra = {}) {
-  const mutations = await getMutations(activeScope);
+async function reportQueueStatus(extra = {}, requestedScope = activeScope) {
+  const queueScope = sanitizeScope(requestedScope);
+  const mutations = await getMutations(queueScope);
   await broadcast({
     type: 'QUEUE_STATUS',
-    scope: activeScope,
+    scope: queueScope,
     pending: mutations.filter((item) => item.state !== 'failed').length,
     failed: mutations.filter((item) => item.state === 'failed').length,
     ...extra
@@ -423,18 +512,29 @@ async function networkOrQueue(request) {
   }
 }
 
-async function replayMutations(reason = 'manual') {
+async function replayMutations(reason = 'manual', requestedScope = activeScope) {
   await contextReady;
-  const mutations = await getMutations(activeScope);
-  if (!mutations.length) {
-    await reportQueueStatus({ syncState: 'idle', reason });
+  const replayScope = sanitizeScope(requestedScope);
+  if (replayScope !== activeScope) {
+    await broadcast({ type: 'SYNC_CANCELLED', scope: replayScope, reason: 'scope-changed' });
     return;
   }
 
-  await broadcast({ type: 'SYNC_STATE', state: 'syncing', total: mutations.length, reason });
+  const mutations = await getMutations(replayScope);
+  if (!mutations.length) {
+    await reportQueueStatus({ syncState: 'idle', reason }, replayScope);
+    return;
+  }
+
+  await broadcast({ type: 'SYNC_STATE', state: 'syncing', total: mutations.length, reason, scope: replayScope });
   let synced = 0;
 
   for (const mutation of mutations) {
+    if (activeScope !== replayScope) {
+      await broadcast({ type: 'SYNC_CANCELLED', scope: replayScope, reason: 'scope-changed' });
+      break;
+    }
+
     const headers = new Headers(mutation.headers || {});
     headers.set('X-PsyAid-Mutation-Id', mutation.id);
     headers.set('X-PsyAid-User-Scope', mutation.scope);
@@ -457,14 +557,14 @@ async function replayMutations(reason = 'manual') {
         mutation.lastError = 'Sesi perlu diperbarui';
         mutation.state = 'pending';
         await putMutation(mutation);
-        await broadcast({ type: 'SYNC_AUTH_REQUIRED', pending: mutations.length - synced });
+        await broadcast({ type: 'SYNC_AUTH_REQUIRED', pending: mutations.length - synced, scope: replayScope });
         break;
       }
 
       if ((response.status >= 200 && response.status < 400) || response.status === 208) {
         await deleteMutation(mutation.id);
         synced += 1;
-        await reportQueueStatus({ synced: mutation.id, syncState: 'syncing' });
+        await reportQueueStatus({ synced: mutation.id, syncState: 'syncing' }, replayScope);
         continue;
       }
 
@@ -478,7 +578,8 @@ async function replayMutations(reason = 'manual') {
           type: 'SYNC_ITEM_FAILED',
           id: mutation.id,
           url: mutation.url,
-          status: response.status
+          status: response.status,
+          scope: replayScope
         });
         continue;
       }
@@ -494,8 +595,8 @@ async function replayMutations(reason = 'manual') {
     }
   }
 
-  await reportQueueStatus({ syncState: 'complete', syncedCount: synced, reason });
-  await broadcast({ type: 'SYNC_COMPLETE', synced, reason });
+  await reportQueueStatus({ syncState: 'complete', syncedCount: synced, reason }, replayScope);
+  await broadcast({ type: 'SYNC_COMPLETE', synced, reason, scope: replayScope });
 }
 
 async function cacheExternalUrl(url) {
@@ -556,10 +657,15 @@ function discoverHtmlAssets(response, baseUrl) {
   }).catch(() => []);
 }
 
-async function cacheSnapshotAsset(url, scopeCache) {
+async function cacheSnapshotAsset(url, scopeCache, isCurrent = () => true) {
+  if (!isCurrent()) {
+    return false;
+  }
+
   const assetUrl = new URL(url);
   if (assetUrl.origin !== self.location.origin) {
-    return cacheExternalUrl(assetUrl.href);
+    const cached = await cacheExternalUrl(assetUrl.href);
+    return isCurrent() ? cached : false;
   }
 
   const request = new Request(assetUrl.href, { credentials: 'include', cache: 'no-store' });
@@ -572,7 +678,7 @@ async function cacheSnapshotAsset(url, scopeCache) {
   }
 
   const response = await fetch(request);
-  if (!isUsableNetworkResponse(response)) {
+  if (!isCurrent() || !isUsableNetworkResponse(response)) {
     return false;
   }
 
@@ -580,78 +686,166 @@ async function cacheSnapshotAsset(url, scopeCache) {
 }
 
 async function warmOfflineSnapshot(urls, scope) {
-  await setActiveScope(scope);
+  const snapshotScope = sanitizeScope(scope);
+  const runId = ++snapshotRunSequence;
+  snapshotRuns.set(snapshotScope, runId);
+  const isCurrent = () => snapshotRuns.get(snapshotScope) === runId;
+
   const uniqueUrls = [...new Set((urls || []).map((url) => new URL(url, self.location.origin).href))];
   const total = uniqueUrls.length;
-  const cache = await caches.open(pageCacheName(activeScope));
+  const optionalPaths = new Set(['/api/earthquake-data']);
+  const requiredTotal = uniqueUrls.filter((url) => !optionalPaths.has(new URL(url).pathname)).length;
+  const cache = await caches.open(pageCacheName(snapshotScope));
   const discoveredAssets = new Set();
   let completed = 0;
   let cached = 0;
+  let requiredCached = 0;
+  const failedUrls = [];
 
-  await broadcast({ type: 'WARM_PROGRESS', state: 'started', total });
+  await broadcast({ type: 'WARM_PROGRESS', state: 'started', total, scope: snapshotScope });
 
   const workers = Array.from({ length: Math.min(4, Math.max(1, uniqueUrls.length)) }, async () => {
-    while (uniqueUrls.length) {
+    while (uniqueUrls.length && isCurrent()) {
       const url = uniqueUrls.shift();
+      const optional = optionalPaths.has(new URL(url).pathname);
       try {
         const request = new Request(url, { credentials: 'include', cache: 'no-store' });
         const response = await fetch(request);
+        if (!isCurrent()) {
+          break;
+        }
         if (isUsableNetworkResponse(response)) {
           const assets = await discoverHtmlAssets(response, url);
           assets.forEach((assetUrl) => discoveredAssets.add(assetUrl));
           if (await safeCachePut(cache, request, response)) {
             cached += 1;
+            if (!optional) {
+              requiredCached += 1;
+            }
+          } else if (!optional) {
+            failedUrls.push(url);
           }
+        } else if (!optional) {
+          failedUrls.push(url);
         }
       } catch (error) {
-        // A partial snapshot remains usable; the next online pass retries it.
+        if (!optional) {
+          failedUrls.push(url);
+        }
       }
       completed += 1;
       if (completed === 1 || completed % 5 === 0 || completed === total) {
-        await broadcast({ type: 'WARM_PROGRESS', state: 'running', completed, total });
+        await broadcast({ type: 'WARM_PROGRESS', state: 'running', completed, total, scope: snapshotScope });
       }
     }
   });
 
   await Promise.all(workers);
+  if (!isCurrent()) {
+    await broadcast({ type: 'WARM_PROGRESS', state: 'cancelled', scope: snapshotScope });
+    return;
+  }
+
   const assetUrls = [...new Set([...EXTERNAL_ASSETS, ...discoveredAssets])];
-  const assetResults = await Promise.allSettled(assetUrls.map((url) => cacheSnapshotAsset(url, cache)));
+  const assetResults = await Promise.allSettled(
+    assetUrls.map((url) => cacheSnapshotAsset(url, cache, isCurrent))
+  );
+  if (!isCurrent()) {
+    await broadcast({ type: 'WARM_PROGRESS', state: 'cancelled', scope: snapshotScope });
+    return;
+  }
+
   const externalCached = assetResults.filter((result) => result.status === 'fulfilled' && result.value).length;
   await trimCache(EXTERNAL_CACHE, 250);
-  await setMeta(`snapshot:${activeScope}`, {
+  if (!isCurrent()) {
+    await broadcast({ type: 'WARM_PROGRESS', state: 'cancelled', scope: snapshotScope });
+    return;
+  }
+
+  const pageKeys = await cache.keys();
+  const snapshotComplete = requiredCached === requiredTotal;
+  await setMeta(`snapshot:${snapshotScope}`, {
+    version: VERSION,
     cachedAt: Date.now(),
     pages: cached,
-    externalAssets: externalCached
+    requiredPages: requiredTotal,
+    pageEntries: pageKeys.length,
+    externalAssets: externalCached,
+    complete: snapshotComplete,
+    failed: failedUrls.length
   });
+  if (!isCurrent()) {
+    if (!snapshotRuns.has(snapshotScope)) {
+      await deleteMeta(`snapshot:${snapshotScope}`);
+    }
+    await broadcast({ type: 'WARM_PROGRESS', state: 'cancelled', scope: snapshotScope });
+    return;
+  }
+
   await broadcast({
     type: 'WARM_PROGRESS',
     state: 'complete',
     completed,
     total,
     cached,
+    requiredCached,
+    requiredTotal,
+    complete: snapshotComplete,
+    failed: failedUrls.length,
     externalCached,
-    scope: activeScope
+    scope: snapshotScope
   });
+  snapshotRuns.delete(snapshotScope);
 }
 
 async function clearScope(scope, clearQueue = false) {
   const safeScope = sanitizeScope(scope);
+  snapshotRuns.delete(safeScope);
+
+  // Change the in-memory context before asynchronous cleanup so a late
+  // message from the logged-out page cannot start another scoped snapshot.
+  if (activeScope === safeScope) {
+    await setActiveScope('public');
+  }
+
   await caches.delete(pageCacheName(safeScope));
+  await deleteMeta(`snapshot:${safeScope}`);
 
   if (clearQueue) {
     const mutations = await getMutations(safeScope);
     await Promise.all(mutations.map((mutation) => deleteMutation(mutation.id)));
   }
 
-  if (activeScope === safeScope) {
-    await setActiveScope('public');
+}
+
+async function precacheApplicationShell() {
+  const cache = await caches.open(STATIC_CACHE);
+
+  // One optional image that is missing in a deployment must not prevent a new
+  // worker from replacing an older worker. cache.addAll() rejects the entire
+  // install in that situation and can leave clients on an already-fixed bug.
+  await Promise.allSettled(PRECACHE_URLS.map(async (url) => {
+    const response = await fetch(new Request(url, { cache: 'reload' }));
+    if (!response.ok) {
+      throw new Error(`Precache ${url} gagal (HTTP ${response.status})`);
+    }
+    await safeCachePut(cache, url, response);
+  }));
+
+  // The offline document is the only mandatory shell entry because it is the
+  // final navigation fallback. Retry it explicitly and fail installation only
+  // when this essential response is genuinely unavailable.
+  if (!await cache.match(OFFLINE_URL)) {
+    const offlineResponse = await fetch(new Request(OFFLINE_URL, { cache: 'reload' }));
+    if (!offlineResponse.ok || !await safeCachePut(cache, OFFLINE_URL, offlineResponse)) {
+      throw new Error('Dokumen fallback offline tidak dapat disimpan.');
+    }
   }
 }
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(STATIC_CACHE)
-      .then((cache) => cache.addAll(PRECACHE_URLS))
+    precacheApplicationShell()
       .then(() => self.skipWaiting())
   );
 });
@@ -690,7 +884,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   if (isNeverCached(url.pathname)) {
-    event.respondWith(fetch(request, { cache: 'no-store' }));
+    event.respondWith(networkOnly(request));
     return;
   }
 
@@ -717,19 +911,39 @@ self.addEventListener('message', (event) => {
   };
 
   if (message.type === 'SET_CONTEXT') {
-    event.waitUntil(setActiveScope(message.scope).then((scope) => respond({ ok: true, scope })));
+    event.waitUntil((async () => {
+      await contextReady;
+      const scope = await switchActiveScope(message.scope);
+      respond({ ok: true, scope });
+    })());
     return;
   }
 
   if (message.type === 'WARM_URLS') {
-    event.waitUntil(warmOfflineSnapshot(message.urls, message.scope));
-    respond({ ok: true });
+    event.waitUntil((async () => {
+      await contextReady;
+      const requestedScope = sanitizeScope(message.scope);
+      if (requestedScope !== activeScope) {
+        respond({ ok: false, staleContext: true, scope: activeScope });
+        return;
+      }
+      respond({ ok: true, scope: requestedScope });
+      await warmOfflineSnapshot(message.urls, requestedScope);
+    })());
     return;
   }
 
   if (message.type === 'SYNC_MUTATIONS') {
-    event.waitUntil(replayMutations(message.reason || 'manual'));
-    respond({ ok: true });
+    event.waitUntil((async () => {
+      await contextReady;
+      const requestedScope = sanitizeScope(message.scope || activeScope);
+      if (requestedScope !== activeScope) {
+        respond({ ok: false, staleContext: true, scope: activeScope });
+        return;
+      }
+      respond({ ok: true, scope: requestedScope });
+      await replayMutations(message.reason || 'manual', requestedScope);
+    })());
     return;
   }
 
@@ -737,10 +951,15 @@ self.addEventListener('message', (event) => {
     event.waitUntil((async () => {
       await contextReady;
       const mutations = await getMutations(message.scope || activeScope);
-      const snapshot = await getMeta(`snapshot:${sanitizeScope(message.scope || activeScope)}`, null);
+      const requestedScope = sanitizeScope(message.scope || activeScope);
+      const snapshot = await getMeta(`snapshot:${requestedScope}`, null);
+      const pageCache = await caches.open(pageCacheName(requestedScope));
+      const pageCount = (await pageCache.keys()).length;
       respond({
         ok: true,
         scope: activeScope,
+        cacheVersion: VERSION,
+        pageCount,
         pending: mutations.filter((item) => item.state !== 'failed').length,
         failed: mutations.filter((item) => item.state === 'failed').length,
         snapshot
@@ -750,7 +969,11 @@ self.addEventListener('message', (event) => {
   }
 
   if (message.type === 'CLEAR_SCOPE') {
-    event.waitUntil(clearScope(message.scope, message.clearQueue === true).then(() => respond({ ok: true })));
+    event.waitUntil((async () => {
+      await contextReady;
+      await clearScope(message.scope, message.clearQueue === true);
+      respond({ ok: true });
+    })());
     return;
   }
 

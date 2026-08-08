@@ -58,7 +58,8 @@ $routes->get('/api/earthquake-data', 'Bpbd\EarthquakeRadarController::fetchBmkgD
 // Posko detail route (Relawan namespace)
 $routes->get('/posko/(:num)', 'Relawan\PoskoController::detail/$1', ['filter' => ['auth']]);
 $routes->get('/relawan/posko/(:num)', 'Relawan\RelawanController::posko/$1', ['filter' => ['auth', 'role:relawan']]);
-$routes->get('/relawan/manajemen-penyintas', 'Relawan\PoskoController::manajemenPenyintas', ['filter' => ['auth']]);
+$routes->get('/relawan/posko-tidak-tersedia', 'Relawan\RelawanController::poskoTidakTersedia', ['filter' => ['auth', 'role:relawan']]);
+$routes->get('/relawan/manajemen-penyintas', 'Relawan\PoskoController::manajemenPenyintas', ['filter' => ['auth', 'role:relawan']]);
 
 // Victim detail & update routes (Relawan namespace)
 $routes->get('/victim/create/(:num)', 'Relawan\VictimController::create/$1', ['filter' => ['auth', 'role:relawan,psikolog']]);

@@ -3,10 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title><?= esc($title ?? 'PsyAid - Disaster Mental Health Command Center') ?></title>
-    <link rel="shortcut icon" type="image/png" href="<?= base_url('images/Logo_PsyAid.png') ?>">
-    <link rel="icon" type="image/png" href="<?= base_url('images/Logo_PsyAid.png') ?>">
     <?= view('components/pwa_head') ?>
 
     <!-- Fonts: Plus Jakarta Sans & Inter -->
@@ -53,7 +51,8 @@
             top: 0;
             left: 0;
             z-index: 1040;
-            background: #f7fbf8; /* Clean soft mint-tinted canvas */
+            background: #f7fbf8;
+            /* Clean soft mint-tinted canvas */
             border-right: 1px solid #e2eaf0;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
@@ -273,7 +272,7 @@
             width: 100%;
         }
 
-        .sidebar-dropdown-container > .sidebar-nav-item {
+        .sidebar-dropdown-container>.sidebar-nav-item {
             margin-bottom: 0 !important;
         }
 
@@ -657,14 +656,13 @@ if (session()->get('logged_in')) {
                     <?php if ($role === 'bpbd_admin'): ?>
                         <!-- BPBD Admin Menu -->
                         <a href="<?= site_url('/bpbd/dashboard') ?>"
-                            class="sidebar-nav-item <?= url_is('bpbd/dashboard*') ? 'active' : '' ?>"
-                            title="Dashboard Utama BPBD">
+                            class="sidebar-nav-item <?= url_is('bpbd/dashboard*') ? 'active' : '' ?>" title="Dashboard Utama BPBD">
                             <i class="nav-icon bi bi-speedometer2 text-success"></i>
                             <span class="sidebar-label">Dashboard BPBD</span>
                         </a>
                         <a href="<?= site_url('/command-center') ?>"
                             class="sidebar-nav-item <?= url_is('command-center*') ? 'active' : '' ?>" title="Command Center BPBD">
-                            <i class="nav-icon bi bi-shield-fill-check text-danger"></i>
+                            <i class="nav-icon bi bi-shield-fill-check text-success"></i>
                             <span class="sidebar-label">Command Center</span>
                         </a>
                         <a href="<?= site_url('/bpbd/manage-posko') ?>"
@@ -676,19 +674,19 @@ if (session()->get('logged_in')) {
                         <a href="<?= site_url('/bpbd/earthquake-radar') ?>"
                             class="sidebar-nav-item <?= url_is('bpbd/earthquake-radar*') ? 'active' : '' ?>"
                             title="Peta Radar Gempa Real-Time BMKG">
-                            <i class="nav-icon bi bi-radar text-warning"></i>
+                            <i class="nav-icon bi bi-radar text-success"></i>
                             <span class="sidebar-label">Peta Radar Gempa</span>
                         </a>
                         <a href="<?= site_url('/psychologist-mapping') ?>"
                             class="sidebar-nav-item <?= url_is('psychologist-mapping*') ? 'active' : '' ?>"
                             title="Pemetaan Tim Psikolog">
-                            <i class="nav-icon bi bi-diagram-3-fill text-primary"></i>
+                            <i class="nav-icon bi bi-diagram-3-fill text-success"></i>
                             <span class="sidebar-label">Pemetaan Psikolog</span>
                         </a>
                         <a href="<?= site_url('/bpbd/ticketing-laporan') ?>"
                             class="sidebar-nav-item <?= url_is('bpbd/ticketing-laporan*') ? 'active' : '' ?>"
                             title="Ticketing Laporan Bencana">
-                            <i class="nav-icon bi bi-ticket-perforated-fill text-emerald-600"></i>
+                            <i class="nav-icon bi bi-ticket-perforated-fill text-success"></i>
                             <span class="sidebar-label">Ticketing Laporan</span>
                         </a>
 
@@ -696,9 +694,9 @@ if (session()->get('logged_in')) {
                         <?php $isRegisterActive = url_is('bpbd/register*') || (url_is('register*') && !url_is('bpbd/register*')); ?>
                         <div class="sidebar-dropdown-container">
                             <a href="#desktopRegisterSubmenu" data-bs-toggle="collapse"
-                                class="sidebar-nav-item <?= $isRegisterActive ? 'active' : 'collapsed' ?>"
-                                role="button" aria-expanded="<?= $isRegisterActive ? 'true' : 'false' ?>"
-                                aria-controls="desktopRegisterSubmenu" title="Registrasi Akun">
+                                class="sidebar-nav-item <?= $isRegisterActive ? 'active' : 'collapsed' ?>" role="button"
+                                aria-expanded="<?= $isRegisterActive ? 'true' : 'false' ?>" aria-controls="desktopRegisterSubmenu"
+                                title="Registrasi Akun">
                                 <i class="nav-icon bi bi-person-plus-fill text-success"></i>
                                 <span class="sidebar-label">Registrasi Akun</span>
                                 <i class="dropdown-chevron bi bi-chevron-down"></i>
@@ -713,13 +711,13 @@ if (session()->get('logged_in')) {
                                 <a href="<?= site_url('/bpbd/register-psikolog') ?>"
                                     class="sidebar-nav-submenu-item <?= url_is('bpbd/register-psikolog*') ? 'active' : '' ?>"
                                     title="Registrasi Akun Psikolog Klinis Baru">
-                                    <i class="submenu-icon bi bi-person-badge-fill text-primary"></i>
+                                    <i class="submenu-icon bi bi-person-badge-fill text-success"></i>
                                     <span class="sidebar-label">Registrasi Psikolog</span>
                                 </a>
                                 <a href="<?= site_url('/register') ?>"
                                     class="sidebar-nav-submenu-item <?= (url_is('register*') && !url_is('bpbd/register*')) ? 'active' : '' ?>"
                                     title="Registrasi Admin BPBD Baru">
-                                    <i class="submenu-icon bi bi-shield-plus text-danger"></i>
+                                    <i class="submenu-icon bi bi-shield-plus text-success"></i>
                                     <span class="sidebar-label">Registrasi Admin BPBD</span>
                                 </a>
                             </div>
@@ -751,7 +749,7 @@ if (session()->get('logged_in')) {
                         <a href="<?= site_url('/psikolog/dashboard') ?>"
                             class="sidebar-nav-item <?= url_is('psikolog/dashboard*') ? 'active' : '' ?>"
                             title="Workspace Psikolog">
-                            <i class="nav-icon bi bi-person-badge-fill text-primary"></i>
+                            <i class="nav-icon bi bi-person-badge-fill text-success"></i>
                             <span class="sidebar-label">Clinical Workspace</span>
                         </a>
                         <a href="<?= site_url('/psikolog/assessment-history') ?>"
@@ -763,7 +761,7 @@ if (session()->get('logged_in')) {
                         <a href="<?= site_url('/psikolog/monitoring') ?>"
                             class="sidebar-nav-item <?= url_is('psikolog/monitoring*') ? 'active' : '' ?>"
                             title="Monitoring & Follow-Up">
-                            <i class="nav-icon bi bi-heart-pulse-fill text-danger"></i>
+                            <i class="nav-icon bi bi-heart-pulse-fill text-success"></i>
                             <span class="sidebar-label">Monitoring & Follow-Up</span>
                         </a>
                     <?php endif; ?>
@@ -833,7 +831,7 @@ if (session()->get('logged_in')) {
                         ],
                     ];
 
-                    if (! $isDashboardPage) {
+                    if (!$isDashboardPage) {
                         $parentBreadcrumb = null;
 
                         if (url_is('psikolog/monitoring/detail*')) {
@@ -901,17 +899,17 @@ if (session()->get('logged_in')) {
                                 <?php $isLastBreadcrumb = $index === array_key_last($breadcrumbItems); ?>
                                 <li class="breadcrumb-item small <?= $isLastBreadcrumb ? 'active fw-bold' : 'fw-semibold' ?>"
                                     <?= $isLastBreadcrumb ? 'aria-current="page"' : '' ?>>
-                                    <?php if (! $isLastBreadcrumb && ! empty($item['url'])): ?>
+                                    <?php if (!$isLastBreadcrumb && !empty($item['url'])): ?>
                                         <a href="<?= site_url($item['url']) ?>"
                                             class="text-decoration-none d-inline-flex align-items-center gap-1">
-                                            <?php if (! empty($item['icon'])): ?>
+                                            <?php if (!empty($item['icon'])): ?>
                                                 <i class="<?= esc($item['icon']) ?>"></i>
                                             <?php endif; ?>
                                             <?= esc($item['label']) ?>
                                         </a>
                                     <?php else: ?>
                                         <span class="d-inline-flex align-items-center gap-1">
-                                            <?php if (! empty($item['icon'])): ?>
+                                            <?php if (!empty($item['icon'])): ?>
                                                 <i class="<?= esc($item['icon']) ?>"></i>
                                             <?php endif; ?>
                                             <?= esc($item['label']) ?>
@@ -979,7 +977,7 @@ if (session()->get('logged_in')) {
                         </a>
                         <a href="<?= site_url('/command-center') ?>"
                             class="sidebar-nav-item py-2 px-3 mb-1 <?= url_is('command-center*') ? 'active' : '' ?>">
-                            <i class="nav-icon bi bi-shield-fill-check text-danger"></i>
+                            <i class="nav-icon bi bi-shield-fill-check text-success"></i>
                             <span class="sidebar-label">Command Center</span>
                         </a>
                         <a href="<?= site_url('/bpbd/manage-posko') ?>"
@@ -989,17 +987,17 @@ if (session()->get('logged_in')) {
                         </a>
                         <a href="<?= site_url('/bpbd/earthquake-radar') ?>"
                             class="sidebar-nav-item py-2 px-3 mb-1 <?= url_is('bpbd/earthquake-radar*') ? 'active' : '' ?>">
-                            <i class="nav-icon bi bi-radar text-warning"></i>
+                            <i class="nav-icon bi bi-radar text-success"></i>
                             <span class="sidebar-label">Peta Radar Gempa</span>
                         </a>
                         <a href="<?= site_url('/psychologist-mapping') ?>"
                             class="sidebar-nav-item py-2 px-3 mb-1 <?= url_is('psychologist-mapping*') ? 'active' : '' ?>">
-                            <i class="nav-icon bi bi-diagram-3-fill text-primary"></i>
+                            <i class="nav-icon bi bi-diagram-3-fill text-success"></i>
                             <span class="sidebar-label">Pemetaan Psikolog</span>
                         </a>
                         <a href="<?= site_url('/bpbd/ticketing-laporan') ?>"
                             class="sidebar-nav-item py-2 px-3 mb-1 <?= url_is('bpbd/ticketing-laporan*') ? 'active' : '' ?>">
-                            <i class="nav-icon bi bi-ticket-perforated-fill text-emerald-600"></i>
+                            <i class="nav-icon bi bi-ticket-perforated-fill text-success"></i>
                             <span class="sidebar-label">Ticketing Laporan</span>
                         </a>
 
@@ -1007,8 +1005,8 @@ if (session()->get('logged_in')) {
                         <?php $isRegisterActive = url_is('bpbd/register*') || (url_is('register*') && !url_is('bpbd/register*')); ?>
                         <div class="sidebar-dropdown-container">
                             <a href="#mobileRegisterSubmenu" data-bs-toggle="collapse"
-                                class="sidebar-nav-item py-2 px-3 <?= $isRegisterActive ? 'active' : 'collapsed' ?>"
-                                role="button" aria-expanded="<?= $isRegisterActive ? 'true' : 'false' ?>">
+                                class="sidebar-nav-item py-2 px-3 <?= $isRegisterActive ? 'active' : 'collapsed' ?>" role="button"
+                                aria-expanded="<?= $isRegisterActive ? 'true' : 'false' ?>">
                                 <i class="nav-icon bi bi-person-plus-fill text-success"></i>
                                 <span class="sidebar-label">Registrasi Akun</span>
                                 <i class="dropdown-chevron bi bi-chevron-down"></i>
@@ -1021,12 +1019,12 @@ if (session()->get('logged_in')) {
                                 </a>
                                 <a href="<?= site_url('/bpbd/register-psikolog') ?>"
                                     class="sidebar-nav-submenu-item <?= url_is('bpbd/register-psikolog*') ? 'active' : '' ?>">
-                                    <i class="submenu-icon bi bi-person-badge-fill text-primary"></i>
+                                    <i class="submenu-icon bi bi-person-badge-fill text-success"></i>
                                     <span>Registrasi Psikolog</span>
                                 </a>
                                 <a href="<?= site_url('/register') ?>"
                                     class="sidebar-nav-submenu-item <?= (url_is('register*') && !url_is('bpbd/register*')); ?>">
-                                    <i class="submenu-icon bi bi-shield-plus text-danger"></i>
+                                    <i class="submenu-icon bi bi-shield-plus text-success"></i>
                                     <span>Registrasi Admin BPBD</span>
                                 </a>
                             </div>
@@ -1053,7 +1051,7 @@ if (session()->get('logged_in')) {
                     <?php elseif ($role === 'psikolog'): ?>
                         <a href="<?= site_url('/psikolog/dashboard') ?>"
                             class="sidebar-nav-item py-2 px-3 mb-1 <?= url_is('psikolog/dashboard*') ? 'active' : '' ?>">
-                            <i class="nav-icon bi bi-person-badge-fill text-primary"></i>
+                            <i class="nav-icon bi bi-person-badge-fill text-success"></i>
                             <span class="sidebar-label">Clinical Workspace</span>
                         </a>
                         <a href="<?= site_url('/psikolog/assessment-history') ?>"
@@ -1063,7 +1061,7 @@ if (session()->get('logged_in')) {
                         </a>
                         <a href="<?= site_url('/psikolog/monitoring') ?>"
                             class="sidebar-nav-item py-2 px-3 mb-1 <?= url_is('psikolog/monitoring*') ? 'active' : '' ?>">
-                            <i class="nav-icon bi bi-heart-pulse-fill text-danger"></i>
+                            <i class="nav-icon bi bi-heart-pulse-fill text-success"></i>
                             <span class="sidebar-label">Monitoring &amp; Follow-Up</span>
                         </a>
                     <?php endif; ?>

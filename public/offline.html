@@ -183,16 +183,68 @@
         </div>
       </div>
 
-      <button type="button" onclick="window.location.reload()">Coba hubungkan kembali</button>
+      <button type="button" id="retry-button">Coba hubungkan kembali</button>
       <p class="connection-hint" id="connection-hint">Gunakan tombol Kembali pada browser untuk membuka snapshot terakhir.</p>
     </div>
   </main>
 
   <script>
-    window.addEventListener('online', function () {
-      document.getElementById('connection-hint').textContent = 'Koneksi pulih. Memuat PsyAid…';
-      window.location.reload();
-    });
+    (function () {
+      var hint = document.getElementById('connection-hint');
+      var retryButton = document.getElementById('retry-button');
+      var checking = false;
+
+      async function recoverWhenServerIsReachable() {
+        if (checking) return;
+        checking = true;
+        hint.textContent = 'Memeriksa koneksi ke server PsyAid...';
+        retryButton.disabled = true;
+
+        try {
+          var controller = new AbortController();
+          var timeout = window.setTimeout(function () { controller.abort(); }, 8000);
+          var response = await fetch('/login?psyaid_online_probe=' + Date.now(), {
+            cache: 'no-store',
+            credentials: 'same-origin',
+            headers: { 'X-PsyAid-Online-Probe': 'true' },
+            signal: controller.signal
+          });
+          window.clearTimeout(timeout);
+
+          // Only leave this document when the probe reaches a usable PsyAid
+          // page. Reloading offline.html itself can create an endless loop
+          // when a server-side redirect fails while the device is online.
+          if (response.ok) {
+            var target = new URL(response.url || '/login', window.location.origin);
+            if (target.origin === window.location.origin && target.pathname !== '/offline.html') {
+              hint.textContent = 'Server dapat dijangkau. Memuat PsyAid...';
+              window.location.replace(target.href);
+              return;
+            }
+          }
+
+          // A non-2xx response still means the server is reachable. Keep the
+          // page stable and surface the real state instead of repeatedly
+          // reloading the offline fallback.
+          if (response.status > 0) {
+            checking = false;
+            retryButton.disabled = false;
+            hint.textContent = 'Server dapat dijangkau, tetapi belum siap merespons (HTTP ' + response.status + '). Coba lagi beberapa saat lagi.';
+            return;
+          }
+        } catch (error) {
+          // A rejected fetch is the actual offline condition.
+        }
+
+        checking = false;
+        retryButton.disabled = false;
+        hint.textContent = 'Server belum dapat dijangkau. Snapshot yang sudah tersimpan tetap dapat digunakan.';
+      }
+
+      retryButton.addEventListener('click', recoverWhenServerIsReachable);
+      window.addEventListener('online', recoverWhenServerIsReachable);
+      if (navigator.onLine) recoverWhenServerIsReachable();
+    }());
   </script>
 </body>
 </html>
